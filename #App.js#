@@ -119,20 +119,26 @@ const knightCanMove = (blackness,x,y,toX,toY)=> {
 }
 
 const pawnCanMove = (blackness,x,y,toX,toY)=> {
-    return ((toY-y==1 && blackness) ||
-	    (toY-y==-1 && !blackness) ||
-	    (toY-y==2 && blackness && y==1  ) ||
-	    (toY-y==-2 && !blackness && y==6  ) 	   
-    ) && (toX==x
-	||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	   pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
-	||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	   pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
-    ) &&
-	   //No straight-on capture
-	   (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead) && toX==x	   ))
+    return
+	//Vertical count rules
+	((toY-y==1 && blackness) ||
+	(toY-y==-1 && !blackness) ||
+	(toY-y==2 && blackness && y==1 ) ||
+	(toY-y==-2 && !blackness && y==6 )) &&
 
-	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead) //TODO refactor    
+	   //Straight ahead OR
+	   ( (toX==x && !pieces.some((t)=>t.x==toX && t.y==toY && !t.dead))||
+	   
+	    //Diagonal capture
+	    (toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.y==toY && !t.blackness && !t.dead))||
+	     (toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness && !t.dead))
+	   ) &&
+
+
+	   //No same-color piece in way
+	 !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead) //TODO refactor    
 }
 
 const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)

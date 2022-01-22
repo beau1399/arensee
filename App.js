@@ -225,24 +225,24 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    if(false) { //COMPUTERPLAYS
+    if(true) { //COMPUTERPLAYS
 	useEffect(() => {
-	    if(props.blacksTurn) {
+	    if(props.moveCount%2==1) {
 		let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
 		props.movePiece(move.n, move.x, move.y, true);
 		//		props.setBlacksTurn(false);
 	    }else{
 		//		props.setBlacksTurn(true);
-		if(true) { //ZEROPLAYER
-		    let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
+		if(false) { //ZEROPLAYER
+		    let pm = possibleMoves(false,props.causesCheck,9,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
 		    //		    props.setBlacksTurn(true);
 		}
 	    }
 	}
-		 ,[props.boardx]);} 
+		  ,[props.moveCount]);} 
 
     return(
 	<View style={{width:1000, height:1000}}><View style={{flex:0.2}}/><View>

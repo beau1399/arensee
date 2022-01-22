@@ -15,7 +15,7 @@
 //  also removes the gimmicky snap-back animation.
 //
 
-import React, {useState, useEffect, Component} from 'react';
+import React, {useState, useEffect, Component, useCallback} from 'react';
 import { StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput} from 'react-native';
 import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
@@ -33,10 +33,13 @@ const noInterveningPiece = function(x,y,toX,toY) {
 };
 
 
-const releaseServer = (e,t,movePiece,n,canMove,causesCheck) => {
+const releaseServer = (e,t,movePiece,canMove,causesCheck) => {
     const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
     const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));
-    let piecesn=pieces.filter((u)=>u.n==t.props.n)[0];
+    let n=t.props.n;
+    let piecesn=pieces.filter((u)=>u.n==n)[0];
+    const blackGo = t.props.moveCount%2==1
+    if(blackGo != piecesn.blackness){return}
     if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
 	alert('CASTLE ATTEMPT')
 	if(!noInterveningPiece(piecesn.x,piecesn.y,targetX,targetY)){
@@ -60,15 +63,20 @@ const releaseServer = (e,t,movePiece,n,canMove,causesCheck) => {
 	}
     }
     if(canMove(n,targetX,targetY)){
-	movePiece(n,targetX,targetY)}
+	movePiece(n,targetX,targetY); }
 }
 
 class Piece extends Component {
     constructor(props){super(props);
-	this.pieceReleaser = (event,t)=>{releaseServer(event,t,props.movePiece,props.n,props.canMove,props.causesCheck)};
+		       //We "curry" releaseServer with the values that are fixed here, i.e. the three functions
+		       // related to piece-moving. Left unbound are the event parameter and the instance of
+		       // Piece, which will vary at runtime.
+		       this.pieceReleaser = (event,t)=>
+		       {releaseServer(event,t,props.movePiece,props.canMove,props.causesCheck)};
     }
     
     render(){
+//	alert('11 '+this.props.moveCount)
 	if(this.props.dead) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
@@ -76,7 +84,7 @@ class Piece extends Component {
 	    <View>
 	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View style={{width:35, height:45}}>
-	    <Sprite sprite={this.props.sprite} pixelSize={3 } />
+		<Sprite sprite={this.props.sprite} pixelSize={3 } />
 	    </View></View></Draggable>
 	);
     }
@@ -187,12 +195,14 @@ function GameInner(props){
     return(<>
 	{props.boardx.map((t)=>(
 	    <Piece n={t.n} key={t.n} dead={t.dead} x={t.x} y={t.y} sprite={t.sprite}
-	    canMove={props.canMove}  causesCheck={props.causesCheck} movePiece={props.movePiece}  dbgString={props.dbgString} />))}
+	    canMove={props.canMove}  causesCheck={props.causesCheck} movePiece={props.movePiece}  dbgString={props.dbgString}
+	    moveCount={props.moveCount}  
+	    />))}
 	</>
     )
 }
 
-let blacksTurn=false;
+//let blacksTurn=false;
 
 //Can be in App?
 function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
@@ -215,44 +225,33 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    if(true) { //COMPUTERPLAYS
+    if(false) { //COMPUTERPLAYS
 	useEffect(() => {
-	    if(blacksTurn) {
-		blacksTurn=false;
-		setTimeout(()=>{
+	    if(props.blacksTurn) {
+		let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
+		let move = pm[Math.floor(Math.random()*pm.length)];
+		props.movePiece(move.n, move.x, move.y, true);
+		//		props.setBlacksTurn(false);
+	    }else{
+		//		props.setBlacksTurn(true);
+		if(true) { //ZEROPLAYER
 		    let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
-		    if(!move || move.length==0 || move[0]==undefined) {/*alert('FALSE MATE '+move)*/}
-		    try{
-			props.movePiece(move.n, move.x, move.y, true);
-		    }catch{debugger;}
-		    //alert('BLACK has moved')
-		}
-			  ,1);
-	    }else{
-		if(false) { //ZEROPLAYER
-		    setTimeout(()=>{
-			let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
-			let move = pm[Math.floor(Math.random()*pm.length)];
-			props.movePiece(move.n, move.x, move.y, true); }
-			      ,1);
-		    blacksTurn=true;
+		    props.movePiece(move.n, move.x, move.y, true);  
+		    //		    props.setBlacksTurn(true);
 		}
 	    }
-	}/*,[props]*/); }
+	}
+		 ,[props.boardx]);} 
 
-    //    useEffect(() => {
-    //	setTimeout(()=>{})
-    //  },[])
-    
     return(
 	<View style={{width:1000, height:1000}}><View style={{flex:0.2}}/><View>
 	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
 	</View>
 	<GameInner boardx={props.boardx} canMove={props.canMove} movePiece={props.movePiece} setDbg={props.setDbg} dbgString={props.dbgString}
-	causesCheck={props.causesCheck}
+	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
-	<View style={{flex:0.2}} ><Text>{props.dbgString}</Text></View>
+	    <View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 	</View>);
 }
 
@@ -274,13 +273,13 @@ function canMakeAMove(blackness,causesCheck){
 
 
 let dbg='INIT'
-function App(props){
-    let [boardx, setBoardx] = useState(pieces)
-    let [dbgString, setDbg] = useState(dbg)
-
-    //    let [blacksTurn, setBlacksTurn] = useState(true)
-
-    function causesCheck(n, x, y) {
+let count=0;
+const App = ()=>{
+    const [boardx, setBoardx] = useState(pieces)
+    const [dbgString, setDbg] = useState(dbg)
+    const [moveCount, setMoveCount] = useState(count)
+    
+    const causesCheck=/*useCallback(*/(n, x, y)=> {
 	let prime=[...boardx]
 
 	const boardxn = boardx.filter(t=>t.n==n)[0]
@@ -297,9 +296,9 @@ function App(props){
 	if(enemy.length==1) { enemy[0].dead=false; }
 	setBoardx(prime)
 	return returnable
-    }
+    }//,[boardx,moveCount])
     
-    function movePiece(n, x, y, prechecked) {
+    const movePiece = /*useCallback(*/(n, x, y, prechecked)=> {
 
 	// A word about state...
 	//  Ultimately boardx, prime, and pieces all end up referring to the same, fixed
@@ -346,17 +345,23 @@ function App(props){
 		    alert('STALEMATE')
 		}
 	    }
-	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
-	    blacksTurn=!prechecked;
+	    //	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
+	    //	    setBlacksTurn(!prechecked); //TODO may be superfluous
+	   	    setMoveCount(++count);
+	    //	    if(moveCount>0)	    alert(moveCount)
 	}
-    }
+    }/*)*/
+
+    //    useEffect(()=>alert(moveCount),[moveCount])
     
-    function canMove(n, toX, toY) {
+    const canMove = /*useCallback(*/(n, toX, toY) => {
 	const boardxn = boardx.filter(t=>t.n==n)[0]	
 	return boardxn.canMove(boardxn.blackness,boardxn.x,boardxn.y,toX,toY)
-    }
+    }//,[boardx,moveCount])
     
-    return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  canMove={canMove} />);    
+    return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  canMove={canMove}
+	moveCount={moveCount} setMoveCount={setMoveCount} boardx={boardx}
+	/>);    
 }    
 
 export default App;

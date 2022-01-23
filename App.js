@@ -147,44 +147,36 @@ const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY)
 
 // The requirement to maintain N here sucks TODO
 const pieces=[
-    { sprite:Art.pawnb, x:0, y:1, n:0, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:1, y:1, n:1, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:2, y:1, n:2, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:3, y:1, n:3, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:4, y:1, n:4, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:5, y:1, n:5, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:6, y:1, n:6, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnb, x:7, y:1, n:7, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:0, y:6, n:8, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:1, y:6, n:9, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:2, y:6, n:10, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:3, y:6, n:11, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:4, y:6, n:12, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:5, y:6, n:13, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:6, y:6, n:14, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-    { sprite:Art.pawnw, x:7, y:6, n:15, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false },
-
+    { sprite:Art.pawnb, x:0, y:1, n:0, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:1, y:1, n:1, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:2, y:1, n:2, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:3, y:1, n:3, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:4, y:1, n:4, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:5, y:1, n:5, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:6, y:1, n:6, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnb, x:7, y:1, n:7, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:0, y:6, n:8, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:1, y:6, n:9, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:2, y:6, n:10, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:3, y:6, n:11, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:4, y:6, n:12, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:5, y:6, n:13, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:6, y:6, n:14, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
+    { sprite:Art.pawnw, x:7, y:6, n:15, canMove: pawnCanMove, blackness: false, kingness: false,  dead: false, pawnness: true },
     { sprite:Art.rookb, x:0, y:0,n:16, canMove: rookCanMove, blackness: true,  kingness: false, dead: false },
     { sprite:Art.rookb, x:7, y:0,n:17, canMove: rookCanMove, blackness: true,  kingness: false, dead: false },
-
     { sprite:Art.bishopb, x:2, y:0, n:18, canMove: bishopCanMove, blackness: true,  kingness: false, dead: false },
     { sprite:Art.bishopb, x:5, y:0, n:19, canMove: bishopCanMove, blackness: true,  kingness: false, dead: false },
-
     { sprite:Art.queenb, x:3, y:0, n:20, canMove: queenCanMove, blackness: true, kingness: false,  dead: false },
     { sprite:Art.kingb, x:4, y:0, n:21, canMove: kingCanMove, blackness: true,  kingness: true,dead: false },
-
     { sprite:Art.knightb, x:1, y:0, n:30, canMove: knightCanMove, blackness: true,  kingness: false, dead: false },
     { sprite:Art.knightb, x:6, y:0, n:31, canMove: knightCanMove, blackness: true,  kingness: false, dead: false },
-    
     { sprite:Art.rookw, x:7, y:7, n:22, canMove: rookCanMove, blackness: false,  kingness: false, dead: false },
     { sprite:Art.rookw, x:0, y:7, n:23, canMove: rookCanMove, blackness: false,  kingness: false, dead: false },
-
     { sprite:Art.bishopw, x:2, y:7, n:24, canMove: bishopCanMove, blackness: false,  kingness: false, dead: false },
     { sprite:Art.bishopw, x:5, y:7, n:25, canMove: bishopCanMove, blackness: false,  kingness: false, dead: false },
-
     { sprite:Art.queenw, x:3, y:7, n:26, canMove: queenCanMove, blackness: false, kingness: false,  dead: false },
     { sprite:Art.kingw, x:4, y:7, n:27, canMove: kingCanMove, blackness: false,  kingness: true,dead: false },
-
     { sprite:Art.knightw, x:1, y:7, n:28, canMove: knightCanMove, blackness: false,  kingness: false, dead: false },
     { sprite:Art.knightw, x:6, y:7, n:29, canMove: knightCanMove, blackness: false,  kingness: false, dead: false },
 
@@ -225,7 +217,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    if(true) { //COMPUTERPLAYS
+    if(true) { //COMPUTERPLAYS TODO NOT WORKING WONT LET BLACK MOVE
 	useEffect(() => {
 	setTimeout(()=>{
 	    if(props.moveCount%2==1) {
@@ -235,7 +227,7 @@ function Game(props){
 		//		props.setBlacksTurn(false);
 	    }else{
 		//		props.setBlacksTurn(true);
-		if(true) { //ZEROPLAYER
+		if(false) { //ZEROPLAYER
 		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
@@ -347,6 +339,14 @@ const App = ()=>{
 		    alert('STALEMATE')
 		}
 	    }
+
+	    //Pawn Promotion
+	    if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
+		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
+		boardxn.canMove=queenCanMove;
+	    }
+
+	       
 	    //	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
 	    //	    setBlacksTurn(!prechecked); //TODO may be superfluous
 	   	    setMoveCount(moveCount+1);

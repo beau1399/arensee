@@ -227,22 +227,24 @@ function Game(props){
 
     if(true) { //COMPUTERPLAYS
 	useEffect(() => {
+	setTimeout(()=>{
 	    if(props.moveCount%2==1) {
-		let pm = possibleMoves(true,props.causesCheck,9,props.setDbg, props.dbgString)
+		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
 		props.movePiece(move.n, move.x, move.y, true);
 		//		props.setBlacksTurn(false);
 	    }else{
 		//		props.setBlacksTurn(true);
-		if(false) { //ZEROPLAYER
-		    let pm = possibleMoves(false,props.causesCheck,9,props.setDbg, props.dbgString)
+		if(true) { //ZEROPLAYER
+		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
 		    //		    props.setBlacksTurn(true);
 		}
 	    }
-	}
-		  ,[props.moveCount]);} 
+	},1);	},[props.moveCount]);}
+    //		  /*,[props.moveCount]*/);}
+    
 
     return(
 	<View style={{width:1000, height:1000}}><View style={{flex:0.2}}/><View>
@@ -273,11 +275,11 @@ function canMakeAMove(blackness,causesCheck){
 
 
 let dbg='INIT'
-let count=0;
+//let count=0;
 const App = ()=>{
     const [boardx, setBoardx] = useState(pieces)
     const [dbgString, setDbg] = useState(dbg)
-    const [moveCount, setMoveCount] = useState(count)
+    const [moveCount, setMoveCount] = useState(0)
     
     const causesCheck=/*useCallback(*/(n, x, y)=> {
 	let prime=[...boardx]
@@ -347,7 +349,7 @@ const App = ()=>{
 	    }
 	    //	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
 	    //	    setBlacksTurn(!prechecked); //TODO may be superfluous
-	   	    setMoveCount(++count);
+	   	    setMoveCount(moveCount+1);
 	    //	    if(moveCount>0)	    alert(moveCount)
 	}
     }/*)*/

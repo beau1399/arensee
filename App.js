@@ -130,12 +130,36 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	    (toY-y==-1 && !blackness) ||
 	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
 	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
-    ) && (toX==x
-	||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	   pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
-	||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	   pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
-    ) &&
+	   ) &&
+
+
+    (toX==x
+
+
+     //Capture (pawn)
+     // Customary diagonal capture, black
+     ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
+
+     // Customary diagonal capture, white
+     ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+	pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
+
+     // Capture-en-passant, black
+     ||(toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
+
+     // Capture-en-passant, white
+     ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
+
+////////////////////////////////////////////////////////////
+
+
+    )
+
+
+	&&
 	   //No straight-on capture
 	   (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead) && toX==x	   ))
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead) //TODO refactor    
@@ -213,7 +237,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    const players=1;
+    const players=2;
 
     if(players==1) {
 	useEffect(() => {

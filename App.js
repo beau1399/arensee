@@ -132,10 +132,10 @@ const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
     const happened = pawnness && (
 	//Black
 	(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.lastMoved && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
+	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
 	//White
 	(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.lastMoved && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead)));
+	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead)));
 
     return {enpassant:happened, capturedX:toX, capturedY:y}
 }
@@ -147,9 +147,7 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
     ) &&
 
-
 	   (toX==x
-
 
 	  //Capture (pawn)
 	  // Customary diagonal capture, black
@@ -385,8 +383,8 @@ const App = ()=>{
 	    // Mark piece dirty
 	    boardxn.dirtiness=true;
 	    // Mark piece (and nothing else) "last moved"
-	    prime.forEach((t)=>t.lastMoved=false);	   
-	    boardxn.lastMoved=true;
+	    prime.forEach((t)=>t.justAdvancedTwo=false);	   
+	    boardxn.justAdvancedTwo=Math.abs(boardxn.y-savey)==2;
 	    // Mutate state
 	    setBoardx(prime)
 	    // Check for mate

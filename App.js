@@ -128,8 +128,8 @@ const knightCanMove = (blackness,x,y,toX,toY)=> {
 const pawnCanMove = (blackness,x,y,toX,toY)=> {
     return ((toY-y==1 && blackness) ||
 	    (toY-y==-1 && !blackness) ||
-	    (toY-y==2 && blackness && y==1  ) ||
-	    (toY-y==-2 && !blackness && y==6  ) 	   
+	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
+	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
     ) && (toX==x
 	||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
 	   pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))

@@ -68,11 +68,11 @@ const releaseServer = (e,t,movePiece,canMove,causesCheck) => {
 
 class Piece extends Component {
     constructor(props){super(props);
-		       //We "curry" releaseServer with the values that are fixed here, i.e. the three functions
-		       // related to piece-moving. Left unbound are the event parameter and the instance of
-		       // Piece, which will vary at runtime.
-		       this.pieceReleaser = (event,t)=>
-		       {releaseServer(event,t,props.movePiece,props.canMove,props.causesCheck)};
+	//We "curry" releaseServer with the values that are fixed here, i.e. the three functions
+	// related to piece-moving. Left unbound are the event parameter and the instance of
+	// Piece, which will vary at runtime.
+	this.pieceReleaser = (event,t)=>
+	    {releaseServer(event,t,props.movePiece,props.canMove,props.causesCheck)};
     }
     
     render(){
@@ -83,7 +83,7 @@ class Piece extends Component {
 	    <View>
 	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View style={{width:35, height:45}}>
-		<Sprite sprite={this.props.sprite} pixelSize={3 } />
+	    <Sprite sprite={this.props.sprite} pixelSize={3 } />
 	    </View></View></Draggable>
 	);
     }
@@ -130,42 +130,57 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	    (toY-y==-1 && !blackness) ||
 	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
 	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
-	   ) &&
+    ) &&
 
 
-    (toX==x
+	   (toX==x
 
 
-     //Capture (pawn)
-     // Customary diagonal capture, black
-     ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+	       //Capture (pawn)
+	       // Customary diagonal capture, black
+	  ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
 	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
 
-     // Customary diagonal capture, white
-     ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
+	       // Customary diagonal capture, white
+	  ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
 
-     // Capture-en-passant, black
-     ||(toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+	       // Capture-en-passant, black
+	  ||(toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
 	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
 
-     // Capture-en-passant, white
-     ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+	       // Capture-en-passant, white
+	  ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
 	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
 
-////////////////////////////////////////////////////////////
+	       ////////////////////////////////////////////////////////////
 
 
-    )
+	   )
 
 
-	&&
+    &&
 	   //No straight-on capture
 	   (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead) && toX==x	   ))
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead) //TODO refactor    
 }
 
 const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)
+
+const enPassant = (blackness,x,y,toX,toY)=> {
+    //TODO this should be called by pawnCanMove
+
+    const happened = 
+    //Black
+     (toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+      pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
+    //White
+     (toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
+     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead));
+
+    if(happened) return {capturedX:toX, capturedY:y}
+     else return false;
+}
 
 // The requirement to maintain N here sucks TODO
 const pieces=[
@@ -259,17 +274,17 @@ function Game(props){
 
     }else{
 	useEffect(() => {
-	setTimeout(()=>{
-	    if(props.moveCount%2==1) {
-		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
-		let move = pm[Math.floor(Math.random()*pm.length)];
-		props.movePiece(move.n, move.x, move.y, true);
-	    }else{
+	    setTimeout(()=>{
+		if(props.moveCount%2==1) {
+		    let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
+		    let move = pm[Math.floor(Math.random()*pm.length)];
+		    props.movePiece(move.n, move.x, move.y, true);
+		}else{
 		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
-	    }
-	},1);	},[props.moveCount]);
+		}
+	    },1);	},[props.moveCount]);
     }
 
 
@@ -280,7 +295,7 @@ function Game(props){
 	<GameInner boardx={props.boardx} canMove={props.canMove} movePiece={props.movePiece} setDbg={props.setDbg} dbgString={props.dbgString}
 	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
-	    <View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	<View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 	</View>);
 }
 

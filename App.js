@@ -125,6 +125,21 @@ const knightCanMove = (blackness,x,y,toX,toY)=> {
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead)
 }
 
+
+const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
+    //TODO this should be called by pawnCanMove
+
+    const happened = pawnness && (
+	//Black
+	(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+	 pieces.some((t)=>t.x==toX && t.lastMoved && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
+	//White
+	(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+	 pieces.some((t)=>t.x==toX && t.lastMoved && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead)));
+
+    return {enpassant:happened, capturedX:toX, capturedY:y}
+}
+
 const pawnCanMove = (blackness,x,y,toX,toY)=> {
     return ((toY-y==1 && blackness) ||
 	    (toY-y==-1 && !blackness) ||
@@ -136,25 +151,17 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	   (toX==x
 
 
-	       //Capture (pawn)
-	       // Customary diagonal capture, black
+	  //Capture (pawn)
+	  // Customary diagonal capture, black
 	  ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
 	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
 
-	       // Customary diagonal capture, white
+	  // Customary diagonal capture, white
 	  ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
 	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead))
 
-	       // Capture-en-passant, black
-	  ||(toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
-	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
-
-	       // Capture-en-passant, white
-	  ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
-	     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))
-
-	       ////////////////////////////////////////////////////////////
-
+	  //En passant
+	  ||enPassant(blackness,true,x,y,toX,toY).enpassant
 
 	   )
 
@@ -166,20 +173,6 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 }
 
 const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)
-
-const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
-    //TODO this should be called by pawnCanMove
-
-    const happened = pawnness && (
-    //Black
-     (toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
-      pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
-    //White
-     (toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
-     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead)));
-
-    return {enpassant:happened, capturedX:toX, capturedY:y}
-}
 
 // The requirement to maintain N here sucks TODO
 const pieces=[
@@ -389,11 +382,16 @@ const App = ()=>{
 	    if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].dead=false; }
 	    setBoardx(prime)
 	}else{
-	    //SUCCESSFUL MOVE
+	    // Mark piece dirty
 	    boardxn.dirtiness=true;
+	    // Mark piece (and nothing else) "last moved"
+	    prime.forEach((t)=>t.lastMoved=false);	   
+	    boardxn.lastMoved=true;
+	    // Mutate state
 	    setBoardx(prime)
+	    // Check for mate
 	    if(!canMakeAMove(!boardxn.blackness, causesCheck)){
-		if(isChecked(!boardxn.blackness/*,setDbg,dbgString*/)){
+		if(isChecked(!boardxn.blackness)){
 		    alert('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') )
 		}else{
 		    alert('STALEMATE')

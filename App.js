@@ -167,19 +167,18 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 
 const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)
 
-const enPassant = (blackness,x,y,toX,toY)=> {
+const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
     //TODO this should be called by pawnCanMove
 
-    const happened = 
+    const happened = pawnness && (
     //Black
      (toY-y==1 && blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
       pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead))||
     //White
      (toY-y==-1 && !blackness && Math.abs(toX-x)==1 && //TODO must be a clean pawn!
-     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead));
+     pieces.some((t)=>t.x==toX && t.y==y && t.pawnness  && t.blackness!=blackness && !t.dead)));
 
-    if(happened) return {capturedX:toX, capturedY:y}
-     else return false;
+    return {enpassant:happened, capturedX:toX, capturedY:y}
 }
 
 // The requirement to maintain N here sucks TODO
@@ -328,16 +327,22 @@ const App = ()=>{
 
 	const boardxn = boardx.filter(t=>t.n==n)[0]
 	
-	//Capture anything there
+	//Capture anything there 
 	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != boardxn.blackness && !t.dead)
 	if(enemy.length==1) { enemy[0].dead=true; }
 
+	//enpassant
+	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y) 
+	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].dead=true; }
+	
 	let savex=boardxn.x; let savey=boardxn.y;
 	boardxn.x=x; boardxn.y=y;
 	let returnable = isChecked(boardxn.blackness/*, setDbg, dbgString*/);
 	boardxn.x=savex;
 	boardxn.y=savey;
 	if(enemy.length==1) { enemy[0].dead=false; }
+	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].dead=false; }
+
 	setBoardx(prime)
 	return returnable
     }
@@ -366,6 +371,10 @@ const App = ()=>{
 	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != boardxn.blackness && !t.dead)
 	if(enemy.length==1) { enemy[0].dead=true; }
 
+	//enpassant
+	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y) 
+	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].dead=true; }
+	
 	let savex=boardxn.x;
 	let savey=boardxn.y;
 	boardxn.x=x;
@@ -377,6 +386,7 @@ const App = ()=>{
 	    boardxn.x=savex;
 	    boardxn.y=savey;
 	    if(enemy.length==1) { enemy[0].dead=false; }
+	    if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].dead=false; }
 	    setBoardx(prime)
 	}else{
 	    //SUCCESSFUL MOVE

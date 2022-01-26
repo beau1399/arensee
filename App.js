@@ -76,7 +76,6 @@ class Piece extends Component {
     }
     
     render(){
-//	alert('11 '+this.props.moveCount)
 	if(this.props.dead) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
@@ -139,7 +138,6 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
     ) &&
 	   //No straight-on capture
 	   (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.dead) && toX==x	   ))
-
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.dead) //TODO refactor    
 }
 
@@ -194,8 +192,6 @@ function GameInner(props){
     )
 }
 
-//let blacksTurn=false;
-
 //Can be in App?
 function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
     let returnable = [];
@@ -217,7 +213,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    const players=2;
+    const players=1;
 
     if(players==1) {
 	useEffect(() => {
@@ -225,14 +221,11 @@ function Game(props){
 		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
 		props.movePiece(move.n, move.x, move.y, true);
-		//		props.setBlacksTurn(false);
 	    }else{
-		//		props.setBlacksTurn(true);
 		if(false) { //ZEROPLAYER
 		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
-		    //		    props.setBlacksTurn(true);
 		}
 	    }
 	},[props.moveCount]);
@@ -247,7 +240,6 @@ function Game(props){
 		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
 		props.movePiece(move.n, move.x, move.y, true);
-		//		props.setBlacksTurn(false);
 	    }else{
 		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
@@ -256,10 +248,6 @@ function Game(props){
 	},1);	},[props.moveCount]);
     }
 
-/*    if(true) { //COMPUTERPLAYS TODO NOT WORKING WONT LET BLACK MOVE
-}
-  */  //		  /*,[props.moveCount]*/);}
-    
 
     return(
 	<View style={{width:1000, height:1000}}><View style={{flex:0.2}}/><View>
@@ -296,7 +284,7 @@ const App = ()=>{
     const [dbgString, setDbg] = useState(dbg)
     const [moveCount, setMoveCount] = useState(count)
     
-    const causesCheck=/*useCallback(*/(n, x, y)=> {
+    const causesCheck = (n, x, y)=> {
 	let prime=[...boardx]
 
 	const boardxn = boardx.filter(t=>t.n==n)[0]
@@ -313,9 +301,9 @@ const App = ()=>{
 	if(enemy.length==1) { enemy[0].dead=false; }
 	setBoardx(prime)
 	return returnable
-    }//,[boardx,moveCount])
+    }
     
-    const movePiece = /*useCallback(*/(n, x, y, prechecked)=> {
+    const movePiece = (n, x, y, prechecked)=> {
 
 	// A word about state...
 	//  Ultimately boardx, prime, and pieces all end up referring to the same, fixed
@@ -345,7 +333,7 @@ const App = ()=>{
 	boardxn.y=y;
 
 	//TODO PRECHECKED LOGIC IS ALLOWING UNCORRECTED CHECK RESPONSES!!!
-	if(!prechecked && isChecked(boardxn.blackness/*,setDbg, dbgString*/)){
+	if(!prechecked && isChecked(boardxn.blackness)){
 	    //Uh-oh! Revert illegal check-causing move.
 	    boardxn.x=savex;
 	    boardxn.y=savey;
@@ -368,22 +356,15 @@ const App = ()=>{
 		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
 		boardxn.canMove=queenCanMove;
 	    }
-
-	       
-	    //	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
-	    //	    setBlacksTurn(!prechecked); //TODO may be superfluous
 	    
 	    setMoveCount(++count);
-	    //	    if(moveCount>0)	    alert(moveCount)
 	}
-    }/*)*/
+    }
 
-    //    useEffect(()=>alert(moveCount),[moveCount])
-    
-    const canMove = /*useCallback(*/(n, toX, toY) => {
+    const canMove = (n, toX, toY) => {
 	const boardxn = boardx.filter(t=>t.n==n)[0]	
 	return boardxn.canMove(boardxn.blackness,boardxn.x,boardxn.y,toX,toY)
-    }//,[boardx,moveCount])
+    }
     
     return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  canMove={canMove}
 	moveCount={moveCount} setMoveCount={setMoveCount} boardx={boardx}

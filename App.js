@@ -217,9 +217,10 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    if(true) { //COMPUTERPLAYS TODO NOT WORKING WONT LET BLACK MOVE
+    const players=2;
+
+    if(players==1) {
 	useEffect(() => {
-	setTimeout(()=>{
 	    if(props.moveCount%2==1) {
 		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
@@ -234,8 +235,30 @@ function Game(props){
 		    //		    props.setBlacksTurn(true);
 		}
 	    }
-	},1);	},[props.moveCount]);}
-    //		  /*,[props.moveCount]*/);}
+	},[props.moveCount]);
+
+    }else if(players==2){
+
+
+    }else{
+	useEffect(() => {
+	setTimeout(()=>{
+	    if(props.moveCount%2==1) {
+		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
+		let move = pm[Math.floor(Math.random()*pm.length)];
+		props.movePiece(move.n, move.x, move.y, true);
+		//		props.setBlacksTurn(false);
+	    }else{
+		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
+		    let move = pm[Math.floor(Math.random()*pm.length)];
+		    props.movePiece(move.n, move.x, move.y, true);  
+	    }
+	},1);	},[props.moveCount]);
+    }
+
+/*    if(true) { //COMPUTERPLAYS TODO NOT WORKING WONT LET BLACK MOVE
+}
+  */  //		  /*,[props.moveCount]*/);}
     
 
     return(
@@ -267,11 +290,11 @@ function canMakeAMove(blackness,causesCheck){
 
 
 let dbg='INIT'
-//let count=0;
+let count=0;
 const App = ()=>{
     const [boardx, setBoardx] = useState(pieces)
     const [dbgString, setDbg] = useState(dbg)
-    const [moveCount, setMoveCount] = useState(0)
+    const [moveCount, setMoveCount] = useState(count)
     
     const causesCheck=/*useCallback(*/(n, x, y)=> {
 	let prime=[...boardx]
@@ -349,7 +372,8 @@ const App = ()=>{
 	       
 	    //	    isChecked(!boardxn.blackness,setDbg,dbgString)	    
 	    //	    setBlacksTurn(!prechecked); //TODO may be superfluous
-	   	    setMoveCount(moveCount+1);
+	    
+	    setMoveCount(++count);
 	    //	    if(moveCount>0)	    alert(moveCount)
 	}
     }/*)*/

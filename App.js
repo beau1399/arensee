@@ -16,11 +16,14 @@
 //
 
 import React, {useState, useEffect, Component, useCallback} from 'react';
-import { StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput} from 'react-native';
+import { StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput, NativeModules} from 'react-native';
 import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
 import * as Art from './Art';
+
+const { RNPlayNative } = NativeModules;
+
 
 const noInterveningPiece = function(x,y,toX,toY) {
     var returnable=true;
@@ -242,7 +245,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    const players=0;
+    const players=1;
 
     if(players==1) {
 	useEffect(() => {
@@ -250,12 +253,7 @@ function Game(props){
 		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
 		let move = pm[Math.floor(Math.random()*pm.length)];
 		props.movePiece(move.n, move.x, move.y, true);
-	    }else{
-		if(false) { //ZEROPLAYER
-		    let pm = possibleMoves(false,props.causesCheck,10,props.setDbg, props.dbgString)
-		    let move = pm[Math.floor(Math.random()*pm.length)];
-		    props.movePiece(move.n, move.x, move.y, true);  
-		}
+		RNPlayNative.runMethod();		
 	    }
 	},[props.moveCount]);
 

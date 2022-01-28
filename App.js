@@ -40,10 +40,10 @@ const releaseServer = (e,t,movePiece,canMove,causesCheck) => {
     let piecesn=pieces.filter((u)=>u.n==n)[0];
     const blackGo = t.props.moveCount%2==1
     if(blackGo != piecesn.blackness){return}
+    // Castling... if this were in kingCanMove, then the computer could use it...
     if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
-	alert('CASTLE ATTEMPT')
 	if(!noInterveningPiece(piecesn.x,piecesn.y,targetX,targetY)){
-	    alert('PIECE IN WAY')
+	    // Piece in way
 	}else{
 	    left = (targetX==2);
 	    if(left){
@@ -242,7 +242,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 
 function Game(props){
 
-    const players=2;
+    const players=0;
 
     if(players==1) {
 	useEffect(() => {
@@ -274,7 +274,7 @@ function Game(props){
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
 		}
-	    },1);	},[props.moveCount]);
+	    },250);	},[props.moveCount]);
     }
 
 

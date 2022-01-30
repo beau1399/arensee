@@ -36,7 +36,7 @@ const noInterveningPiece = function(x,y,toX,toY) {
 };
 
 
-const releaseServer = (e,t,movePiece,canMove,causesCheck) => {
+const releaseServer = (e,t) => {
     const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
     const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));
     let n=t.props.n;
@@ -52,37 +52,31 @@ const releaseServer = (e,t,movePiece,canMove,causesCheck) => {
 	    if(left){
 		let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
 		if(!castle.dirtiness && !piecesn.dirtiness && !castle.dead && !piecesn.dead) {
-		    if(!causesCheck(n,piecesn.x-1,targetY) && !causesCheck(n,piecesn.x-2,targetY)){
-			movePiece(n,piecesn.x-2,targetY);
-			movePiece(castle.n,castle.x+3,castle.y); }}
+		    if(!t.props.causesCheck(n,piecesn.x-1,targetY) && !t.props.causesCheck(n,piecesn.x-2,targetY)){
+			t.props.movePiece(n,piecesn.x-2,targetY);
+			t.props.movePiece(castle.n,castle.x+3,castle.y); }}
 	    }else{
 		let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
 		if(!castle.dirtiness && !piecesn.dirtiness && !castle.dead && !piecesn.dead) {
-		    if(!causesCheck(n,piecesn.x+1,targetY) && !causesCheck(n,piecesn.x+2,targetY)){
-			movePiece(n,piecesn.x+1,targetY);
-			movePiece(n,piecesn.x+2,targetY);
-			movePiece(castle.n,castle.x-2,castle.y); }}
+		    if(!t.props.causesCheck(n,piecesn.x+1,targetY) && !t.props.causesCheck(n,piecesn.x+2,targetY)){
+			t.props.movePiece(n,piecesn.x+1,targetY);
+			t.props.movePiece(n,piecesn.x+2,targetY);
+			t.props.movePiece(castle.n,castle.x-2,castle.y); }}
 	    }
 	}
     }
-    if(canMove(n,targetX,targetY)){
-	movePiece(n,targetX,targetY); }
+    if(t.props.canMove(n,targetX,targetY)){
+	t.props.movePiece(n,targetX,targetY); }
 }
 
 class Piece extends Component {
-    constructor(props){super(props);
-	//We "curry" releaseServer with the values that are fixed here, i.e. the three functions
-	// related to piece-moving. Left unbound are the event parameter and the instance of
-	// Piece, which will vary at runtime.
-	this.pieceReleaser = (event,t)=>
-	    {releaseServer(event,t,props.movePiece,props.canMove,props.causesCheck)};
-    }
+    constructor(props){super(props);}
     
     render(){
 	if(this.props.dead) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{this.pieceReleaser(event,this)}}>
+	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{releaseServer(event,this)}}>
 	    <View>
 	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View style={{width:35, height:45}}>
@@ -176,7 +170,7 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)
 
 // The requirement to maintain N here sucks TODO
-const pieces=[
+const initPieces=()=>[
     { sprite:Art.pawnb, x:0, y:1, n:0, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
     { sprite:Art.pawnb, x:1, y:1, n:1, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
     { sprite:Art.pawnb, x:2, y:1, n:2, canMove: pawnCanMove, blackness: true, kingness: false,  dead: false, pawnness: true },
@@ -212,6 +206,8 @@ const pieces=[
 
     
 ]
+
+let pieces=initPieces();
 
 function GameInner(props){
     return(<>
@@ -392,15 +388,18 @@ const App = ()=>{
 		}else{
 		    alert('STALEMATE')
 		}
+		pieces=initPieces()
+		setBoardx(pieces)
+		setMoveCount(0)
 	    }
-
+	    else{
 	    //Pawn Promotion
 	    if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
 		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
 		boardxn.canMove=queenCanMove;
 	    }
 	    
-	    setMoveCount(++count);
+		setMoveCount(++count);}
 	}
     }
 

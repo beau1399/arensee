@@ -16,7 +16,7 @@
 //
 
 import React, {useState, useEffect, Component, useCallback} from 'react';
-import { StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput, NativeModules} from 'react-native';
+import {Pressable, StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';
 import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
@@ -240,10 +240,9 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 }
 
 function Game(props){
-
     const players=1;
-
-    if(players==1) {
+    if(!props.modalVisible) {
+     if(players==1) {
 	useEffect(() => {
 	    if(props.moveCount%2==1) {
 		let pm = possibleMoves(true,props.causesCheck,10,props.setDbg, props.dbgString)
@@ -253,10 +252,10 @@ function Game(props){
 	    }
 	},[props.moveCount]);
 
-    }else if(players==2){
+     }else if(players==2){
 
 
-    }else{
+     }else{
 	useEffect(() => {
 	    setTimeout(()=>{
 		if(props.moveCount%2==1) {
@@ -269,17 +268,47 @@ function Game(props){
 		    props.movePiece(move.n, move.x, move.y, true);  
 		}
 	    },250);	},[props.moveCount]);
+     }
     }
-
-
+   // alert(props.modalVisible)
     return(
-	<View style={{width:1000, height:1000}}><View style={{flex:0.2}}/><View>
+	<View style={{width:1000, height:1000}}><View style={{flex:0.315}}/><View>
 	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
 	</View>
 	<GameInner boardx={props.boardx} canMove={props.canMove} movePiece={props.movePiece} setDbg={props.setDbg} dbgString={props.dbgString}
 	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
 	<View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+
+ <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={props.modalVisible?true:false}
+        onRequestClose={() => {
+         // Alert.alert("Modal has been closed.");
+          setModalVisible(undefined);
+        }}
+      >
+            <View style={styles.centeredView} >
+            <Text style={{color:"black"}}>{props.modalVisible}</Text>
+            <Pressable
+        style={{padding:10, backgroundColor:"rgba(32,32,32,0.2)", color:"black"}}
+        onPress={() => {props.setModalVisible(undefined)
+
+		pieces=initPieces()
+		props.setBoardx(pieces)
+		props.setMoveCount(0)
+
+
+		       }}
+            >
+              <Text style={styles.textStyle}>OK</Text>
+            </Pressable>
+          </View>
+
+	</Modal>
+</View>
 	</View>);
 }
 
@@ -306,6 +335,7 @@ const App = ()=>{
     const [boardx, setBoardx] = useState(pieces)
     const [dbgString, setDbg] = useState(dbg)
     const [moveCount, setMoveCount] = useState(count)
+    const [modalVisible,setModalVisible]=useState(undefined);
     
     const causesCheck = (n, x, y)=> {
 	let prime=[...boardx]
@@ -384,22 +414,21 @@ const App = ()=>{
 	    // Check for mate
 	    if(!canMakeAMove(!boardxn.blackness, causesCheck)){
 		if(isChecked(!boardxn.blackness)){
-		    alert('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') )
+		    setModalVisible(('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') ))
 		}else{
-		    alert('STALEMATE')
+		    setModalVisible('STALEMATE')		    
+		    //alert('STALEMATE')
 		}
-		pieces=initPieces()
-		setBoardx(pieces)
-		setMoveCount(0)
+		
 	    }
 	    else{
-	    //Pawn Promotion
-	    if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
+	     //Pawn Promotion
+	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
 		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
 		boardxn.canMove=queenCanMove;
+	     }
+	     setMoveCount(++count);
 	    }
-	    
-		setMoveCount(++count);}
 	}
     }
 
@@ -409,8 +438,47 @@ const App = ()=>{
     }
     
     return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  canMove={canMove}
-	moveCount={moveCount} setMoveCount={setMoveCount} boardx={boardx}
+	   moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx} boardx={boardx} modalVisible={modalVisible} setModalVisible={setModalVisible}
 	/>);    
 }    
+
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "rgba(255,255,255,0.8)",
+    borderRadius: 4,
+    padding: 35,
+    alignItems: "center",
+    elevation: 5
+  },
+    button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4}
+/*  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }*/
+});
 
 export default App;

@@ -411,6 +411,13 @@ const App = ()=>{
 	    boardxn.justAdvancedTwo=Math.abs(boardxn.y-savey)==2;
 	    // Mutate state
 	    setBoardx(prime)
+
+	     //Pawn Promotion
+	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
+		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
+		boardxn.canMove=queenCanMove;
+	     }
+
 	    // Check for mate
 	    if(!canMakeAMove(!boardxn.blackness, causesCheck)){
 		if(isChecked(!boardxn.blackness)){
@@ -420,13 +427,7 @@ const App = ()=>{
 		    //alert('STALEMATE')
 		}
 		
-	    }
-	    else{
-	     //Pawn Promotion
-	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
-		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
-		boardxn.canMove=queenCanMove;
-	     }
+	    }else{
 	     setMoveCount(++count);
 	    }
 	}

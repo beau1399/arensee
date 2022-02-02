@@ -142,7 +142,11 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	    (toY-y==-1 && !blackness) ||
 	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
 	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
-    ) &&
+	   )
+        // No jumping by pawns
+	&& noInterveningPiece(x,y,toX,toY)
+
+	&&
 
 	   (toX==x
 

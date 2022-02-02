@@ -39,6 +39,7 @@ const noInterveningPiece = function(x,y,toX,toY) {
 const releaseServer = (e,t) => {
     const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
     const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));
+    if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
     let n=t.props.n;
     let piecesn=pieces.filter((u)=>u.n==n)[0];
     const blackGo = t.props.moveCount%2==1

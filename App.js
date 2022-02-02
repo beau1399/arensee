@@ -451,35 +451,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "rgba(255,255,255,0.8)",
-    borderRadius: 4,
-    padding: 35,
-    alignItems: "center",
-    elevation: 5
-  },
-    button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4}
-/*  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "black",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }*/
+  button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4}
 });
 
 export default App;

@@ -112,19 +112,6 @@ const knightCanMove = (blackness,x,y,toX,toY,pieces)=> {
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
 }
 
-//This can be in Pawn.js? TODO
-const enPassant = (blackness,pawnness,x,y,toX,toY,pieces)=> {
-
-    const happened = pawnness && (
-	//Black
-	(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness))||
-	//White
-	(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness)));
-
-    return {enpassant:happened, capturedX:toX, capturedY:y}
-}
 
 //const Pawn.CanMove = (blackness,x,y,toX,toY,pieces)=> {}
 
@@ -296,7 +283,7 @@ const App = ()=>{
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
+	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
 	let savex=boardxn.x; let savey=boardxn.y;
@@ -342,7 +329,7 @@ const App = ()=>{
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
+	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
 	let savex=boardxn.x;

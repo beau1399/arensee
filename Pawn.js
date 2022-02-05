@@ -1,23 +1,20 @@
 import Movement from './Movement';
 
-//This can be in Pawn.js? TODO
-const enPassant = (blackness,pawnness,x,y,toX,toY,pieces)=> {
-
-    const happened = pawnness && (
-	//Black
-	(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness))||
-	//White
-	(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	 pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness)));
-
-    return {enpassant:happened, capturedX:toX, capturedY:y}
-}
-
 
 const Pawn = {
-    CanMove:  (blackness,x,y,toX,toY,pieces)=> {
 
+    EnPassant:  (blackness,pawnness,x,y,toX,toY,pieces)=> {
+	const happened = pawnness && (
+	    //Black
+	    (toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness))||
+	    //White
+	    (toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+	     pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness)));
+	return {enpassant:happened, capturedX:toX, capturedY:y}
+    },
+    
+    CanMove:  (blackness,x,y,toX,toY,pieces)=> {
 	return ((toY-y==1 && blackness) ||
 		(toY-y==-1 && !blackness) ||
 		(toY-y==2 && blackness && y==1  && Movement.NoInterveningPiece(x,y,toX,toY,pieces)) ||
@@ -26,9 +23,7 @@ const Pawn = {
         // No jumping by pawns
 	    && Movement.NoInterveningPiece(x,y,toX,toY,pieces)
 
-   &&
-
-	       (toX==x
+   &&(toX==x
 
 		   //Capture (pawn)
 		   // Customary diagonal capture, black
@@ -40,7 +35,7 @@ const Pawn = {
 		 pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
 
 		   //En passant
-	      ||enPassant(blackness,true,x,y,toX,toY,pieces).enpassant
+	      ||Pawn.EnPassant(blackness,true,x,y,toX,toY,pieces).enpassant
 
 	       )
 

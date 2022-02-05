@@ -1,3 +1,6 @@
+// TODO GITIGNORE
+// TODO PATCH FILE LOOKS WEIRD
+// TODO EMACS WEBMODE AT START
 //
 // npm install react-native-webview
 //
@@ -237,7 +240,8 @@ function Game(props){
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);  
 		}
-	    },250);	},[props.moveCount]);
+	    },250);
+	},[props.moveCount]);
      }
     }
     return(

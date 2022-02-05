@@ -25,6 +25,7 @@ import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
 import * as Art from './Art';
 import Rook from './Rook';
+import Pawn from './Pawn';
 import Engine from './Engine';
 
 const { RNPlayNative } = NativeModules;
@@ -40,7 +41,7 @@ const noInterveningPiece = function(x,y,toX,toY) {
 };
 
 
-const releaseServer = (e,t) => {
+const releaseServer = (e,t,pieces) => {
     const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
     const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));
     if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
@@ -81,7 +82,7 @@ class Piece extends Component {
 	if(this.props.deadness) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{releaseServer(event,this)}}>
+	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{releaseServer(event,this,this.props.board)}}>
 	    <View>
 	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View style={{width:35, height:45}}>
@@ -112,7 +113,7 @@ const knightCanMove = (blackness,x,y,toX,toY,pieces)=> {
 }
 
 //This can be in Pawn.js? TODO
-const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
+const enPassant = (blackness,pawnness,x,y,toX,toY,pieces)=> {
 
     const happened = pawnness && (
 	//Black
@@ -125,60 +126,28 @@ const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
     return {enpassant:happened, capturedX:toX, capturedY:y}
 }
 
-const pawnCanMove = (blackness,x,y,toX,toY,pieces)=> {
-    return ((toY-y==1 && blackness) ||
-	    (toY-y==-1 && !blackness) ||
-	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
-	    (toY-y==-2 && !blackness && y==6  && noInterveningPiece(x,y,toX,toY)) 	   
-	   )
-        // No jumping by pawns
-	&& noInterveningPiece(x,y,toX,toY)
-
-	&&
-
-	   (toX==x
-
-	  //Capture (pawn)
-	  // Customary diagonal capture, black
-	  ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
-
-	  // Customary diagonal capture, white
-	  ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-	     pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
-
-	  //En passant
-	  ||enPassant(blackness,true,x,y,toX,toY).enpassant
-
-	   )
-
-
-    &&
-	   //No straight-on capture
-	   (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness) && toX==x	   ))
-	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //TODO refactor    
-}
+//const Pawn.CanMove = (blackness,x,y,toX,toY,pieces)=> {}
 
 const queenCanMove = (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || bishopCanMove(blackness,x,y,toX,toY,pieces)
 
 // The requirement to maintain N here sucks TODO
 const initPieces=()=>[
-    { sprite:Art.pawnb, x:0, y:1, n:0, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:1, y:1, n:1, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:2, y:1, n:2, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:3, y:1, n:3, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:4, y:1, n:4, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:5, y:1, n:5, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:6, y:1, n:6, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnb, x:7, y:1, n:7, canMove: pawnCanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:0, y:6, n:8, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:1, y:6, n:9, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:2, y:6, n:10, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:3, y:6, n:11, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:4, y:6, n:12, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:5, y:6, n:13, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:6, y:6, n:14, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.pawnw, x:7, y:6, n:15, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:2, y:1, n:2, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:3, y:1, n:3, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:4, y:1, n:4, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:5, y:1, n:5, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:6, y:1, n:6, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.Black, x:7, y:1, n:7, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:0, y:6, n:8, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:1, y:6, n:9, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:2, y:6, n:10, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:3, y:6, n:11, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:4, y:6, n:12, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:5, y:6, n:13, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:6, y:6, n:14, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
+    { sprite:Pawn.White, x:7, y:6, n:15, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
     { sprite:Rook.Black, x:0, y:0,n:16, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Rook.Black, x:7, y:0,n:17, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.bishopb, x:2, y:0, n:18, canMove: bishopCanMove, blackness: true,  kingness: false, deadness: false },
@@ -206,14 +175,16 @@ function GameInner(props){
 	{props.boardx.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
 	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	    moveCount={props.moveCount}  
+	    moveCount={props.moveCount} board={props.boardx}
 	    />))}
 	</>
     )
 }
 
 function Game(props){
-    const players=0;
+    const players=1;
+
+    // Computer movement
     if(!props.modalVisible) {
      if(players==1) {
 	useEffect(() => {
@@ -226,7 +197,7 @@ function Game(props){
 	},[props.moveCount]);
 
      }else if(players==2){
-
+	 //We don't need to do any computer-driven moving if 2 players
 
      }else{
 	useEffect(() => {
@@ -244,6 +215,8 @@ function Game(props){
 	},[props.moveCount]);
      }
     }
+
+    
     return(
 	<View style={{width:1000, height:1000}}><View style={{flex:0.315}}/><View>
 	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
@@ -280,7 +253,7 @@ function Game(props){
 }
 
 //Can be in App?
-function canMakeAMove(blackness,causesCheck){
+function canMakeAMove(blackness,causesCheck,pieces){
     let returnable = false;
     pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
 	for(let i=0; i<8; ++i){
@@ -312,7 +285,7 @@ const App = ()=>{
 	}
 	return returnable;
     }
-    
+
     const causesCheck = (n, x, y)=> {
 	let prime=[...boardx]
 
@@ -323,7 +296,7 @@ const App = ()=>{
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y) 
+	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
 	let savex=boardxn.x; let savey=boardxn.y;
@@ -369,7 +342,7 @@ const App = ()=>{
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y) 
+	const {enpassant,capturedX,capturedY} = enPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
 	let savex=boardxn.x;
@@ -377,20 +350,25 @@ const App = ()=>{
 	boardxn.x=x;
 	boardxn.y=y;
 
-	//TODO PRECHECKED LOGIC IS ALLOWING UNCORRECTED CHECK RESPONSES!!!
 	if(!prechecked && isChecked(boardxn.blackness)){
-	    //Uh-oh! Revert illegal check-causing move.
+	    //Uh-oh! Revert illegal check-causing move. (This is for moves attempted by
+	    //  humans. The computer has already considered this possibility.)
 	    boardxn.x=savex;
 	    boardxn.y=savey;
 	    if(enemy.length==1) { enemy[0].deadness=false; }
 	    if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=false; }
 	    setBoardx(prime)
 	}else{
+	    // Successful move
+	    //
+
 	    // Mark piece dirty
 	    boardxn.dirtiness=true;
-	    // Mark piece (and nothing else) "last moved"
+	    
+	    // Maintain "just advanced two" flag for enpassant logic
 	    prime.forEach((t)=>t.justAdvancedTwo=false);	   
 	    boardxn.justAdvancedTwo=Math.abs(boardxn.y-savey)==2;
+
 	    // Mutate state
 	    setBoardx(prime)
 
@@ -401,7 +379,7 @@ const App = ()=>{
 	     }
 
 	    // Check for mate
-	    if(!canMakeAMove(!boardxn.blackness, causesCheck)){
+	    if(!canMakeAMove(!boardxn.blackness, causesCheck, boardx)){
 		if(isChecked(!boardxn.blackness)){
 		    setModalVisible(('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') ))
 		}else{

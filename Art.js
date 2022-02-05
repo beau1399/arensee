@@ -26,21 +26,6 @@ export const bishopb=
 	" ,0000o  ",
 	",000000o "]
 
-export const pawnb=
-    [
-	"         ",
-	"         ",
-	"         ",
-	"         ",
-	"   0     ",
-	"  000    ",
-	" o0000   ",
-	"  o0o    ",
-	"  o0o    ",
-	"  o0o    ",
-	" ,000o  ",
-	",00000o "]
-
 export const knightb=
     [
 	"    0     ",
@@ -71,22 +56,6 @@ export const knightw=
 	" oo@@@@@@ ",
 	"o@@@@@@@@o",
 	"o@@@@@@@@o"]
-
-export const pawnw=
-    [
-	"         ",
-	"         ",
-	"         ",
-	"         ",
-	"   @     ",
-	"  @@@    ",
-	" `@@@'   ",
-	"  `@'    ",
-	"  `@'    ",
-	"  `@'    ",
-	" `@@@'  ",
-	"`@@@@@' "]
-
 
 export const kingb=
     [

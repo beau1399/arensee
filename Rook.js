@@ -1,6 +1,6 @@
 import Movement from './Movement';
 
-export default Rook = {
+const Rook = {
     CanMove:  (blackness,x,y,toX,toY,pieces)=> (x==toX || y==toY)
 					  && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor
 					  && !pieces.some((t)=>
@@ -36,3 +36,5 @@ export default Rook = {
 	"`@@@@@@@`",
 	"`@@@@@@@`"],    
 };
+
+export {Rook as default};

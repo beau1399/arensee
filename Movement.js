@@ -1,4 +1,4 @@
-export default Movement = {
+const Movement = {
     NoInterveningPiece: (x,y,toX,toY,pieces) =>
 	{
 	    var returnable=true;
@@ -10,3 +10,5 @@ export default Movement = {
 	    return returnable;
 	},
 };
+
+export {Movement as default};

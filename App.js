@@ -21,6 +21,7 @@ import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
 import * as Art from './Art';
+import Rook from './Rook';
 
 const { RNPlayNative } = NativeModules;
 
@@ -66,7 +67,8 @@ const releaseServer = (e,t) => {
 	    }
 	}
     }
-    if(t.props.canMove(n,targetX,targetY)){
+    if(piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
+	//t.props.Moveable(t.n,targetX,targetY)){ //WHY TODO?
 	t.props.movePiece(n,targetX,targetY); }
 }
 
@@ -87,37 +89,33 @@ class Piece extends Component {
     }
 }
 
-const bishopCanMove = (blackness,x,y,toX,toY)=> (Math.abs(toX-x)==Math.abs(toY-y))
+const bishopCanMove = (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
 					   && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor
 					   && !pieces.some((t)=>
 					       t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
 					   && noInterveningPiece(x,y,toX,toY)
 
-const rookCanMove = (blackness,x,y,toX,toY)=> (x==toX || y==toY)
-					 && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor
-					 && !pieces.some((t)=>
-					     t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
-					 && noInterveningPiece(x,y,toX,toY)
 
+      
 function isChecked(blackness, setDbg, dbgString) {
     //King of the color that might be checked. We assume this exists.
     const k=pieces.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
     let returnable = false;
     if(k) {
 	//TODO abstract the deadness thing away
-	returnable= pieces.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y));
+	returnable= pieces.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,pieces));
     }
     setDbg && setDbg(dbgString + '/' + (blackness?'BLACK':'WHITE')+' '+ (returnable?'IS':'IS NOT') + ' CHECKED')
     return returnable;
 }
 
-const kingCanMove = (blackness,x,y,toX,toY)=> {
+const kingCanMove = (blackness,x,y,toX,toY,pieces)=> {
     return (Math.abs(toX-x)<=1 && Math.abs(toY-y)<=1
 	 && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor	
 	 && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //TODO refactor
 )}
 
-const knightCanMove = (blackness,x,y,toX,toY)=> {
+const knightCanMove = (blackness,x,y,toX,toY,pieces)=> {
     return (Math.abs(toX-x) + Math.abs(toY-y)==3)
 	&& toX!=x && toY!=y
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
@@ -138,7 +136,7 @@ const enPassant = (blackness,pawnness,x,y,toX,toY)=> {
     return {enpassant:happened, capturedX:toX, capturedY:y}
 }
 
-const pawnCanMove = (blackness,x,y,toX,toY)=> {
+const pawnCanMove = (blackness,x,y,toX,toY,pieces)=> {
     return ((toY-y==1 && blackness) ||
 	    (toY-y==-1 && !blackness) ||
 	    (toY-y==2 && blackness && y==1  && noInterveningPiece(x,y,toX,toY)) ||
@@ -172,7 +170,7 @@ const pawnCanMove = (blackness,x,y,toX,toY)=> {
 	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //TODO refactor    
 }
 
-const queenCanMove = (blackness,x,y,toX,toY)=>rookCanMove(blackness,x,y,toX,toY) || bishopCanMove(blackness,x,y,toX,toY)
+const queenCanMove = (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || bishopCanMove(blackness,x,y,toX,toY,pieces)
 
 // The requirement to maintain N here sucks TODO
 const initPieces=()=>[
@@ -192,16 +190,16 @@ const initPieces=()=>[
     { sprite:Art.pawnw, x:5, y:6, n:13, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
     { sprite:Art.pawnw, x:6, y:6, n:14, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
     { sprite:Art.pawnw, x:7, y:6, n:15, canMove: pawnCanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Art.rookb, x:0, y:0,n:16, canMove: rookCanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.rookb, x:7, y:0,n:17, canMove: rookCanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Art.rookb, x:0, y:0,n:16, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Art.rookb, x:7, y:0,n:17, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.bishopb, x:2, y:0, n:18, canMove: bishopCanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.bishopb, x:5, y:0, n:19, canMove: bishopCanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.queenb, x:3, y:0, n:20, canMove: queenCanMove, blackness: true, kingness: false,  deadness: false },
     { sprite:Art.kingb, x:4, y:0, n:21, canMove: kingCanMove, blackness: true,  kingness: true,deadness: false },
     { sprite:Art.knightb, x:1, y:0, n:30, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.knightb, x:6, y:0, n:31, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.rookw, x:7, y:7, n:22, canMove: rookCanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Art.rookw, x:0, y:7, n:23, canMove: rookCanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Art.rookw, x:7, y:7, n:22, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Art.rookw, x:0, y:7, n:23, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Art.bishopw, x:2, y:7, n:24, canMove: bishopCanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Art.bishopw, x:5, y:7, n:25, canMove: bishopCanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Art.queenw, x:3, y:7, n:26, canMove: queenCanMove, blackness: false, kingness: false,  deadness: false },
@@ -218,7 +216,7 @@ function GameInner(props){
     return(<>
 	{props.boardx.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	    canMove={props.canMove}  causesCheck={props.causesCheck} movePiece={props.movePiece}  dbgString={props.dbgString}
+	    Moveable={props.Moveable}  causesCheck={props.causesCheck} movePiece={props.movePiece}  dbgString={props.dbgString}
 	    moveCount={props.moveCount}  
 	    />))}
 	</>
@@ -233,7 +231,7 @@ function possibleMoves(blackness,causesCheck,max,setDbg,dbgString){
 	    for(let i=0; i<8; ++i){
 		for(let j=0; j<8; ++j){
 		    if(returnable.length<max){
-			let cm=t.canMove(t.blackness,t.x,t.y,i,j);
+			let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
 			if(cm){
 			    let nocheck= !causesCheck(t.n,i,j);
 			    if(cm && nocheck) { returnable.push({n:t.n, x:i, y:j}); }
@@ -280,7 +278,7 @@ function Game(props){
 	<View style={{width:1000, height:1000}}><View style={{flex:0.315}}/><View>
 	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
 	</View>
-	<GameInner boardx={props.boardx} canMove={props.canMove} movePiece={props.movePiece} setDbg={props.setDbg} dbgString={props.dbgString}
+	<GameInner boardx={props.boardx} Moveable={props.Moveable} movePiece={props.movePiece} setDbg={props.setDbg} dbgString={props.dbgString}
 	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
 	<View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
@@ -324,7 +322,7 @@ function canMakeAMove(blackness,causesCheck){
 	for(let i=0; i<8; ++i){
 	    for(let j=0; j<8; ++j){
 		if(!returnable){
-		    let cm=t.canMove(t.blackness,t.x,t.y,i,j);
+		    let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
 		    if(cm) {
 			let nocheck= !causesCheck(t.n,i,j);
 			if(cm && nocheck) { returnable = true; }
@@ -438,12 +436,12 @@ const App = ()=>{
 	}
     }
 
-    const canMove = (n, toX, toY) => {
+    const Moveable = (n, toX, toY) => {
 	const boardxn = boardx.filter(t=>t.n==n)[0]	
-	return boardxn.canMove(boardxn.blackness,boardxn.x,boardxn.y,toX,toY)
+	return boardxn.canMove(boardxn.blackness,boardxn.x,boardxn.y,toX,toY,pieces)
     }
     
-    return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  canMove={canMove}
+    return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck} setDbg={setDbg} dbgString={dbgString}  Moveable={Moveable}
 	   moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx} boardx={boardx} modalVisible={modalVisible} setModalVisible={setModalVisible}
 	/>);    
 }    

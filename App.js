@@ -19,7 +19,7 @@
 //
 
 import React, {useState, useEffect, Component, useCallback} from 'react';
-import {Pressable, StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';
+import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';
 import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
@@ -37,40 +37,6 @@ import Movement from './Movement';
 const { RNPlayNative } = NativeModules;
 
 // The requirement to maintain N here sucks TODO
-const initPieces=()=>[
-    { sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:2, y:1, n:2, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:3, y:1, n:3, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:4, y:1, n:4, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:5, y:1, n:5, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:6, y:1, n:6, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.Black, x:7, y:1, n:7, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:0, y:6, n:8, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:1, y:6, n:9, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:2, y:6, n:10, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:3, y:6, n:11, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:4, y:6, n:12, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:5, y:6, n:13, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:6, y:6, n:14, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Pawn.White, x:7, y:6, n:15, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
-    { sprite:Rook.Black, x:0, y:0,n:16, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Rook.Black, x:7, y:0,n:17, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Bishop.Black, x:2, y:0, n:18, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Bishop.Black, x:5, y:0, n:19, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Queen.Black, x:3, y:0, n:20, canMove: Queen.CanMove, blackness: true, kingness: false,  deadness: false },
-    { sprite:King.Black, x:4, y:0, n:21, canMove: King.CanMove, blackness: true,  kingness: true,deadness: false },
-    { sprite:Knight.Black, x:1, y:0, n:30, canMove: Knight.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Knight.Black, x:6, y:0, n:31, canMove: Knight.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Rook.White, x:7, y:7, n:22, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Rook.White, x:0, y:7, n:23, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Bishop.White, x:2, y:7, n:24, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Bishop.White, x:5, y:7, n:25, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Queen.White, x:3, y:7, n:26, canMove: Queen.CanMove, blackness: false, kingness: false,  deadness: false },
-    { sprite:King.White, x:4, y:7, n:27, canMove: King.CanMove, blackness: false,  kingness: true,deadness: false },
-    { sprite:Knight.White, x:1, y:7, n:28, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Knight.White, x:6, y:7, n:29, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
-]
 
 class Piece extends Component {
     constructor(props){super(props);}
@@ -94,13 +60,13 @@ class Piece extends Component {
 
 function Board(props){
     return(<>
-	{props.boardx.map((t)=>(
-	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	    moveCount={props.moveCount} board={props.boardx}
-	    />))}
-	</>
-    )
+	   {props.boardx.map((t)=>(
+		   <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
+	       causesCheck={props.causesCheck} movePiece={props.movePiece}  
+	       moveCount={props.moveCount} board={props.boardx}
+		   />))}
+	   </>
+	  )
 }
 
 function Game(props){
@@ -108,78 +74,76 @@ function Game(props){
 
     // Computer movement
     if(!props.modalVisible) {
-     if(players==1) {
-	useEffect(() => {
-	    if(props.moveCount%2==1) {
-		let pm = Engine.PossibleMoves(true,props.causesCheck,10,pieces)
-		let move = pm[Math.floor(Math.random()*pm.length)];
-		props.movePiece(move.n, move.x, move.y, true);
-		RNPlayNative.runMethod();		
-	    }
-	},[props.moveCount]);
-
-     }else if(players==2){
-	 //We don't need to do any computer-driven moving if 2 players
-
-     }else{
-	useEffect(() => {
-	    setTimeout(()=>{
+	if(players==1) {
+	    useEffect(() => {
 		if(props.moveCount%2==1) {
 		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,pieces)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);
-		}else{
-		    let pm = Engine.PossibleMoves(false,props.causesCheck,10,pieces)
-		    let move = pm[Math.floor(Math.random()*pm.length)];
-		    props.movePiece(move.n, move.x, move.y, true);  
+		    RNPlayNative.runMethod();		
 		}
-	    },250);
-	},[props.moveCount]);
-     }
-    }
+	    },[props.moveCount]);
 
+	}else if(players==2){
+	    //We don't need to do any computer-driven moving if 2 players
+
+	}else{
+	    useEffect(() => {
+		setTimeout(()=>{
+		    if(props.moveCount%2==1) {
+			let pm = Engine.PossibleMoves(true,props.causesCheck,10,pieces)
+			let move = pm[Math.floor(Math.random()*pm.length)];
+			props.movePiece(move.n, move.x, move.y, true);
+		    }else{
+			let pm = Engine.PossibleMoves(false,props.causesCheck,10,pieces)
+			let move = pm[Math.floor(Math.random()*pm.length)];
+			props.movePiece(move.n, move.x, move.y, true);  
+		    }
+		},250);
+	    },[props.moveCount]);
+	}
+    }
     
     return(
-	<View style={styles.gameWrapper}><View style={styles.boardWrapper}/><View>
-	<Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
-	</View>
-	<Board boardx={props.boardx} movePiece={props.movePiece}
-	causesCheck={props.causesCheck} moveCount={props.moveCount}
-	/>
-	    <View style={{flex:0.2}} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	    <View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
+	    <View>
+	    <Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
+	    </View>
+	    <Board boardx={props.boardx} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
+	    <View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 
- <View style={styles.centeredView}>
-      <Modal
+	    <View style={styles.centeredView}>
+	    <Modal
         animationType="slide"
         transparent={true}
         visible={props.modalVisible?true:false}
         onRequestClose={() => {
-          setModalVisible(undefined);
+            setModalVisible(undefined);
         }}
-      >
+	    >
             <View style={styles.centeredView} >
-            <Text style={{color:"black"}}>{props.modalVisible}</Text>
+            <Text style={styles.modalText}>{props.modalVisible}</Text>
             <Pressable
-        style={{padding:10, backgroundColor:"rgba(32,32,32,0.2)", color:"black"}}
+        style={styles.modalButton}
         onPress={() => {props.setModalVisible(undefined)
 			props.ResetBoard();
 		       }}
             >
-              <Text style={styles.textStyle}>OK</Text>
+            <Text>OK</Text>
             </Pressable>
-          </View>
+            </View>
 
 	</Modal>
-</View>
-	</View>);
+	    </View>
+	    </View>);
 }
 
-let count=0;
-let pieces=initPieces();
+//let count=0;
+let pieces=Constants.StartingBoard();
 
 const App = ()=>{
     const [boardx, setBoardx] = useState(pieces)
-    const [moveCount, setMoveCount] = useState(count)
+    const [moveCount, setMoveCount] = useState(0)
     const [modalVisible,setModalVisible]=useState(undefined);
 
     const isChecked = (blackness)=> {
@@ -219,8 +183,9 @@ const App = ()=>{
     }
 
     const ResetBoard = ()=>{
-	pieces=initPieces()
+	pieces=Constants.StartingBoard()
 	setBoardx(pieces)
+//	count=0;
 	setMoveCount(0)
     }
     
@@ -279,11 +244,11 @@ const App = ()=>{
 	    // Mutate state
 	    setBoardx(prime)
 
-	     //Pawn Promotion
-	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
-		 boardxn.sprite=boardxn.blackness?Queen.Black:Queen.White;
+	    //Pawn Promotion
+	    if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
+		boardxn.sprite=boardxn.blackness?Queen.Black:Queen.White;
 		boardxn.canMove=Queen.CanMove;
-	     }
+	    }
 
 	    // Check for mate
 	    if(!Movement.CanMakeAMove(!boardxn.blackness, causesCheck, boardx)){
@@ -293,10 +258,10 @@ const App = ()=>{
 		    setModalVisible('STALEMATE')		    
 		}		
 	    }else{
-	     setMoveCount(++count);
+		setMoveCount(moveCount+1);
 	    }
 	}
-    }
+    } 
     
     return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck}   
 	   moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx}
@@ -304,16 +269,19 @@ const App = ()=>{
 }    
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
+    centeredView: {
+	flex: 1,
+	justifyContent: "center",
+	alignItems: "center",
+	marginTop: 22
+    },
     button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4},
     pieceWrapper: {width:35, height:45},
     gameWrapper: {width: 1000, height:1000},
-    boardWrapper: {flex:0.315}
+    boardWrapper: {flex:0.315},
+    modalButton: {padding:10, backgroundColor:"rgba(32,32,32,0.2)", color:"black"},
+    textBanner: {flex:0.2},
+    modalText: {color:"black"},
 });
 
 export default App;

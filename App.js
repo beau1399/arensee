@@ -31,6 +31,7 @@ import Knight from './Knight';
 import King from './King';
 import Queen from './Queen';
 import Engine from './Engine';
+import Movement from './Movement';
 
 const { RNPlayNative } = NativeModules;
 
@@ -125,7 +126,7 @@ const initPieces=()=>[
 
 let pieces=initPieces();
 
-function GameInner(props){
+function Board(props){
     return(<>
 	{props.boardx.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
@@ -176,7 +177,7 @@ function Game(props){
 	<View style={{width:1000, height:1000}}><View style={{flex:0.315}}/><View>
 	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
 	</View>
-	<GameInner boardx={props.boardx} movePiece={props.movePiece}
+	<Board boardx={props.boardx} movePiece={props.movePiece}
 	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
 	<View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
@@ -312,7 +313,7 @@ const App = ()=>{
 
 	     //Pawn Promotion
 	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
-		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
+		 boardxn.sprite=boardxn.blackness?Queen.Black:Queen.White;
 		boardxn.canMove=Queen.CanMove;
 	     }
 

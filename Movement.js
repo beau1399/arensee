@@ -9,7 +9,7 @@ const Movement = {
 	    }
 	    return returnable;
 	},
-    canMakeAMove: (blackness,causesCheck,pieces) => {
+    CanMakeAMove: (blackness,causesCheck,pieces) => {
 	let returnable = false;
 	pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
 	    for(let i=0; i<8; ++i){

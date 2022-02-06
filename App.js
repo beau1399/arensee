@@ -1,21 +1,11 @@
-// TODO GITIGNORE
-// TODO PATCH FILE LOOKS WEIRD
-// TODO EMACS WEBMODE AT START
+// If you have just cloned the repo, you need to run:
+// npm install
+// npx patch-package
 //
-// npm install react-native-webview
-//
-// react-native link react-native-webview
-//
-// npm install react-native-canvas
-
-// npm install react-native-canvas
-//
-// npm install react-native-draggable
-//
-// Run "npx patch-package" to fix react-native-draggable's broken
+// That "npx patch-package" fixes react-native-draggable's broken
 //  "shouldReverse" feature. As things stand in the repo, the promised
-//  "onReverse" callback doesn't ever run. My patch fixes that, and
-//  also removes the gimmicky snap-back animation.
+//  "onReverse" callback doesn't ever run. The patch also removes the
+//  gimmicky snap-back animation.
 
 import React, {useState, useEffect, Component, useCallback} from 'react';
 import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';

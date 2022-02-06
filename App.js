@@ -35,45 +35,6 @@ import Movement from './Movement';
 
 const { RNPlayNative } = NativeModules;
 
-const castling = (targetX, targetY, piecesn, pieces, n, t) => {
-    // Castling... if this were in kingCanMove, then the computer could use it...
-    if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
-	if(!Movement.NoInterveningPiece(piecesn.x,piecesn.y,targetX,targetY,pieces)){
-	    // Piece in way
-	}else{
-	    const left = (targetX==2);
-	    if(left){
-		let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
-		if(!castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
-		    if(!t.props.causesCheck(n,piecesn.x-1,targetY) && !t.props.causesCheck(n,piecesn.x-2,targetY)){
-			t.props.movePiece(n,piecesn.x-2,targetY);
-			t.props.movePiece(castle.n,castle.x+3,castle.y); }}
-	    }else{
-		let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
-		if(!castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
-		    if(!t.props.causesCheck(n,piecesn.x+1,targetY) && !t.props.causesCheck(n,piecesn.x+2,targetY)){
-			t.props.movePiece(n,piecesn.x+1,targetY);
-			t.props.movePiece(n,piecesn.x+2,targetY);
-			t.props.movePiece(castle.n,castle.x-2,castle.y); }}
-	    }
-	}
-    }
-}
-
-const releaseServer = (e,t) => {
-    const pieces = t.props.board;
-    const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
-    const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));
-    if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
-    const n=t.props.n; //Should we really access stuff this way? TODO
-    const piecesn=pieces.filter((u)=>u.n==n)[0];
-    const blackGo = t.props.moveCount%2==1
-    if(blackGo != piecesn.blackness){return}
-    castling (targetX, targetY, piecesn, pieces, n, t);
-    if(piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
-	t.props.movePiece(n,targetX,targetY); }
-}
-
 class Piece extends Component {
     constructor(props){super(props);}
     
@@ -81,7 +42,7 @@ class Piece extends Component {
 	if(this.props.deadness) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{releaseServer(event,this)}}>
+	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{Movement.Release(event,this)}}>
 	    <View>
 	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View style={{width:35, height:45}}>

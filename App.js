@@ -23,7 +23,6 @@ import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, 
 import Canvas from 'react-native-canvas';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
-import * as Art from './Art';
 import Rook from './Rook';
 import Pawn from './Pawn';
 import Bishop from './Bishop';
@@ -33,6 +32,7 @@ import Queen from './Queen';
 import Engine from './Engine';
 import Constants from './Constants';
 import Movement from './Movement';
+import * as Art from './Art';
 
 const { RNPlayNative } = NativeModules;
 
@@ -77,7 +77,7 @@ function Game(props){
 	if(players==1) {
 	    useEffect(() => {
 		if(props.moveCount%2==1) {
-		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,pieces)
+		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardx)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);
 		    RNPlayNative.runMethod();		
@@ -91,11 +91,11 @@ function Game(props){
 	    useEffect(() => {
 		setTimeout(()=>{
 		    if(props.moveCount%2==1) {
-			let pm = Engine.PossibleMoves(true,props.causesCheck,10,pieces)
+			let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardx)
 			let move = pm[Math.floor(Math.random()*pm.length)];
 			props.movePiece(move.n, move.x, move.y, true);
 		    }else{
-			let pm = Engine.PossibleMoves(false,props.causesCheck,10,pieces)
+			let pm = Engine.PossibleMoves(false,props.causesCheck,10,props.board)
 			let move = pm[Math.floor(Math.random()*pm.length)];
 			props.movePiece(move.n, move.x, move.y, true);  
 		    }
@@ -138,21 +138,18 @@ function Game(props){
 	    </View>);
 }
 
-//let count=0;
-let pieces=Constants.StartingBoard();
-
 const App = ()=>{
-    const [boardx, setBoardx] = useState(pieces)
+    const [boardx, setBoardx] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
     const [modalVisible,setModalVisible]=useState(undefined);
 
     const isChecked = (blackness)=> {
 	//King of the color that might be checked. We assume this exists.
-	const k=pieces.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
+	const k=boardx.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
 	let returnable = false;
 	if(k) {
 	    //TODO abstract the deadness thing away
-	    returnable= pieces.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,pieces));
+	    returnable= boardx.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardx));
 	}
 	return returnable;
     }
@@ -183,30 +180,12 @@ const App = ()=>{
     }
 
     const ResetBoard = ()=>{
-	pieces=Constants.StartingBoard()
-	setBoardx(pieces)
-//	count=0;
+	setBoardx(Constants.StartingBoard())
 	setMoveCount(0)
     }
     
     const movePiece = (n, x, y, prechecked)=> {
 
-	// A word about state...
-	//  Ultimately boardx, prime, and pieces all end up referring to the same, fixed
-	//  storage locations. These are established in the const declaration of pieces
-	//  (somewhere above here) and do not change. We do need setBoardx() to inform the
-	//  virtual DOM when it should re-render, and setBoardX() is called exclusively by
-	//  this movePiece() function. It is in fact a sort of middleware tier, in that it
-	//  can do things like manage the threateningly cyclical "does a proposed move 
-	//  cause check?" question. In areas of the code where challenges are less
-	//  threatening, it is fine for various code to inspect pieces directly, so long
-	//  as all changes to piece position (which is, of course, precisely what would
-	//  cause the need for re-rendering) are directed here. Yes, there is the canMove()
-	//  member of each piece defininition, e.g. Bishop.CanMove, but this is purely
-	//  physical in nature vs. being about other rules... that's where we set up the
-	//  fact that bishops move diagonally and can't jump pieces, not where we enforce
-	//  rules around moving into check). So, the toggle to "prime" is done once we have
-	//  attempted the move "in-memory," and reverted the move if check was found.
 	let prime=[...boardx]
 	const boardxn = boardx.filter(t=>t.n==n)[0]
 	//Capture anything there

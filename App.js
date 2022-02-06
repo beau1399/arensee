@@ -1,6 +1,8 @@
-// If you have just cloned the repo, you need to run:
+// If you have just cloned the repo, you need to run (from repo root "arensee"):
+//
 // npm install
 // npx patch-package
+// rm node_modules/react-native-draggable/Draggable.js
 //
 // That "npx patch-package" fixes react-native-draggable's broken
 //  "shouldReverse" feature. As things stand in the repo, the promised

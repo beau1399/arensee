@@ -26,6 +26,7 @@ import Sprite from './Sprite';
 import * as Art from './Art';
 import Rook from './Rook';
 import Pawn from './Pawn';
+import Bishop from './Bishop';
 import Engine from './Engine';
 
 const { RNPlayNative } = NativeModules;
@@ -92,14 +93,6 @@ class Piece extends Component {
     }
 }
 
-const bishopCanMove = (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
-					   && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor
-					   && !pieces.some((t)=>
-					       t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
-					   && noInterveningPiece(x,y,toX,toY)
-
-
-     
 const kingCanMove = (blackness,x,y,toX,toY,pieces)=> {
     return (Math.abs(toX-x)<=1 && Math.abs(toY-y)<=1
 	 && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor	
@@ -115,7 +108,7 @@ const knightCanMove = (blackness,x,y,toX,toY,pieces)=> {
 
 //const Pawn.CanMove = (blackness,x,y,toX,toY,pieces)=> {}
 
-const queenCanMove = (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || bishopCanMove(blackness,x,y,toX,toY,pieces)
+const queenCanMove = (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || Bishop.CanMove(blackness,x,y,toX,toY,pieces)
 
 // The requirement to maintain N here sucks TODO
 const initPieces=()=>[
@@ -137,16 +130,16 @@ const initPieces=()=>[
     { sprite:Pawn.White, x:7, y:6, n:15, canMove: Pawn.CanMove, blackness: false, kingness: false,  deadness: false, pawnness: true },
     { sprite:Rook.Black, x:0, y:0,n:16, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Rook.Black, x:7, y:0,n:17, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.bishopb, x:2, y:0, n:18, canMove: bishopCanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.bishopb, x:5, y:0, n:19, canMove: bishopCanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Bishop.Black, x:2, y:0, n:18, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Bishop.Black, x:5, y:0, n:19, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.queenb, x:3, y:0, n:20, canMove: queenCanMove, blackness: true, kingness: false,  deadness: false },
     { sprite:Art.kingb, x:4, y:0, n:21, canMove: kingCanMove, blackness: true,  kingness: true,deadness: false },
     { sprite:Art.knightb, x:1, y:0, n:30, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Art.knightb, x:6, y:0, n:31, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Rook.White, x:7, y:7, n:22, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Rook.White, x:0, y:7, n:23, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Art.bishopw, x:2, y:7, n:24, canMove: bishopCanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Art.bishopw, x:5, y:7, n:25, canMove: bishopCanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Bishop.White, x:2, y:7, n:24, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Bishop.White, x:5, y:7, n:25, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Art.queenw, x:3, y:7, n:26, canMove: queenCanMove, blackness: false, kingness: false,  deadness: false },
     { sprite:Art.kingw, x:4, y:7, n:27, canMove: kingCanMove, blackness: false,  kingness: true,deadness: false },
     { sprite:Art.knightw, x:1, y:7, n:28, canMove: knightCanMove, blackness: false,  kingness: false, deadness: false },
@@ -317,7 +310,7 @@ const App = ()=>{
 	//  threatening, it is fine for various code to inspect pieces directly, so long
 	//  as all changes to piece position (which is, of course, precisely what would
 	//  cause the need for re-rendering) are directed here. Yes, there is the canMove()
-	//  member of each piece defininition, e.g. bishopCanMove, but this is purely
+	//  member of each piece defininition, e.g. Bishop.CanMove, but this is purely
 	//  physical in nature vs. being about other rules... that's where we set up the
 	//  fact that bishops move diagonally and can't jump pieces, not where we enforce
 	//  rules around moving into check). So, the toggle to "prime" is done once we have

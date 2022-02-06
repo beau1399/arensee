@@ -11,21 +11,6 @@ export const board=
 	"rprprprp",
     ]
 
-export const bishopb=
-    [
-	"   0     ",
-	"  000    ",
-	" o0000   ",
-	"o00...0  ",
-	" o0000   ",
-	"  o0o    ",
-	"  o0o    ",
-	"  o0o    ",
-	"  o0o    ",
-	"  o0o    ",
-	" ,0000o  ",
-	",000000o "]
-
 export const knightb=
     [
 	"    0     ",
@@ -39,8 +24,8 @@ export const knightb=
 	"  o000000 ",
 	" oo000000 ",
 	"o00000000o",
-	"o00000000o"]
-
+	"o00000000o"
+    ]
 
 export const knightw=
     [
@@ -117,20 +102,5 @@ export const kingw=
 	" 0000000 ",
 	"`````````"]
 
-
-export const bishopw=
-    [
-	"   @     ",
-	"  `@@    ",
-	' `@@@@   ',
-	'`@@...`  ',
-	' `@@@@   ',
-	'  `@"    ',
-	'  `@"    ',
-	'  `@"    ',
-	'  `@"    ',
-	'  `@"    ',
-	' `@@@@"  ',
-	'`@@@@@@" ']
 
 

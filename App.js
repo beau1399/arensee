@@ -31,26 +31,10 @@ import Knight from './Knight';
 import King from './King';
 import Queen from './Queen';
 import Engine from './Engine';
+import Constants from './Constants';
 import Movement from './Movement';
 
 const { RNPlayNative } = NativeModules;
-
-class Piece extends Component {
-    constructor(props){super(props);}
-    
-    render(){
-	if(this.props.deadness) return null;
-	return (
-	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={92 } x={ this.props.x * 42 + 9} y={this.props.y * 42 + 138} onDragRelease={(event)=>{Movement.Release(event,this)}}>
-	    <View>
-	    {/*This wrapping view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
-	    <View style={{width:35, height:45}}>
-	    <Sprite sprite={this.props.sprite} pixelSize={3 } />
-	    </View></View></Draggable>
-	);
-    }
-}
 
 // The requirement to maintain N here sucks TODO
 const initPieces=()=>[
@@ -86,11 +70,27 @@ const initPieces=()=>[
     { sprite:King.White, x:4, y:7, n:27, canMove: King.CanMove, blackness: false,  kingness: true,deadness: false },
     { sprite:Knight.White, x:1, y:7, n:28, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Knight.White, x:6, y:7, n:29, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
-
-    
 ]
 
-let pieces=initPieces();
+class Piece extends Component {
+    constructor(props){super(props);}
+    
+    render(){
+	if(this.props.deadness) return null;
+	return (
+		<Draggable shouldReverse={true /*We'll handle the positioning*/ }
+	    renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0)}
+	    y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
+		<View>
+		{/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
+		<View style={styles.pieceWrapper}>
+  		<Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
+		</View>
+		</View>
+		</Draggable>
+	);
+    }
+}
 
 function Board(props){
     return(<>
@@ -140,13 +140,13 @@ function Game(props){
 
     
     return(
-	<View style={{width:1000, height:1000}}><View style={{flex:0.315}}/><View>
-	<Sprite pixelSize={42} sprite={Art.board} ></Sprite>	     
+	<View style={styles.gameWrapper}><View style={styles.boardWrapper}/><View>
+	<Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
 	</View>
 	<Board boardx={props.boardx} movePiece={props.movePiece}
 	causesCheck={props.causesCheck} moveCount={props.moveCount}
 	/>
-	<View style={{flex:0.2}} ><Text>{"MOVE " + props.moveCount + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	    <View style={{flex:0.2}} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 
  <View style={styles.centeredView}>
       <Modal
@@ -175,6 +175,8 @@ function Game(props){
 }
 
 let count=0;
+let pieces=initPieces();
+
 const App = ()=>{
     const [boardx, setBoardx] = useState(pieces)
     const [moveCount, setMoveCount] = useState(count)
@@ -308,7 +310,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22
   },
-  button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4}
+    button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4},
+    pieceWrapper: {width:35, height:45},
+    gameWrapper: {width: 1000, height:1000},
+    boardWrapper: {flex:0.315}
 });
 
 export default App;

@@ -16,7 +16,6 @@
 //  "shouldReverse" feature. As things stand in the repo, the promised
 //  "onReverse" callback doesn't ever run. My patch fixes that, and
 //  also removes the gimmicky snap-back animation.
-//
 
 import React, {useState, useEffect, Component, useCallback} from 'react';
 import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';

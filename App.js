@@ -27,20 +27,12 @@ import * as Art from './Art';
 import Rook from './Rook';
 import Pawn from './Pawn';
 import Bishop from './Bishop';
+import Knight from './Knight';
+import King from './King';
+import Queen from './Queen';
 import Engine from './Engine';
 
 const { RNPlayNative } = NativeModules;
-
-const noInterveningPiece = function(x,y,toX,toY) {
-    var returnable=true;
-    const signX=Math.sign(toX-x);
-    const signY=Math.sign(toY-y);
-    for(let i=1; i<Math.max(Math.abs(toX-x),Math.abs(toY-y)); i+=1){
-	pieces.forEach((pt,pi)=>{ if(pt.x==x+signX*i && pt.y==y+signY*i && !pt.deadness){returnable=false;}   });
-    }
-    return returnable;
-};
-
 
 const releaseServer = (e,t,pieces) => {
     const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
@@ -93,23 +85,6 @@ class Piece extends Component {
     }
 }
 
-const kingCanMove = (blackness,x,y,toX,toY,pieces)=> {
-    return (Math.abs(toX-x)<=1 && Math.abs(toY-y)<=1
-	 && (!(x==toX && y==toY)) //It is helpful for game logic to exclude the identity TODO refactor	
-	 && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //TODO refactor
-)}
-
-const knightCanMove = (blackness,x,y,toX,toY,pieces)=> {
-    return (Math.abs(toX-x) + Math.abs(toY-y)==3)
-	&& toX!=x && toY!=y
-	&& !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
-}
-
-
-//const Pawn.CanMove = (blackness,x,y,toX,toY,pieces)=> {}
-
-const queenCanMove = (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || Bishop.CanMove(blackness,x,y,toX,toY,pieces)
-
 // The requirement to maintain N here sucks TODO
 const initPieces=()=>[
     { sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
@@ -132,18 +107,18 @@ const initPieces=()=>[
     { sprite:Rook.Black, x:7, y:0,n:17, canMove: Rook.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Bishop.Black, x:2, y:0, n:18, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Bishop.Black, x:5, y:0, n:19, canMove: Bishop.CanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.queenb, x:3, y:0, n:20, canMove: queenCanMove, blackness: true, kingness: false,  deadness: false },
-    { sprite:Art.kingb, x:4, y:0, n:21, canMove: kingCanMove, blackness: true,  kingness: true,deadness: false },
-    { sprite:Art.knightb, x:1, y:0, n:30, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
-    { sprite:Art.knightb, x:6, y:0, n:31, canMove: knightCanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Queen.Black, x:3, y:0, n:20, canMove: Queen.CanMove, blackness: true, kingness: false,  deadness: false },
+    { sprite:King.Black, x:4, y:0, n:21, canMove: King.CanMove, blackness: true,  kingness: true,deadness: false },
+    { sprite:Knight.Black, x:1, y:0, n:30, canMove: Knight.CanMove, blackness: true,  kingness: false, deadness: false },
+    { sprite:Knight.Black, x:6, y:0, n:31, canMove: Knight.CanMove, blackness: true,  kingness: false, deadness: false },
     { sprite:Rook.White, x:7, y:7, n:22, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Rook.White, x:0, y:7, n:23, canMove: Rook.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Bishop.White, x:2, y:7, n:24, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
     { sprite:Bishop.White, x:5, y:7, n:25, canMove: Bishop.CanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Art.queenw, x:3, y:7, n:26, canMove: queenCanMove, blackness: false, kingness: false,  deadness: false },
-    { sprite:Art.kingw, x:4, y:7, n:27, canMove: kingCanMove, blackness: false,  kingness: true,deadness: false },
-    { sprite:Art.knightw, x:1, y:7, n:28, canMove: knightCanMove, blackness: false,  kingness: false, deadness: false },
-    { sprite:Art.knightw, x:6, y:7, n:29, canMove: knightCanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Queen.White, x:3, y:7, n:26, canMove: Queen.CanMove, blackness: false, kingness: false,  deadness: false },
+    { sprite:King.White, x:4, y:7, n:27, canMove: King.CanMove, blackness: false,  kingness: true,deadness: false },
+    { sprite:Knight.White, x:1, y:7, n:28, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
+    { sprite:Knight.White, x:6, y:7, n:29, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false },
 
     
 ]
@@ -231,23 +206,6 @@ function Game(props){
 </View>
 	</View>);
 }
-
-//Can be in App?
-function canMakeAMove(blackness,causesCheck,pieces){
-    let returnable = false;
-    pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
-	for(let i=0; i<8; ++i){
-	    for(let j=0; j<8; ++j){
-		if(!returnable){
-		    let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
-		    if(cm) {
-			let nocheck= !causesCheck(t.n,i,j);
-			if(cm && nocheck) { returnable = true; }
-		    }
-    }}}});
-    return returnable;
-}
-
 
 let count=0;
 const App = ()=>{
@@ -355,11 +313,11 @@ const App = ()=>{
 	     //Pawn Promotion
 	     if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
 		boardxn.sprite=boardxn.blackness?Art.queenb:Art.queenw;
-		boardxn.canMove=queenCanMove;
+		boardxn.canMove=Queen.CanMove;
 	     }
 
 	    // Check for mate
-	    if(!canMakeAMove(!boardxn.blackness, causesCheck, boardx)){
+	    if(!Movement.CanMakeAMove(!boardxn.blackness, causesCheck, boardx)){
 		if(isChecked(!boardxn.blackness)){
 		    setModalVisible(('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') ))
 		}else{

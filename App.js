@@ -2,7 +2,7 @@
 //
 // npm install
 // npx patch-package
-// rm node_modules/react-native-draggable/Draggable.js
+// rm ./node_modules/react-native-draggable/Draggable.js
 //
 // That "npx patch-package" fixes react-native-draggable's broken
 //  "shouldReverse" feature. As things stand in the repo, the promised
@@ -10,7 +10,7 @@
 //  gimmicky snap-back animation.
 //
 // You may also need something like:
-//  echo sdk.dir=$ANDROID_SDK_ROOT > /home/chuck/arensee/android/local.properties
+//  echo sdk.dir=$ANDROID_SDK_ROOT > ./android/local.properties
 //
 import React, {useState, useEffect, Component, useCallback} from 'react';
 import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';

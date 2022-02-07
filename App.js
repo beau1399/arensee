@@ -8,7 +8,10 @@
 //  "shouldReverse" feature. As things stand in the repo, the promised
 //  "onReverse" callback doesn't ever run. The patch also removes the
 //  gimmicky snap-back animation.
-
+//
+// You may also need something like:
+//  echo sdk.dir=$ANDROID_SDK_ROOT > /home/chuck/arensee/android/local.properties
+//
 import React, {useState, useEffect, Component, useCallback} from 'react';
 import {Pressable, StyleSheet, Text, Button, View, TouchableOpacity, TextInput, NativeModules, Modal} from 'react-native';
 import Canvas from 'react-native-canvas';

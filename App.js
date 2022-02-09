@@ -13,9 +13,8 @@
 //
 //  echo sdk.dir=$ANDROID_SDK_ROOT > ./android/local.properties
 //
-import React, {useState, useEffect, Component, useCallback} from 'react';
-import {Pressable, StyleSheet, Text, Button, View, NativeModules, Modal} from 'react-native';
-import Canvas from 'react-native-canvas';
+import React, {useState, useEffect, Component } from 'react';
+import {Pressable, StyleSheet, Text,  View, NativeModules, Modal} from 'react-native';
 import Draggable from 'react-native-draggable';
 import Sprite from './Sprite';
 import Rook from './Rook';

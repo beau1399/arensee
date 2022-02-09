@@ -30,8 +30,6 @@ import * as Art from './Art';
 
 const { RNPlayNative } = NativeModules;
 
-// The requirement to maintain N here sucks TODO
-
 class Piece extends Component {
     constructor(props){super(props);}
     

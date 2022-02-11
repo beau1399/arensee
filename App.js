@@ -36,29 +36,29 @@ class Piece extends Component {
     render(){
 	if(this.props.deadness) return null;
 	return (
-		<Draggable shouldReverse={true /*We'll handle the positioning*/ }
+	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
 	    renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0)}
 	    y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
-		<View>
-		{/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
-		<View style={styles.pieceWrapper}>
-  		<Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
-		</View>
-		</View>
-		</Draggable>
+	    <View>
+	    {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
+	    <View style={styles.pieceWrapper}>
+  	    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
+	    </View>
+	    </View>
+	    </Draggable>
 	);
     }
 }
 
 function Board(props){
     return(<>
-	   {props.boardx.map((t)=>(
-		   <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	       causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	       moveCount={props.moveCount} board={props.boardx}
-		   />))}
-	   </>
-	  )
+	{props.boardx.map((t)=>(
+	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
+	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
+	    moveCount={props.moveCount} board={props.boardx}
+	    />))}
+	</>
+    )
 }
 
 function Game(props){
@@ -97,37 +97,38 @@ function Game(props){
     }
     
     return(
-	    <View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
-	    <View>
-	    <Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
-	    </View>
-	    <Board boardx={props.boardx} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
-	    <View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	<View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
+	
+	<View>
+	<Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
+	</View>
 
-	    <View style={styles.centeredView}>
-	    <Modal
+	<Board boardx={props.boardx} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
+
+	<View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+
+	<View style={styles.centeredView}>
+	<Modal
         animationType="slide"
         transparent={true}
         visible={props.modalVisible?true:false}
         onRequestClose={() => {
             setModalVisible(undefined);
-        }}
-	    >
-            <View style={styles.centeredView} >
-            <Text style={styles.modalText}>{props.modalVisible}</Text>
-            <Pressable
+        }}>
+        <View style={styles.centeredView} >
+        <Text style={styles.modalText}>{props.modalVisible}</Text>
+        <Pressable
         style={styles.modalButton}
         onPress={() => {props.setModalVisible(undefined)
-			props.ResetBoard();
-		       }}
-            >
-            <Text>OK</Text>
-            </Pressable>
-            </View>
-
+	    props.ResetBoard();
+	}} >
+        <Text>OK</Text>
+        </Pressable>
+        </View>
 	</Modal>
-	    </View>
-	    </View>);
+	</View>
+
+	</View>);
 }
 
 const App = ()=>{
@@ -235,8 +236,8 @@ const App = ()=>{
     } 
     
     return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck}   
-	   moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx}
-	   modalVisible={modalVisible} setModalVisible={setModalVisible} ResetBoard={ResetBoard} />);    
+	moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx}
+	modalVisible={modalVisible} setModalVisible={setModalVisible} ResetBoard={ResetBoard} />);    
 }    
 
 const styles = StyleSheet.create({

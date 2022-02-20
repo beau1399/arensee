@@ -56,8 +56,8 @@ function Board(props){
     return(<>
 	{props.boardState.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	    moveCount={props.moveCount} board={props.boardState}
+	     causesCheck={props.causesCheck} movePiece={props.movePiece}  
+	     moveCount={props.moveCount} board={props.boardState}
 	    />))}
 	</>
     )
@@ -100,36 +100,30 @@ function Game(props){
     
     return(
 	<View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
-	
-	<View>
-	<Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
-	</View>
 
-	<Board boardState={props.boardState} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
+	 {/*The chessboard*/}
+ 	 <View>
+	  <Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
+	 </View>
 
-	<View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	 {/*The pieces*/}
+	 <Board boardState={props.boardState} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
 
-	<View style={styles.centeredView}>
-	<Modal
-        animationType="slide"
-        transparent={true}
-        visible={props.modalVisible?true:false}
-        onRequestClose={() => {
-            setModalVisible(undefined);
-        }}>
-        <View style={styles.centeredView} >
-        <Text style={styles.modalText}>{props.modalVisible}</Text>
-        <Pressable
-        style={styles.modalButton}
-        onPress={() => {props.setModalVisible(undefined)
-	    props.ResetBoard();
-	}} >
-        <Text>OK</Text>
-        </Pressable>
-        </View>
-	</Modal>
-	</View>
+	 {/*Text banner beneath board (move count)*/}
+	 <View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 
+	 {/*Modal, to announce mate &c.*/}
+	 <View style={styles.centeredView}>
+	  <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} 
+           onRequestClose={() => { setModalVisible(undefined);}} >
+           <View style={styles.centeredView} >
+            <Text style={styles.modalText}>{props.modalVisible}</Text>
+            <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
+             <Text>OK</Text>
+            </Pressable>
+           </View>
+	  </Modal>
+	 </View>
 	</View>);
 }
 
@@ -143,8 +137,9 @@ const App = ()=>{
 	const k=boardState.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
 	let returnable = false;
 	if(k) {
-	    //TODO abstract the deadness thing away
-	    returnable= boardState.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardState));
+            returnable=
+		boardState.filter((t)=>!t.deadness).some(
+		    (t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardState));
 	}
 	return returnable;
     }

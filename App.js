@@ -37,14 +37,16 @@ class Piece extends Component {
 	if(this.props.deadness) return null;
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0)}
-	    y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
-	    <View>
-	    {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
-	    <View style={styles.pieceWrapper}>
-  	    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
-	    </View>
-	    </View>
+	     renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0)}
+	     y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
+	    
+	     {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
+	     <View>
+	      <View style={styles.pieceWrapper}>
+  	       <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
+	      </View>
+	     </View>
+
 	    </Draggable>
 	);
     }
@@ -52,10 +54,10 @@ class Piece extends Component {
 
 function Board(props){
     return(<>
-	{props.boardx.map((t)=>(
+	{props.boardState.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
 	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	    moveCount={props.moveCount} board={props.boardx}
+	    moveCount={props.moveCount} board={props.boardState}
 	    />))}
 	</>
     )
@@ -69,7 +71,7 @@ function Game(props){
 	if(players==1) {
 	    useEffect(() => {
 		if(props.moveCount%2==1) {
-		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardx)
+		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardState)
 		    let move = pm[Math.floor(Math.random()*pm.length)];
 		    props.movePiece(move.n, move.x, move.y, true);
 		    RNPlayNative.runMethod();		
@@ -83,7 +85,7 @@ function Game(props){
 	    useEffect(() => {
 		setTimeout(()=>{
 		    if(props.moveCount%2==1) {
-			let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardx)
+			let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardState)
 			let move = pm[Math.floor(Math.random()*pm.length)];
 			props.movePiece(move.n, move.x, move.y, true);
 		    }else{
@@ -103,7 +105,7 @@ function Game(props){
 	<Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
 	</View>
 
-	<Board boardx={props.boardx} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
+	<Board boardState={props.boardState} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
 
 	<View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 
@@ -132,100 +134,100 @@ function Game(props){
 }
 
 const App = ()=>{
-    const [boardx, setBoardx] = useState(Constants.StartingBoard())
+    const [boardState, setBoardState] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
     const [modalVisible,setModalVisible]=useState(undefined);
 
     const isChecked = (blackness)=> {
 	//King of the color that might be checked. We assume this exists.
-	const k=boardx.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
+	const k=boardState.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
 	let returnable = false;
 	if(k) {
 	    //TODO abstract the deadness thing away
-	    returnable= boardx.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardx));
+	    returnable= boardState.filter((t)=>!t.deadness).some((t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardState));
 	}
 	return returnable;
     }
 
     const causesCheck = (n, x, y)=> {
-	let prime=[...boardx]
+	let prime=[...boardState]
 
-	const boardxn = boardx.filter(t=>t.n==n)[0]
+	const movingPiece = boardState.filter(t=>t.n==n)[0]
 	
 	//Capture anything there 
-	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != boardxn.blackness && !t.deadness)
+	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != movingPiece.blackness && !t.deadness)
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
+	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(movingPiece.blackness,movingPiece.pawnness,movingPiece.x,movingPiece.y,x,y,boardState) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
-	let savex=boardxn.x; let savey=boardxn.y;
-	boardxn.x=x; boardxn.y=y;
-	let returnable = isChecked(boardxn.blackness);
-	boardxn.x=savex;
-	boardxn.y=savey;
+	let savex=movingPiece.x; let savey=movingPiece.y;
+	movingPiece.x=x; movingPiece.y=y;
+	let returnable = isChecked(movingPiece.blackness);
+	movingPiece.x=savex;
+	movingPiece.y=savey;
 	if(enemy.length==1) { enemy[0].deadness=false; }
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=false; }
 
-	setBoardx(prime)
+	setBoardState(prime)
 	return returnable
     }
 
     const ResetBoard = ()=>{
-	setBoardx(Constants.StartingBoard())
+	setBoardState(Constants.StartingBoard())
 	setMoveCount(0)
     }
     
     const movePiece = (n, x, y, prechecked)=> {
 
-	let prime=[...boardx]
-	const boardxn = boardx.filter(t=>t.n==n)[0]
+	let prime=[...boardState]
+	const movingPiece = boardState.filter(t=>t.n==n)[0]
 	//Capture anything there
-	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != boardxn.blackness && !t.deadness)
+	const enemy=prime.filter((t)=>t.x==x && t.y==y && t.blackness != movingPiece.blackness && !t.deadness)
 	if(enemy.length==1) { enemy[0].deadness=true; }
 
 	//enpassant
-	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(boardxn.blackness,boardxn.pawnness,boardxn.x,boardxn.y,x,y,boardx) 
+	const {enpassant,capturedX,capturedY} = Pawn.EnPassant(movingPiece.blackness,movingPiece.pawnness,movingPiece.x,movingPiece.y,x,y,boardState) 
 	if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 	
-	let savex=boardxn.x;
-	let savey=boardxn.y;
-	boardxn.x=x;
-	boardxn.y=y;
+	let savex=movingPiece.x;
+	let savey=movingPiece.y;
+	movingPiece.x=x;
+	movingPiece.y=y;
 
-	if(!prechecked && isChecked(boardxn.blackness)){
+	if(!prechecked && isChecked(movingPiece.blackness)){
 	    //Uh-oh! Revert illegal check-causing move. (This is for moves attempted by
 	    //  humans. The computer has already considered this possibility.)
-	    boardxn.x=savex;
-	    boardxn.y=savey;
+	    movingPiece.x=savex;
+	    movingPiece.y=savey;
 	    if(enemy.length==1) { enemy[0].deadness=false; }
 	    if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=false; }
-	    setBoardx(prime)
+	    setBoardState(prime)
 	}else{
 	    // Successful move
 	    //
 
 	    // Mark piece dirty
-	    boardxn.dirtiness=true;
+	    movingPiece.dirtiness=true;
 	    
 	    // Maintain "just advanced two" flag for enpassant logic
 	    prime.forEach((t)=>t.justAdvancedTwo=false);	   
-	    boardxn.justAdvancedTwo=Math.abs(boardxn.y-savey)==2;
+	    movingPiece.justAdvancedTwo=Math.abs(movingPiece.y-savey)==2;
 
 	    // Mutate state
-	    setBoardx(prime)
+	    setBoardState(prime)
 
 	    //Pawn Promotion
-	    if(boardxn.pawnness && ((boardxn.blackness && boardxn.y==7)||(!boardxn.blackness && boardxn.y==0))){
-		boardxn.sprite=boardxn.blackness?Queen.Black:Queen.White;
-		boardxn.canMove=Queen.CanMove;
+	    if(movingPiece.pawnness && ((movingPiece.blackness && movingPiece.y==7)||(!movingPiece.blackness && movingPiece.y==0))){
+		movingPiece.sprite=movingPiece.blackness?Queen.Black:Queen.White;
+		movingPiece.canMove=Queen.CanMove;
 	    }
 
 	    // Check for mate
-	    if(!Movement.CanMakeAMove(!boardxn.blackness, causesCheck, boardx)){
-		if(isChecked(!boardxn.blackness)){
-		    setModalVisible(('CHECKMATE! WINNER: ' + (boardxn.blackness?'BLACK':'WHITE') ))
+	    if(!Movement.CanMakeAMove(!movingPiece.blackness, causesCheck, boardState)){
+		if(isChecked(!movingPiece.blackness)){
+		    setModalVisible(('CHECKMATE! WINNER: ' + (movingPiece.blackness?'BLACK':'WHITE') ))
 		}else{
 		    setModalVisible('STALEMATE')		    
 		}		
@@ -235,8 +237,8 @@ const App = ()=>{
 	}
     } 
     
-    return(<Game boardx={boardx} movePiece={movePiece} causesCheck={causesCheck}   
-	moveCount={moveCount} setMoveCount={setMoveCount} setBoardx={setBoardx}
+    return(<Game boardState={boardState} movePiece={movePiece} causesCheck={causesCheck}   
+	moveCount={moveCount} setMoveCount={setMoveCount} setBoardState={setBoardState}
 	modalVisible={modalVisible} setModalVisible={setModalVisible} ResetBoard={ResetBoard} />);    
 }    
 

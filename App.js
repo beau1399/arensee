@@ -14,12 +14,9 @@
 //  echo sdk.dir=$ANDROID_SDK_ROOT > ./android/local.properties
 //
 import React, {useState, useEffect, Component } from 'react';
-import {Pressable, Text,  View, Modal} from 'react-native';
 import {Game} from './Game';
-import Sprite from './Sprite';
 import Constants from './Constants';
 import Movement from './Movement';
-import {styles} from './Styles'
 import Pawn from './Pawn';
 import Queen from './Queen';
 

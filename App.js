@@ -16,6 +16,7 @@
 import React, {useState, useEffect, Component } from 'react';
 import {Pressable, Text,  View, NativeModules, Modal} from 'react-native';
 import {Piece} from './Piece';
+import {Board} from './Board';
 import Sprite from './Sprite';
 import Rook from './Rook';
 import Pawn from './Pawn';
@@ -30,16 +31,6 @@ import {styles} from './Styles'
 
 const { RNPlayNative } = NativeModules;
 
-function Board(props){
-    return(<>
-	{props.boardState.map((t)=>(
-	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	    moveCount={props.moveCount} board={props.boardState}
-	    />))}
-	</>
-    )
-}
 
 function Game(props){
     const players=1;

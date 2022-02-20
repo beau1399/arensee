@@ -17,15 +17,11 @@ import React, {useState, useEffect, Component } from 'react';
 import {Pressable, Text,  View, Modal} from 'react-native';
 import {Game} from './Game';
 import Sprite from './Sprite';
-import Rook from './Rook';
-import Pawn from './Pawn';
-import Bishop from './Bishop';
-import Knight from './Knight';
-import King from './King';
-import Queen from './Queen';
 import Constants from './Constants';
 import Movement from './Movement';
 import {styles} from './Styles'
+import Pawn from './Pawn';
+import Queen from './Queen';
 
 const App = ()=>{
     const [boardState, setBoardState] = useState(Constants.StartingBoard())

@@ -16,8 +16,8 @@ export function Game(props){
 	if(players==1) {
 	    useEffect(() => {
 		if(props.moveCount%2==1) {
-		    let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardState)
-		    let move = pm[Math.floor(Math.random()*pm.length)];
+		    let pm = Engine.PossibleMoves(true,props.causesCheck,100000,props.boardState)
+		    let move = pm[0];
 		    props.movePiece(move.n, move.x, move.y, true);
 		    RNPlayNative.runMethod();		
 		}
@@ -30,12 +30,12 @@ export function Game(props){
 	    useEffect(() => {
 		setTimeout(()=>{
 		    if(props.moveCount%2==1) {
-			let pm = Engine.PossibleMoves(true,props.causesCheck,10,props.boardState)
-			let move = pm[Math.floor(Math.random()*pm.length)];
+			let pm = Engine.PossibleMoves(true,props.causesCheck,100000,props.boardState)
+			let move = pm[0];
 			props.movePiece(move.n, move.x, move.y, true);
 		    }else{
-			let pm = Engine.PossibleMoves(false,props.causesCheck,10,props.board)
-			let move = pm[Math.floor(Math.random()*pm.length)];
+			let pm = Engine.PossibleMoves(false,props.causesCheck,100000,props.board)
+			let move = pm[0];
 			props.movePiece(move.n, move.x, move.y, true);  
 		    }
 		},250);

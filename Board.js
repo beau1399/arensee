@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import Constants from './Constants';
-import Movement from './Movement';
-import Sprite from './Sprite';
-import Draggable from 'react-native-draggable';
-import {styles} from './Styles'
 import {Piece} from './Piece'
 
 export function Board(props){

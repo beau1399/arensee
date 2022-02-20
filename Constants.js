@@ -10,6 +10,17 @@ const Constants = {
     SpritePixelSize: 3,
     SpriteWidth: 18,
     BoardTop: 138,
+    Chessboard:
+    [
+	"prprprpr",
+	"rprprprp",
+	"prprprpr",
+	"rprprprp",
+	"prprprpr",
+	"rprprprp",
+	"prprprpr",
+	"rprprprp",
+    ],
     StartingBoard: ()=> [
 	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },
 	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true },

@@ -14,8 +14,8 @@
 //  echo sdk.dir=$ANDROID_SDK_ROOT > ./android/local.properties
 //
 import React, {useState, useEffect, Component } from 'react';
-import {Pressable, StyleSheet, Text,  View, NativeModules, Modal} from 'react-native';
-import Draggable from 'react-native-draggable';
+import {Pressable, Text,  View, NativeModules, Modal} from 'react-native';
+import {Piece} from './Piece';
 import Sprite from './Sprite';
 import Rook from './Rook';
 import Pawn from './Pawn';
@@ -26,38 +26,16 @@ import Queen from './Queen';
 import Engine from './Engine';
 import Constants from './Constants';
 import Movement from './Movement';
-import * as Art from './Art';
+import {styles} from './Styles'
 
 const { RNPlayNative } = NativeModules;
-
-class Piece extends Component {
-    constructor(props){super(props);}
-    
-    render(){
-	if(this.props.deadness) return null;
-	return (
-	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	     renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0)}
-	     y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
-	    
-	     {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
-	     <View>
-	      <View style={styles.pieceWrapper}>
-  	       <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
-	      </View>
-	     </View>
-
-	    </Draggable>
-	);
-    }
-}
 
 function Board(props){
     return(<>
 	{props.boardState.map((t)=>(
 	    <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-	     causesCheck={props.causesCheck} movePiece={props.movePiece}  
-	     moveCount={props.moveCount} board={props.boardState}
+	    causesCheck={props.causesCheck} movePiece={props.movePiece}  
+	    moveCount={props.moveCount} board={props.boardState}
 	    />))}
 	</>
     )
@@ -101,29 +79,29 @@ function Game(props){
     return(
 	<View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
 
-	 {/*The chessboard*/}
- 	 <View>
-	  <Sprite pixelSize={Constants.SquareSize} sprite={Art.board} ></Sprite>	     
-	 </View>
+	{/*The chessboard*/}
+ 	<View>
+	<Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} ></Sprite>	     
+	</View>
 
-	 {/*The pieces*/}
-	 <Board boardState={props.boardState} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
+	{/*The pieces*/}
+	<Board boardState={props.boardState} movePiece={props.movePiece} causesCheck={props.causesCheck} moveCount={props.moveCount} />
 
-	 {/*Text banner beneath board (move count)*/}
-	 <View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
+	{/*Text banner beneath board (move count)*/}
+	<View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
 
-	 {/*Modal, to announce mate &c.*/}
-	 <View style={styles.centeredView}>
-	  <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} 
-           onRequestClose={() => { setModalVisible(undefined);}} >
-           <View style={styles.centeredView} >
-            <Text style={styles.modalText}>{props.modalVisible}</Text>
-            <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
-             <Text>OK</Text>
-            </Pressable>
-           </View>
-	  </Modal>
-	 </View>
+	{/*Modal, to announce mate &c.*/}
+	<View style={styles.centeredView}>
+	<Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} 
+        onRequestClose={() => { setModalVisible(undefined);}} >
+        <View style={styles.centeredView} >
+        <Text style={styles.modalText}>{props.modalVisible}</Text>
+        <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
+        <Text>OK</Text>
+        </Pressable>
+        </View>
+	</Modal>
+	</View>
 	</View>);
 }
 
@@ -236,21 +214,5 @@ const App = ()=>{
 	moveCount={moveCount} setMoveCount={setMoveCount} setBoardState={setBoardState}
 	modalVisible={modalVisible} setModalVisible={setModalVisible} ResetBoard={ResetBoard} />);    
 }    
-
-const styles = StyleSheet.create({
-    centeredView: {
-	flex: 1,
-	justifyContent: "center",
-	alignItems: "center",
-	marginTop: 22
-    },
-    button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4},
-    pieceWrapper: {width:35, height:45},
-    gameWrapper: {width: 1000, height:1000},
-    boardWrapper: {flex:0.315},
-    modalButton: {padding:10, backgroundColor:"rgba(32,32,32,0.2)", color:"black"},
-    textBanner: {flex:0.2},
-    modalText: {color:"black"},
-});
 
 export default App;

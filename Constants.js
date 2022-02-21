@@ -6,6 +6,8 @@ import King from './King';
 import Queen from './Queen';
 
 const Constants = {
+    Difficulty: 100000,
+    Players: 1, 
     SquareSize: 42,
     SpritePixelSize: 3,
     SpriteWidth: 18,

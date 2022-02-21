@@ -9,32 +9,31 @@ import Engine from './Engine';
 const { RNPlayNative } = NativeModules;
 
 export function Game(props){
-    const players=1;
 
     // Computer movement
     if(!props.modalVisible) {
-	if(players==1) {
+	if(Constants.Players==1) {
 	    useEffect(() => {
 		if(props.moveCount%2==1) {
-		    let pm = Engine.PossibleMoves(true,props.causesCheck,100000,props.boardState)
+		    let pm = Engine.PossibleMoves(true,props.causesCheck,Constants.Difficulty,props.boardState)
 		    let move = pm[0];
 		    props.movePiece(move.n, move.x, move.y, true);
 		    RNPlayNative.runMethod();		
 		}
 	    },[props.moveCount]);
 
-	}else if(players==2){
+	}else if(Constants.Players==2){
 	    //We don't need to do any computer-driven moving if 2 players
 
 	}else{
 	    useEffect(() => {
 		setTimeout(()=>{
 		    if(props.moveCount%2==1) {
-			let pm = Engine.PossibleMoves(true,props.causesCheck,100000,props.boardState)
+			let pm = Engine.PossibleMoves(true,props.causesCheck,Constants.Difficulty,props.boardState)
 			let move = pm[0];
 			props.movePiece(move.n, move.x, move.y, true);
 		    }else{
-			let pm = Engine.PossibleMoves(false,props.causesCheck,100000,props.board)
+			let pm = Engine.PossibleMoves(false,props.causesCheck,Constants.Difficulty,props.boardState)
 			let move = pm[0];
 			props.movePiece(move.n, move.x, move.y, true);  
 		    }

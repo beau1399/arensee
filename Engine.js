@@ -19,6 +19,9 @@ const Engine = {
 				    const {enpassant,capturedX,capturedY} =
 					  Pawn.EnPassant(t.blackness,t.pawnness,t.x,t.y,i,j,pieces);
 				    
+
+				    // BIG TODO - give +++ credit for moves that cause check
+
 				    if(enpassant) { takenPiece=1; }				   
 				    returnable.push({n:t.n, x:i, y:j, takenPiece:takenPiece});
 				}

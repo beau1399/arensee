@@ -11,7 +11,7 @@ const Movement = {
             return returnable;
         },
 
-    CanMakeAMove: (blackness,causesCheck,pieces) => {
+    CanMakeAMove: (blackness,causesSelfCheck,pieces) => {
         let returnable = false;
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             for(let i=0; i<8; ++i){
@@ -19,7 +19,7 @@ const Movement = {
                     if(!returnable){
                         let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
                         if(cm) {
-                            let nocheck= !causesCheck(t.n,i,j);
+                            let nocheck= !causesSelfCheck(t.n,i,j);
                             if(cm && nocheck) { returnable = true; }
                         }
         }}}});
@@ -36,13 +36,13 @@ const Movement = {
                 if(left){
                     let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
-                        if(!t.props.causesCheck(n,piecesn.x-1,targetY) && !t.props.causesCheck(n,piecesn.x-2,targetY)){
+                        if(!t.props.causesSelfCheck(n,piecesn.x-1,targetY) && !t.props.causesSelfCheck(n,piecesn.x-2,targetY)){
                             t.props.movePiece(n,piecesn.x-2,targetY);
                             t.props.movePiece(castle.n,castle.x+3,castle.y); }}
                 }else{
                     let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
-                        if(!t.props.causesCheck(n,piecesn.x+1,targetY) && !t.props.causesCheck(n,piecesn.x+2,targetY)){
+                        if(!t.props.causesSelfCheck(n,piecesn.x+1,targetY) && !t.props.causesSelfCheck(n,piecesn.x+2,targetY)){
                             t.props.movePiece(n,piecesn.x+1,targetY);
                             t.props.movePiece(n,piecesn.x+2,targetY);
                             t.props.movePiece(castle.n,castle.x-2,castle.y); }}

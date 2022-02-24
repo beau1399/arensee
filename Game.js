@@ -15,7 +15,7 @@ export function Game(props){
         if(Constants.Players==1) {
             useEffect(() => {
                 if(props.moveCount%2==1) {
-                    let pm = Engine.PossibleMoves(true,props.causesSelfCheck,Constants.Difficulty,props.boardState)
+                    let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                     let move = pm[0];
                     props.movePiece(move.n, move.x, move.y, true);
                     RNPlayNative.runMethod();           
@@ -29,11 +29,11 @@ export function Game(props){
             useEffect(() => {
                 setTimeout(()=>{
                     if(props.moveCount%2==1) {
-                        let pm = Engine.PossibleMoves(true,props.causesSelfCheck,Constants.Difficulty,props.boardState)
+                        let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                         let move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);
                     }else{
-                        let pm = Engine.PossibleMoves(false,props.causesSelfCheck,Constants.Difficulty,props.boardState)
+                        let pm = Engine.PossibleMoves(false,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                         let move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);  
                     }

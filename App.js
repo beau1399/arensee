@@ -37,7 +37,7 @@ const App = ()=>{
         return returnable;
     }
 
-    const causesSelfCheck = (n, x, y)=> {
+    const causesCheck = (n, x, y, opponent)=> {
         let prime=[...boardState]
 
         const movingPiece = boardState.filter(t=>t.n==n)[0]
@@ -52,7 +52,7 @@ const App = ()=>{
         
         let savex=movingPiece.x; let savey=movingPiece.y;
         movingPiece.x=x; movingPiece.y=y;
-        let returnable = isChecked(movingPiece.blackness);
+        let returnable = isChecked(opponent ? !movingPiece.blackness : movingPiece.blackness);
         movingPiece.x=savex;
         movingPiece.y=savey;
         if(enemy.length==1) { enemy[0].deadness=false; }
@@ -61,6 +61,8 @@ const App = ()=>{
         setBoardState(prime)
         return returnable
     }
+
+    const causesSelfCheck = (n, x, y)=> causesCheck(n,x,y,false)
 
     const ResetBoard = ()=>{
         setBoardState(Constants.StartingBoard())

@@ -2,7 +2,7 @@ import Pawn from './Pawn';
 
 const Engine = {
     // Returns possible moves for a color, sorted from best to worst.
-    PossibleMoves: (blackness,causesSelfCheck,max,pieces)=>{
+    PossibleMoves: (blackness,causesCheck,max,pieces)=>{
         let returnable = [];
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             if(returnable.length<max){
@@ -12,6 +12,7 @@ const Engine = {
                             let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
                             if(cm){
                                 let nocheck= !causesSelfCheck(t.n,i,j);
+                                let check= 
                                 if(nocheck) {
                                     let takenPiece=pieces.filter(u=>u.blackness!=blackness && !u.deadness && u.x==i && u.y==j)[0]?.value ?? 0;
 

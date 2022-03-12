@@ -17,7 +17,8 @@ const Movement = {
             for(let i=0; i<8; ++i){
                 for(let j=0; j<8; ++j){
                     if(!returnable){
-                        let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
+                        // We call canMove, and also exclude the "null" or "identity" move
+                        let cm=(t.x!=i || t.y!=j) &&  t.canMove(t.blackness,t.x,t.y,i,j,pieces);
                         if(cm) {
                             let nocheck= !causesSelfCheck(t.n,i,j);
                             if(cm && nocheck) { returnable = true; }
@@ -61,7 +62,8 @@ const Movement = {
         const blackGo = t.props.moveCount%2==1
         if(blackGo != piecesn.blackness){return}
         Movement.Castling (targetX, targetY, piecesn, pieces, n, t);
-        if(piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
+        if((targetX!=piecesn.x || targetY!=piecesn.y) &&
+           piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
             t.props.movePiece(n,targetX,targetY); }
     }
 };

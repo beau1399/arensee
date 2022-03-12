@@ -32,7 +32,7 @@ const App = ()=>{
         if(k) {
             returnable=
                 boardState.filter((t)=>!t.deadness).some(
-                    (t,i)=>t.blackness!=blackness && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardState));
+                    (t,i)=>t.blackness!=blackness && (t.x!=k.x || t.y!=k.y) && t.canMove(t.blackness,t.x,t.y,k.x,k.y,boardState));
         }
         return returnable;
     }

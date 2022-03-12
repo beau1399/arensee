@@ -21,15 +21,6 @@ const letterToColor={"r":"red",
 
 function Sprite(props) {
     let markup=[];
-    if(Array.isArray(props.sprite[0])){
-	markup = (<View style={{flexDirection: "column"}}>				    
-	    {props.sprite.map((t,i)=>{
-		return (<View key={i} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>
-		    {t.map((u,j)=>{return (<View key={j+","+i}  style={{width:props.pixelSize, height:props.pixelSize,backgroundColor:u}} />);})}
-		    </View>);})}
-	    </View>
-	);
-    }else{
 	markup = (<View style={{flexDirection: "column"}}>				    
 	    {props.sprite.map((t,i)=>{
 		return (<View key={i} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>
@@ -39,7 +30,7 @@ function Sprite(props) {
 		    </View>);})}
 	    </View>
 	);
-    }
+    
     
     return <View>{markup}</View>
 }

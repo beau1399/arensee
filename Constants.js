@@ -12,7 +12,7 @@ const Constants = {
     SpritePixelSize: 3,
     SpriteWidth: 18,
     BoardTop: 138,
-    BoardLeft: 20,
+    BoardLeft: 13,
     Chessboard:
     [
 	"prprprpr",

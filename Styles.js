@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     boardWrapper: {flex:0.315},
     modalButton: {padding:10, backgroundColor:"rgba(32,32,32,0.2)", color:"black"},
     textBanner: {flex:0.2},
+    verticalShim: {flex:0.02},
     modalText: {color:"black"},
 });
 

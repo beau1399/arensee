@@ -46,8 +46,12 @@ export function Game(props){
         <View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
 
         {/*The chessboard*/}
+        <View style={{flexDirection:"row"}}>
+        <View style={styles.verticalShim} />
         <View>
         <Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} ></Sprite>            
+        </View>
+        <View style={styles.verticalShim} />        
         </View>
 
         {/*The pieces*/}

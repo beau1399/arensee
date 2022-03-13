@@ -9,7 +9,7 @@ const Engine = {
                 for(let i=0; i<8; ++i){
                     for(let j=0; j<8; ++j){
                         if(returnable.length<max){
-                            let cm=t.canMove(t.blackness,t.x,t.y,i,j,pieces);
+                            let cm= (t.x!=i || t.y!=j) && t.canMove(t.blackness,t.x,t.y,i,j,pieces);
                             if(cm){
                                 let noSelfCheck= !causesSelfCheck(t.n,i,j);
                                 if(noSelfCheck) {

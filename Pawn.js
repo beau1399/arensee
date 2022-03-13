@@ -42,7 +42,7 @@ const Pawn = {
             &&
 	    //No straight-on capture
 	(!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness) && toX==x	   ))
-	    && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //TODO refactor    
+	    && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
 
     },
 

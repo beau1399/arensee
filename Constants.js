@@ -6,14 +6,19 @@ import King from './King';
 import Queen from './Queen';
 
 const Constants = {
-    Difficulty: 100000,
-    Players: 1, 
+    
+    //Tweakable parameters for build
+    Difficulty: 100000, // How many potential moves should chess engine iterate over
+    Players: 1,
+    CheckValue: 10, // How highly does the chess engine value putting opponent in check, in points (pawn=1, bishop=4, etc.)
+
+    //Things you probably don't need to change (dimensions, initial piece position, etc.) 
     SquareSize: 42,
     SpritePixelSize: 3,
     SpriteWidth: 18,
     BoardTop: 138,
     BoardLeft: 13,
-    Chessboard:
+    Chessboard:      //Board spritexs
     [
 	"prprprpr",
 	"rprprprp",

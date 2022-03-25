@@ -1,4 +1,5 @@
 import Pawn from './Pawn';
+import Constants from './Constants';
 
 const Engine = {
     // Returns possible moves for a color, sorted from best to worst.
@@ -16,7 +17,7 @@ const Engine = {
                                     let takenPiece=pieces.filter(u=>u.blackness!=blackness && !u.deadness && u.x==i && u.y==j)[0]?.value ?? 0;
                                     let enemyCheck= causesEnemyCheck(t.n,i,j);
 
-                                    if(enemyCheck){ takenPiece += 10; /*TODO this is endlessly tweakable*/ }
+                                    if(enemyCheck){ takenPiece += Constants.CheckValue; /*Valuate any check-causing move*/ }
 
                                     //Account for capture en passant 
                                     const {enpassant,capturedX,capturedY} =

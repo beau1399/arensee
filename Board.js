@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {Piece} from './Piece'
 
+//
+// Component "Board"
+//
+//  This renders the pieces as they stand at any given point in the game. As such it's
+//  just a "map" from props.boardState to a bunch of "Piece" components.
+//
+//
 export function Board(props){
     return(<>
         {props.boardState.map((t)=>(

@@ -8,16 +8,24 @@ import Engine from './Engine';
 
 const { RNPlayNative } = NativeModules;
 
+//
+// Component "Game"
+//
+// This is the outermost container in the component hierarchy, and also where computer chess engine is invoked
+//  for 0-player and 1-player games
 export function Game(props){
 
-    // Computer movement
-    if(!props.modalVisible) {
-        if(Constants.Players==1) {
+    // Handle computer movement when necessary
+    if(!props.modalVisible) { // Modal presents game result; don't make any computer moves while it's open
+        if(Constants.Players==1) { // Human-vs.-computer mode... 
             useEffect(() => {
                 if(props.moveCount%2==1) {
+                    // Run the engine and make a computer move for moves 1,3,5 etc. (human is white pieces)
                     let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                     let move = pm[0];
                     props.movePiece(move.n, move.x, move.y, true);
+
+                    //This prompts the human that the computer has moved
                     RNPlayNative.runMethod();           
                 }
             },[props.moveCount]);
@@ -25,14 +33,16 @@ export function Game(props){
         }else if(Constants.Players==2){
             //We don't need to do any computer-driven moving if 2 players
 
-        }else{
+        }else{ // Computer vs. computer
             useEffect(() => {
                 setTimeout(()=>{
                     if(props.moveCount%2==1) {
+                        // Black's turn
                         let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                         let move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);
                     }else{
+                        // White's turn... either way, we're running the engine and moving based on result
                         let pm = Engine.PossibleMoves(false,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                         let move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);  

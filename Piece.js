@@ -6,11 +6,15 @@ import Sprite from './Sprite';
 import Draggable from 'react-native-draggable';
 import {styles} from './Styles'
 
+//
+// Component "Piece" - a single instance of a piece. 
+//
+//
 export class Piece extends Component {
     constructor(props){super(props);}
     
     render(){
-	if(this.props.deadness) return null;
+	if(this.props.deadness) return null; // No rendering if piece has been captured
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
 	    renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0) + Constants.BoardLeft}

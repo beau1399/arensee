@@ -135,3 +135,8 @@ The actual implementation of "CanMove" seen in Bishop.js reflects the rules of t
 * The bishop cannot jump over other pieces
 
 The first rule is enforced on line 97, the second on lines 98-100, and the third on line 101. 
+
+Most of the piece types are similarly uncomplicated in their definitions. Where other piece-specific behavior must be defined, though, I have endeavored to do so within the appropriate piece definition file. In Pawn.js, for example, one finds member function EnPassant, which accepts parameters around a hypothetical move and returns a composite structure telling whether capture-en-passant happened, and where the captured piece was located if it did.
+
+**Rules Enforcement**
+

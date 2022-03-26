@@ -16,11 +16,32 @@ I will describe Arensee's code as I wrote it: from the bottom up, beginning with
 
 ![chessboard2](https://user-images.githubusercontent.com/42191239/160249174-86069be6-6d3d-47dd-8adf-649752f57c84.png)
 
-This figure attempts to demonstrate how easy it is to use React Native's "View" component and its flexbox layout to divide a rectangular area into regularly sized cells of designated colors. If one takes such a rectangular area and places within it a horizontal flexbox consisting of View components having equal **flex** values, this will naturally break the rectangular area up into columns. Then, each column can similarly be used to contain a vertical flexbox of View components having equal **flex** values, with these used as raster cells to establish virtual pixels of a designated color. 
+This figure attempts to demonstrate how easy it is to use React Native's "View" component and its flexbox layout to divide a rectangular area into regularly sized cells of designated colors, creating a "sprite." If one takes such a rectangular area and places within it a horizontal flexbox consisting of View components having equal **flex** values, this will naturally break the rectangular area up into columns. Then, each column can similarly be used to contain a vertical flexbox of View components having equal **flex** values, with these used as raster cells to establish virtual pixels of a designated color. 
 
-Here, this concept has been baked into a component called Sprite, in file Sprite.js, and the resulting idiom is quite intuitive. Here's an example:
+Here, this concept has been baked into a component called Sprite, in file Sprite.js, and the resulting idiom is quite intuitive. Note that appearance definitions are done using multi-dimension character arrays. Consider for example, the partial declaration shown below, in which the appearance definition of the black knight sprite is evident:
+
+```
+    Black: [
+	"    0     ",
+	"   o000   ",
+	" o0000000 ",
+	"o000000kk ",
+	"o000 00000",
+	" o000  000",
+	"  o0000   ",
+	"  o00000  ",
+	"  o000000 ",
+	" oo000000 ",
+	"o00000000o",
+	"o00000000o"
+    ],
+
+```
+
+Here's an example of the overall usage of the Sprite component:
 ```
   <Sprite pixelSize=24
           sprite={["x.",".x"]}
           letterToColor={"x":"yellow", ".":"brown"} />
 ```
+The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and 

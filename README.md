@@ -19,8 +19,8 @@ I will describe Arensee's code as I wrote it: from the bottom up, beginning with
 This figure attempts to demonstrate how easy it is to use React Native's "View" component and its flexbox layout to divide a rectangular area into regularly sized cells of designated colors. If one takes such a rectangular area and places within it a horizontal flexbox consisting of View components having equal **flex** values, this will naturally break the rectangular area up into columns. Then, each column can similarly be used to contain a vertical flexbox of View components having equal **flex** values, with these used as raster cells to establish virtual pixels of a designated color. 
 
 Here, this concept has been baked into a component called Sprite, in file Sprite.js, and the resulting idiom is quite intuitive. Here's an example:
-`
+```
   <Sprite pixelSize=24
           sprite={["x.",".x"]}
           letterToColor={"x":"yellow", ".":"brown"} />
-`
+```

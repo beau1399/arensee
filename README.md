@@ -1,3 +1,3 @@
 # arensee
 React Native Chess
-<img width="312" alt="Screen Shot 2022-03-26 at 11 29 42 AM" src="https://user-images.githubusercontent.com/42191239/160246406-f9b6edf9-24e7-4fad-a14d-673c6f537c20.png">
+<img width="317" alt="Screen Shot 2022-03-26 at 11 33 03 AM" src="https://user-images.githubusercontent.com/42191239/160246495-2c154763-af04-4427-8417-15ef11743785.png">

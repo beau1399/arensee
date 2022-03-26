@@ -142,7 +142,7 @@ Most of the piece types are similarly uncomplicated in their definitions. Where 
 
 **The *App* Component**
 
-The "App" component in App.js is a top-level container for the game components, and also the central locus for game state, enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also methods for game-level checks and for piece move attempts. Here is the App state setup:
+The "App" component in App.js is a top-level container for the game components, and also the central locus for game state, enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also functions for game-level checks and for piece move attempts. Here is the App state setup:
 
 ```
     const [boardState, setBoardState] = useState(Constants.StartingBoard())
@@ -162,7 +162,21 @@ The enforcement of the mandatory draw rules described in the bulleted list above
 
 In addition to state, App.js declares several functions which are passed down into child components for game logic purposes:
 
-* "isChecked" checks whether a particular color is in check
-* "causesSelfCheck" tells whether a hypothetical move should be illegal because it would put the moving color in check
-* "causesOpponentCheck" tells whether a hypothetical move puts the opponent in check
-* "movePiece" does what its name implies, 
+Function "isChecked" checks whether a particular color is in check. 
+
+Function "causesSelfCheck" tells whether a hypothetical move should be illegal because it would put the moving color in check. Function "causesOpponentCheck" tells whether a hypothetical move puts the opponent in check.
+
+Function "movePiece" does what its name implies, and is thus largely responsible for the state members elucidated in the last code snippet. This includes not only piece position, but also the "deadness" property for captured pieces. Function "movePiece" is also the place where moves that would put the mover in check are refused, for human players; the computer's chess engine will already have excluded such moves before attempting them. Capture-en-passant is handled here, since it's really just a species of capture. (The computer chess engine calls into the same members of module "Pawn" that are used to detect capture-en-passant in "movePiece," and the engine will thus consider en passant in its machinations just like any other piece capture.)
+
+Pawn promotion is checked for in "movePiece." This turns out to be pretty straightforward:
+
+```
+//Pawn Promotion
+if(movingPiece.pawnness && 
+   ((movingPiece.blackness && movingPiece.y==7)||
+    (!movingPiece.blackness && movingPiece.y==0))){
+   movingPiece.sprite = movingPiece.blackness ? Queen.Black : Queen.White;
+   movingPiece.canMove = Queen.CanMove;
+}
+```
+

@@ -12,4 +12,7 @@ Arensee is noteworthy for its lack of dependencies. Other than React Native itse
 
 **Component *Sprite*** 
 
-I will describe Arensee's code as I wrote it: from the bottom up. My efforts began with the desire to render raster "sprites" 
+I will describe Arensee's code as I wrote it: from the bottom up, beginning with the question "how do I render a chessboard and pieces on the screen?". In the past I've used OpenGL ES and **react-native-canvas** with good results, but I didn't think what I needed here was a drawing engine per se. Rather, it seemed to me that these rendering tasks could be accomplished using a very raster-centric "pixel art" style reminiscent of the 8-bit era of home computing. Consider the image below, where a magnified version of my white bishop is shown with some illustrative guidelines:
+<img width="96" alt="chessboard2" src="https://user-images.githubusercontent.com/42191239/160248994-1847d980-2f3b-470f-b6c1-318d4a129c38.png">
+
+

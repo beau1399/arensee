@@ -145,8 +145,9 @@ const App = ()=>{
 
             //Pawn Promotion
             if(movingPiece.pawnness && ((movingPiece.blackness && movingPiece.y==7)||(!movingPiece.blackness && movingPiece.y==0))){
-                movingPiece.sprite=movingPiece.blackness?Queen.Black:Queen.White;
+                movingPiece.sprite=movingPiece.blackness ? Queen.Black : Queen.White;
                 movingPiece.canMove=Queen.CanMove;
+                movingPiece.value=Queen.Value;
             }
 
             // Check for mate

@@ -50,7 +50,7 @@ For Arensee, the Sprite component is mostly invoked from component "Piece," wher
 ```
    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} letterToColor={Constants.LetterToColor} />
 ```
-The Piece component is, in turn, contained by component "Board":
+The Piece component is, in turn, contained by component "Board," which emits a React fragment containing Pieces:
 ```
 //
 // Component "Board"
@@ -71,4 +71,57 @@ export function Board(props){
 }
 
 ```
+Several key aspects of the Arensee design are in evidence in the snippet above. The data format of the "boardState" prop is a scheme that is pervasive throughout the Arensee codebase. As hinted by its name, it tells where the pieces are located on the board, whether they are dead and can be ignored ("deadness"), whether they are black or white ("blackness"), and so on. Within this data format there are also members that define the aspects of piece that are specific to its type: what it looks like on the screen, how it moves, etc.
+
+**The Piece Data Format**
+
+Some specifics are in order, from a couple of other JS files. From Constants.js:
+
+```
+    StartingBoard: ()=> [
+	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
+	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
+	{ sprite:Pawn.Black, x:2, y:1, n:2, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
+
+```
+This "StartingBoard" function returns the initial value at game start for what ultimately becomes "props.boardState" in "Board.js." I have covered "deadness" and "blackness"; above we also see "kingness" and "pawnness"- kings and pawns are special, viz. capture-en-passant, castling, checkmate, rules around pawn movement and forced draws, etc.
+
+Note that member "value" reflects the value of each piece (pawn=1, queen=9, etc.); this is key to the chess engine seen in Engine.js. Members "x" and "y" extend down and right from the back (black) left corner of the board. 
+
+Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the appearance of the picece rendering) comes from "Pawn.Black", seen in Pawn.js. This file is shown below, with ellipses as commented:
+
+```
+import Movement from './Movement';
+
+const Bishop = {
+    CanMove: (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
+					 && !pieces.some((t)=>
+					     t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
+					 && Movement.NoInterveningPiece(x,y,toX,toY,pieces),
+
+    Black:
+    [
+	"   0     ",
+	"  000    ",
+	" o0000   ",
+	"o00...0  ",
+	" o0000   ",
+	"  o0o    ",
+	"  o0o    ",
+	"  o0o    ",
+	"  o0o    ",
+	"  o0o    ",
+	" ,0000o  ",
+	",000000o "
+    ],
+  // 
+  // There's also a "Black" member, removed for brevity
+  //
+};
+
+export {Bishop as default};
+
+```
+
+
 

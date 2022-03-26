@@ -33,9 +33,7 @@ Here, this concept has been baked into a component called Sprite, in file Sprite
 	"  o000000 ",
 	" oo000000 ",
 	"o00000000o",
-	"o00000000o"
-    ],
-
+	"o00000000o"],
 ```
 
 Here's an example of the overall usage of the Sprite component:
@@ -44,4 +42,6 @@ Here's an example of the overall usage of the Sprite component:
           sprite={["x.",".x"]}
           letterToColor={"x":"yellow", ".":"brown"} />
 ```
-The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and 
+The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and a mapping object that gives the necessary context to render the sprite from its textual appearance definition.
+
+For Arensee, the Sprite component is mostly invoked from component "Piece," where the JSX seen below is present:

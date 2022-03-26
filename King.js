@@ -14,13 +14,13 @@ const King = {
             }else{
                 const left = (targetX==2);
                 if(left){
-                    let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
+                    const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
                         if(!t.props.causesSelfCheck(n,piecesn.x-1,targetY) && !t.props.causesSelfCheck(n,piecesn.x-2,targetY)){
                             t.props.movePiece(n,piecesn.x-2,targetY);
                             t.props.movePiece(castle.n,castle.x+3,castle.y); }}
                 }else{
-                    let castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
+                    const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
                         if(!t.props.causesSelfCheck(n,piecesn.x+1,targetY) && !t.props.causesSelfCheck(n,piecesn.x+2,targetY)){
                             t.props.movePiece(n,piecesn.x+1,targetY);

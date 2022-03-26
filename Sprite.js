@@ -12,8 +12,7 @@ import { View } from 'react-native';
 //          letterToColor={"x":"yellow", ".":"brown"} />
 //
 function Sprite(props) {
-    let markup=[];
-	markup = (<View style={{flexDirection: "column"}}>				    
+    const markup = (<View style={{flexDirection: "column"}}>				    
 	    {props.sprite.map((t,i)=>{
 		return (<View key={i} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>
 		    {t.split('').map((u,j)=>{

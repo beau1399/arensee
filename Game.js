@@ -21,8 +21,8 @@ export function Game(props){
             useEffect(() => {
                 if(props.moveCount%2==1) {
                     // Run the engine and make a computer move for moves 1,3,5 etc. (human is white pieces)
-                    let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
-                    let move = pm[0];
+                    const pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
+                    const move = pm[0];
                     props.movePiece(move.n, move.x, move.y, true);
 
                     //This prompts the human that the computer has moved
@@ -38,13 +38,13 @@ export function Game(props){
                 setTimeout(()=>{
                     if(props.moveCount%2==1) {
                         // Black's turn
-                        let pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
-                        let move = pm[0];
+                        const pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
+                        const move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);
                     }else{
                         // White's turn... either way, we're running the engine and moving based on result
-                        let pm = Engine.PossibleMoves(false,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
-                        let move = pm[0];
+                        const pm = Engine.PossibleMoves(false,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
+                        const move = pm[0];
                         props.movePiece(move.n, move.x, move.y, true);  
                     }
                 },250);

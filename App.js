@@ -49,7 +49,7 @@ const App = ()=>{
     //  or other-color check (opponent=true). 
     const causesCheck = (n, x, y, opponent)=> {
         //Construct next board state so we can simulate the move to gauge impact
-        let prime=[...boardState]
+        const prime=[...boardState]
         
         //Find moving piece
         const movingPiece = prime.filter(t=>t.n==n)[0]
@@ -64,13 +64,13 @@ const App = ()=>{
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Move is performed hypothetically so we save state of piece n
-        let savex=movingPiece.x;
-        let savey=movingPiece.y;
+        const savex=movingPiece.x;
+        const savey=movingPiece.y;
         movingPiece.x=x;
         movingPiece.y=y;
 
         //Get a verdict
-        let returnable = isChecked(opponent ? !movingPiece.blackness : movingPiece.blackness);
+        const returnable = isChecked(opponent ? !movingPiece.blackness : movingPiece.blackness);
 
         //Restore state
         movingPiece.x=savex;
@@ -99,7 +99,7 @@ const App = ()=>{
     const movePiece = (n, x, y, prechecked)=> {
 
         //Construct new board state
-        let prime=[...boardState]
+        const prime=[...boardState]
 
         //Get piece n, the moving piece
         const movingPiece = prime.filter(t=>t.n==n)[0]
@@ -114,8 +114,8 @@ const App = ()=>{
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Save state in case the (human's) move attempt is illegal
-        let savex=movingPiece.x;
-        let savey=movingPiece.y;
+        const savex=movingPiece.x;
+        const savey=movingPiece.y;
         movingPiece.x=x;
         movingPiece.y=y;
 

@@ -157,7 +157,6 @@ const App = ()=>{
                     setModalVisible('STALEMATE')                    
                 }               
             }else{
-                setMoveCount(moveCount+1);
                 if(movingPiece.pawnness || enemy.length==1){
                     setDrawMoveCount(0)
                 } else {
@@ -165,6 +164,7 @@ const App = ()=>{
                 }
                 // 50 moves w/o pawn move or piece capture is a draw by rule
                 if(drawMoveCount == 50) { setModalVisible('DRAW') }
+                setMoveCount(moveCount+1);
                 const newHistory=[...history]
                 newHistory.push(JSON.stringify(boardState))
                 setHistory(newHistory)

@@ -111,7 +111,8 @@ const App = ()=>{
         if(enemy.length==1) { enemy[0].deadness=true; }
 
         //Detect and enforce enpassant
-        const {enpassant,capturedX,capturedY} = Pawn.EnPassant(movingPiece.blackness,movingPiece.pawnness,movingPiece.x,movingPiece.y,x,y,boardState) 
+        const {enpassant,capturedX,capturedY} =
+            Pawn.EnPassant(movingPiece.blackness, movingPiece.pawnness, movingPiece.x, movingPiece.y, x, y, boardState) 
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Save state in case the (human's) move attempt is illegal

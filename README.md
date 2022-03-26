@@ -90,6 +90,8 @@ Note that member "value" reflects the value of each piece (pawn=1, queen=9, etc.
 
 Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the appearance of the picece rendering) comes from "Pawn.Black", seen in Pawn.js. Similarly, we have "Rook.Black" in Rook.js, "Knight.White" in Knight.js, and so on for all the piece types.
 
+**Piece Type Definition**
+
 Here is Bishop.js, with ellipses as commented:
 ```
 import Movement from './Movement';

@@ -15,6 +15,5 @@ Arensee is noteworthy for its lack of dependencies. Other than React Native itse
 I will describe Arensee's code as I wrote it: from the bottom up, beginning with the question "how do I render a chessboard and pieces on the screen?". In the past I've used OpenGL ES and **react-native-canvas** with good results, but I didn't think what I needed here was a drawing engine per se. Rather, it seemed to me that these rendering tasks could be accomplished using a very raster-centric "pixel art" style reminiscent of the 8-bit era of home computing. Consider the image below, where a magnified version of my white bishop is shown with some illustrative guidelines:
 
 
+![chessboard2](https://user-images.githubusercontent.com/42191239/160249174-86069be6-6d3d-47dd-8adf-649752f57c84.png)
 
-
-![chessboard2](https://user-images.githubusercontent.com/42191239/160249147-488cdbde-447b-4a9f-b67f-493b8d948edc.png)

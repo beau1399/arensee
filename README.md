@@ -138,12 +138,45 @@ The actual implementation of "CanMove" seen in Bishop.js reflects the rules of t
 
 The first rule is enforced on line 97, the second on lines 98-100, and the third on line 101. 
 
-Most of the piece types are similarly uncomplicated in their definitions. Where other piece-specific behavior must be defined, though, I have endeavored to do so within the appropriate piece definition file. In Pawn.js, for example, one finds member function EnPassant, which accepts parameters around a hypothetical move and returns a composite structure telling whether capture-en-passant happened, and where the captured piece was located if it did.
+Most of the piece types are similarly uncomplicated in their definitions. Where other piece-specific behavior must be defined, though, I have endeavored to do so within the appropriate piece definition file. In Pawn.js, for example, one finds member function EnPassant, which accepts parameters around a hypothetical move and returns a composite structure telling whether capture-en-passant happened, and where the captured piece was located if it did. Similarly, there is a "Castling" member in King.js that detects and arbitrates castling attempts. 
 
 **The *App* Component**
 
-**Rules Enforcement**
+The "App" component in App.js is a top-level container for the game components, and also the central locus for game state, enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also functions for game-level checks and for piece move attempts. Here is the App state setup:
 
-The discussion so far describes a pretty well-organized system. Yes, there is a certain "members and parameters flying in close formation" anti-pattern in evidence,  which is probably a use case for Typescript, but there's a logic to how the rules, piece appearances, etc. are organized. 
+```
+    const [boardState, setBoardState] = useState(Constants.StartingBoard())
+    const [moveCount, setMoveCount] = useState(0)
+    const [drawMoveCount, setDrawMoveCount] = useState(0)
+    const [modalVisible, setModalVisible] = useState(undefined);
+    const [history, setHistory] = useState([])
+```
 
-Unfortunately, I think this achievement rests more on the regularity of the rules of chess than on any architectural talent on my part. Where some architectural creativity is necessary is in handling those parts of the rules of chess that aren't so regular. 
+* Member "boardState" maintains piece position / status as already described
+* Member "moveCount" is presented to the end user, but also (modulus 2) determines which color must move next
+* Member "drawMoveCount" is used to declare a draw after 50 moves without pawn movement or capture, per rules
+* Member "modalVisible" controls the visibility of the modal used to communicate game end, and also to prevent further movement
+* Member "history" is used to declare a draw when the same position has been repeated 5 times, per rule
+
+The enforcement of the mandatory draw rules described in the bulleted list above is a perfect example of the sort of game-level logic that belongs in App.js, and these rules are indeed enforced entirely within App.js.
+
+In addition to state, App.js declares several functions which are passed down into child components for game logic purposes:
+
+Function "isChecked" checks whether a particular color is in check. 
+
+Function "causesSelfCheck" tells whether a hypothetical move should be illegal because it would put the moving color in check. Function "causesOpponentCheck" tells whether a hypothetical move puts the opponent in check.
+
+Function "movePiece" does what its name implies, and is thus largely responsible for the state members elucidated in the last code snippet. This includes not only piece position, but also the "deadness" property for captured pieces. Function "movePiece" is also the place where moves that would put the mover in check are refused, for human players; the computer's chess engine will already have excluded such moves before attempting them. Capture-en-passant is handled here, since it's really just a species of capture. (The computer chess engine calls into the same members of module "Pawn" that are used to detect capture-en-passant in "movePiece," and the engine will thus consider en passant in its machinations just like any other piece capture.)
+
+Pawn promotion is checked for in "movePiece." This turns out to be pretty straightforward:
+
+```
+//Pawn Promotion
+if(movingPiece.pawnness && 
+   ((movingPiece.blackness && movingPiece.y==7)||
+    (!movingPiece.blackness && movingPiece.y==0))){
+   movingPiece.sprite = movingPiece.blackness ? Queen.Black : Queen.White;
+   movingPiece.canMove = Queen.CanMove;
+}
+```
+

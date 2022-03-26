@@ -136,7 +136,7 @@ The actual implementation of "CanMove" seen in Bishop.js reflects the rules of t
 * The bishop cannot move to a square occupied by another piece of the same color
 * The bishop cannot jump over other pieces
 
-The first rule is enforced on line 97, the second on lines 98-100, and the third on line 101. 
+The first rule is enforced on line 3 of the snippet, the second on lines 4-6, and the third on line 7. 
 
 Most of the piece types are similarly uncomplicated in their definitions. Where other piece-specific behavior must be defined, though, I have endeavored to do so within the appropriate piece definition file. In Pawn.js, for example, one finds member function EnPassant, which accepts parameters around a hypothetical move and returns a composite structure telling whether capture-en-passant happened, and where the captured piece was located if it did. Similarly, there is a "Castling" member in King.js that detects and arbitrates castling attempts. 
 
@@ -177,6 +177,29 @@ if(movingPiece.pawnness &&
     (!movingPiece.blackness && movingPiece.y==0))){
    movingPiece.sprite = movingPiece.blackness ? Queen.Black : Queen.White;
    movingPiece.canMove = Queen.CanMove;
+   movingPiece.value=Queen.Value;
 }
 ```
+In short, we check that the piece is a pawn, and then that it's either white and in row 0 or black and in row 7. The check for mates is similarly legible:
+
+```
+if(!Movement.CanMakeAMove(!movingPiece.blackness, causesSelfCheck, boardState)){
+ if(isChecked(!movingPiece.blackness)){
+  setModalVisible(('CHECKMATE! WINNER: ' + (movingPiece.blackness?'BLACK':'WHITE') ))
+ }else{
+  setModalVisible('STALEMATE')                    
+ }               
+}
+```
+The outermost "if" determines that the opponent (i.e. the color that is not moving) cannot respond to the move in play with a move of his own. This will either be a checkmate (if the opponent is in check) or a stalemate (if he is not). It is hoped that this code reads easily, and that this is particularly true of the high-level code in App.js.
+
+One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
+
+**Development Process**
+
+Arensee began mostly as a learning exercise. Having done pretty extensive React development, and pretty extensive Java / Android native development, I wanted a real project to help me bridge the knowledge gap between the two. I began with an Expo-based React Native app created on the Friday of a three-day weekend, and by Sunday evening the game had taken its final appearance and was mostly complete. 
+
+As I recall things, castling, capture-en-passant, and the more obscure draw rules remained undone at the end of the weekend, but it was definitely possible to play games against the computer using the user interface depicted above. On Monday I moved my code from Expo to a more generic React Native codebase, and all of the unwritten logic for a full chess game followed pretty rapidly.
+
+Having written a basic computer chess game in such a short time, I reiterate with confidence what I said right up front: React Native is emminently suited for this particular application. 
 

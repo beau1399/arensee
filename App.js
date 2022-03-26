@@ -158,7 +158,7 @@ const App = ()=>{
                 setMoveCount(moveCount+1);
                 const newHistory=[...history]
                 newHistory.push(JSON.stringify(boardState))
-                setHist(newHistory)
+                setHistory(newHistory)
                 const repeatedPositionCount =  history.filter((t, n)=>{return t==JSON.stringify(boardState)}).length
                 // If a position has been repeated thrice, then the computer (if playing) will avail itself of the right
                 //  to request a draw from the game arbiter.

@@ -92,13 +92,11 @@ Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the ap
 
 ```
 import Movement from './Movement';
-
 const Bishop = {
     CanMove: (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
 					 && !pieces.some((t)=>
 					     t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
 					 && Movement.NoInterveningPiece(x,y,toX,toY,pieces),
-
     Black:
     [
 	"   0     ",
@@ -114,9 +112,7 @@ const Bishop = {
 	" ,0000o  ",
 	",000000o "
     ],
-  // 
   // There's also a "Black" member, removed for brevity
-  //
 };
 
 export {Bishop as default};

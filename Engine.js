@@ -14,7 +14,7 @@ const Engine = {
                             if(cm){
                                 const noSelfCheck= !causesSelfCheck(t.n,i,j);
                                 if(noSelfCheck) {
-                                    const takenPiece=pieces.filter(u=>u.blackness!=blackness && !u.deadness && u.x==i && u.y==j)[0]?.value ?? 0;
+                                    let takenPiece=pieces.filter(u=>u.blackness!=blackness && !u.deadness && u.x==i && u.y==j)[0]?.value ?? 0;
                                     const enemyCheck= causesEnemyCheck(t.n,i,j);
 
                                     if(enemyCheck){ takenPiece += Constants.CheckValue; /*Valuate any check-causing move*/ }

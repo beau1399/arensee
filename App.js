@@ -29,6 +29,7 @@ import Queen from './Queen';
 const App = ()=>{
     const [boardState, setBoardState] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
+    const [drawMoveCount, setDrawMoveCount] = useState(0)
     const [modalVisible, setModalVisible] = useState(undefined);
     const [history, setHistory] = useState([])
     
@@ -90,6 +91,7 @@ const App = ()=>{
     const ResetBoard = ()=>{
         setBoardState(Constants.StartingBoard())
         setMoveCount(0)
+        setDrawMoveCount(0)
     }
 
     // Piece move handler
@@ -156,6 +158,13 @@ const App = ()=>{
                 }               
             }else{
                 setMoveCount(moveCount+1);
+                if(movingPiece.pawnness || enemy.length==1){
+                    setDrawMoveCount(0)
+                } else {
+                    setDrawMoveCount(drawMoveCount + 1)
+                }
+                // 50 moves w/o pawn move or piece capture is a draw by rule
+                if(drawMoveCount == 50) { setModalVisible('DRAW') }
                 const newHistory=[...history]
                 newHistory.push(JSON.stringify(boardState))
                 setHistory(newHistory)

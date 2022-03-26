@@ -24,9 +24,6 @@ export function Game(props){
                     const pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                     const move = pm[0];
                     props.movePiece(move.n, move.x, move.y, true);
-
-                    //This prompts the human that the computer has moved
-                    RNPlayNative.runMethod();           
                 }
             },[props.moveCount]);
 

@@ -59,7 +59,7 @@ export function Game(props){
         <View style={styles.boardCenterer}>
         <View style={styles.verticalShim} />
         <View>
-        <Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} ></Sprite>            
+        <Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} letterToColor={Constants.LetterToColor} ></Sprite>            
         </View>
         <View style={styles.verticalShim} />        
         </View>

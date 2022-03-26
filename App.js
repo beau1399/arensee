@@ -29,8 +29,9 @@ import Queen from './Queen';
 const App = ()=>{
     const [boardState, setBoardState] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
-    const [modalVisible, setModalVisible]=useState(undefined);
-
+    const [modalVisible, setModalVisible] = useState(undefined);
+    const [history, setHistory] = useState([])
+    
     const isChecked = (blackness)=> {
         //Find king of the color that might be checked.
         const k=boardState.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
@@ -93,11 +94,8 @@ const App = ()=>{
 
     // Piece move handler
     //
-    // Beyond mutating board state, this is also the locus of some bookkeeping code (marking dirty,
-    //  notating two-square pawn moves for subsequnet en passant) and the place where illegal
-    //  self-checking moves by human players are rejected (in which case param "prechecked" is false...
-    //  the computer's chess engine will already have filtered out any self-checking moves as part of
-    //  its analysis).
+    // Here is where we mutate board state, detect  check, detect mates and draws of all types,
+    //  and perform game-level bookkeeping around things like en passant.
     const movePiece = (n, x, y, prechecked)=> {
 
         //Construct new board state
@@ -158,6 +156,19 @@ const App = ()=>{
                 }               
             }else{
                 setMoveCount(moveCount+1);
+                const newHistory=[...history]
+                newHistory.push(JSON.stringify(boardState))
+                setHist(newHistory)
+                const repeatedPositionCount =  history.filter((t, n)=>{return t==JSON.stringify(boardState)}).length
+                // If a position has been repeated thrice, then the computer (if playing) will avail itself of the right
+                //  to request a draw from the game arbiter.
+                if(Constants.Players < 2 && repeatedPositionCount == 3) {
+                    setModalVisible('DRAW')                    
+                }
+                // If a position has been repeated five times, then it's a draw per rule
+                if(Constants.Players < 2 && repeatedPositionCount == 5) {
+                    setModalVisible('DRAW')                    
+                }
             }
         }
     } 

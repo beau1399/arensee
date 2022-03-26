@@ -88,8 +88,9 @@ This "StartingBoard" function returns the initial value at game start for what u
 
 Note that member "value" reflects the value of each piece (pawn=1, queen=9, etc.); this is key to the chess engine seen in Engine.js. Members "x" and "y" extend down and right from the back (black) left corner of the board. 
 
-Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the appearance of the picece rendering) comes from "Pawn.Black", seen in Pawn.js. This file is shown below, with ellipses as commented:
+Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the appearance of the picece rendering) comes from "Pawn.Black", seen in Pawn.js. Similarly, we have "Rook.Black" in Rook.js, "Knight.White" in Knight.js, and so on for all the piece types.
 
+Here is Bishop.js, with ellipses as commented:
 ```
 import Movement from './Movement';
 const Bishop = {
@@ -115,10 +116,21 @@ const Bishop = {
     ],
   // There's also a "Black" member, removed for brevity
 };
-
 export {Bishop as default};
-
 ```
 
+In addition to the sprite appearance members, we have just "CanMove," which defines how a bishop moves. All "CanMove" members receive the same parameters, respectively:
+* The color of the piecess (blackness bit)
+* The x and y position of the piece's current square
+* The x and y position of some hypothetical board square where the piece might move
+* The state of the chessboard, called "pieces" here but in the same format as "boardState" mentioned earlier
 
+Each "CanMove" member returns a boolean telling the caller whether the hypothetical move envisioned by the actual parameters passed in is legal. Note, though, that this is not where we worry about causing check; rules around check are handled are centralized within the top-level "App" component. This is appropriate; it doesn't matter whether your moving a bishop, a rook, or anything else- you can't make a move if it puts your own color in check.
 
+The actual implementation of "CanMove" seen in Bishop.js reflects the rules of the game, where there are three rules of bishop movement:
+
+* The bishop moves diagonally (e.g. over one square and up one, or over one and down one, or over two and up two, etc.).
+* The bishop cannot move to a square occupied by another piece of the same color
+* The bishop cannot jump over other pieces
+
+The first rule is enforced on line 97, the second on lines 98-100, and the third on line 101. 

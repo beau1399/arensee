@@ -12,8 +12,6 @@ function Sprite(props) {
 		    </View>);})}
 	    </View>
 	);
-    
-    
     return <View>{markup}</View>
 }
 

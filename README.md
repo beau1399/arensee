@@ -44,4 +44,31 @@ Here's an example of the overall usage of the Sprite component:
 ```
 The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and a mapping object that gives the necessary context to render the sprite from its textual appearance definition.
 
+**Components *Piece* and *Board*** 
+
 For Arensee, the Sprite component is mostly invoked from component "Piece," where the JSX seen below is present:
+```
+   <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} letterToColor={Constants.LetterToColor} />
+```
+The Piece component is, in turn, contained by component "Board":
+```
+//
+// Component "Board"
+//
+//  This renders the pieces as they stand at any given point in the game. As such it's
+//  just a "map" from props.boardState to a bunch of "Piece" components.
+//
+//
+export function Board(props){
+    return(<>
+        {props.boardState.map((t)=>(
+            <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
+            causesSelfCheck={props.causesSelfCheck} causesEnemyCheck={props.causesEnemyCheck} movePiece={props.movePiece}  
+            moveCount={props.moveCount} board={props.boardState}
+            />))}
+        </>
+    )
+}
+
+```
+

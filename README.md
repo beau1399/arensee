@@ -138,5 +138,10 @@ The first rule is enforced on line 97, the second on lines 98-100, and the third
 
 Most of the piece types are similarly uncomplicated in their definitions. Where other piece-specific behavior must be defined, though, I have endeavored to do so within the appropriate piece definition file. In Pawn.js, for example, one finds member function EnPassant, which accepts parameters around a hypothetical move and returns a composite structure telling whether capture-en-passant happened, and where the captured piece was located if it did.
 
+**The *App* Component**
+
 **Rules Enforcement**
 
+The discussion so far describes a pretty well-organized system. Yes, there is a certain "members and parameters flying in close formation" anti-pattern in evidence,  which is probably a use case for Typescript, but there's a logic to how the rules, piece appearances, etc. are organized. 
+
+Unfortunately, I think this achievement rests more on the regularity of the rules of chess than on any architectural talent on my part. Where some architectural creativity is necessary is in handling those parts of the rules of chess that aren't so regular. 

@@ -70,9 +70,9 @@ export function Board(props){
 }
 
 ```
-Several key aspects of the Arensee design are in evidence in the snippet above. There are some FUNNNNCTIONS like causesEnemyCheck
+Several key aspects of the Arensee design are in evidence in the snippet above. The data format of the "boardState" prop is a scheme that is pervasive throughout the Arensee codebase. As hinted by its name, it tells where the pieces are located on the board, whether they are dead and can be ignored ("deadness"), whether they are black or white ("blackness"), and so on. Within this data format there are also members that define the aspects of piece that are specific to its type: what it looks like on the screen, how it moves, etc.
 
-The data format of the "boardState" prop is a scheme that is pervasive throughout the Arensee codebase. As hinted by its name, it tells where the pieces are located on the board, whether they are dead and can be ignored ("deadness"), whether they are black or white ("blackness"), and so on. Within this data format there are also members that define the aspects of piece that are specific to its type: what it looks like on the screen, how it moves, etc.
+Another thing evident in the code snippet above is the passage from parent component to child of functions that are useful for running the chess game. Function "causesEnemyCheck" is an example. This is passed through under the same name in the code above. Ultimately it originates from the top-level App component, where check is managed, and gets passed down to 
 
 **The Piece Data Format**
 
@@ -194,6 +194,12 @@ if(!Movement.CanMakeAMove(!movingPiece.blackness, causesSelfCheck, boardState)){
 The outermost "if" determines that the opponent (i.e. the color that is not moving) cannot respond to the move in play with a move of his own. This will either be a checkmate (if the opponent is in check) or a stalemate (if he is not). It is hoped that this code reads easily, and that this is particularly true of the high-level code in App.js.
 
 One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
+
+**The Computer Chess Engine**
+
+Some readers will be most concerned with the logic used by the computer player's chess engine. For these people, the lead-up to this section may have seemed mundane. Sadly, if you endured everything above in hopes of learning about my latent, silicon-based Boris Spasky, you are destined for further disappointment. That said, if you are thinking about _developing_ a great chess engine, then you may be in luck, as I will now tell you exactly where and how to hook your code up.
+
+
 
 **Development Process**
 

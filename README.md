@@ -5,7 +5,7 @@
 
 Arensee is a computer chess game written in React Native. As cloned, the source code builds an app where the human user plays white and the computer responds by playing black. Build-time parameters in file Constants.js can be tweaked to support two human players, or even computer-versus-computer play.
 
-The chess engine used by the computer "player(s)" is rudimentary in nature. It is aggressive and lacks foresight. However, an obvious locus and interface are provided for chess engine improvements, in file Engine.js.
+The chess engine used by the computer "player(s)" is rudimentary in nature. Located in file Engine.js, it is aggressive and lacks foresight. That said, improvements here are on my own "to do" list, and the interface between the chess engine and the other parts of the system is designed to be obvious and extensible. 
 
 Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just a single NPM package called **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the react user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 

@@ -199,6 +199,7 @@ One new wrinkle in evidence above is the existence of module "Movement.js." Ther
 
 Some readers will be most concerned with the logic used by the computer player's chess engine. For these people, the lead-up to this section may have seemed mundane. Sadly, if you endured everything above in hopes of learning about my latent, silicon-based Boris Spasky, you are destined for further disappointment. That said, if you are thinking about _developing_ a great chess engine, then you may be in luck, as I will now tell you exactly where and how to hook your code up.
 
+**Draggable Patch**
 
 
 **Development Process**

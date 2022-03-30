@@ -9,6 +9,8 @@ The chess engine used by the computer is rudimentary in nature. Located in file 
 
 Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just a single NPM package called **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the react user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 
+More generally, I thought the development of Arensee unfolded with notable rapidity. I started work on the Friday evening of a three-day weekend, and what I had Sunday evening was pretty close to the finished product seen here. The overall Arensee development process struck me as interesting, and I allow myself to pontificate about it a bit at the end of this article.
+
 **Component *Sprite*** 
 
 I will describe Arensee's code as I wrote it: from the bottom up, beginning with the question "how do I render a chessboard and pieces on the screen?". In the past I've used OpenGL ES and **react-native-canvas** with good results, but I didn't think what I needed here was a drawing engine per se. Rather, it seemed to me that these rendering tasks could be accomplished using a very raster-centric "pixel art" style reminiscent of the 8-bit era of home computing. Consider the image below, where a magnified version of my white bishop is shown with some illustrative guidelines:

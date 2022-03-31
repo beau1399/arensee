@@ -203,6 +203,8 @@ Some readers will be most concerned with the logic used by the computer player's
 
 **Draggable Patch**
 
+**Future**
+TS vs JS scalars "flying in close formation"
 
 **Development Process**
 

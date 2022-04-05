@@ -1,7 +1,7 @@
 # arensee
 **R**eact **N**ative **C**hess
 
-<img width="268" alt="cb1" src="https://user-images.githubusercontent.com/42191239/160251333-be2f7a53-40c2-44a4-ab61-373edef1f7f6.png">
+<img width="268" alt="arensee" src="https://user-images.githubusercontent.com/42191239/161679795-e19efeb4-3d7d-47ed-aa40-58b8567b1b05.png">
 
 Arensee is a computer chess game written using React Native. As cloned, the source code builds an app where the human user plays white and the computer responds by playing black. Build-time parameters in file Constants.js can be tweaked to support two human players, or even computer-versus-computer play.
 

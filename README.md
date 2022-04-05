@@ -43,7 +43,7 @@ Here's an example of the overall usage of the Sprite component:
           sprite={["x.",".x"]}
           letterToColor={"x":"yellow", ".":"brown"} />
 ```
-The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and a mapping object that gives the necessary context to render the sprite from its textual appearance definition.
+The properties seen in the markup above establish, in order, the size of each virtual pixel in device pixels, the appearance definition of the sprite, and a mapping object that gives the necessary context to render the sprite from its textual appearance definition. (The mapping object actually used for Arensee is declared in file Constants.js, not declared inline as seen above.)
 
 **Components *Piece* and *Board*** 
 

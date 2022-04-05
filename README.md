@@ -7,7 +7,7 @@ Arensee is a computer chess game written using React Native. As cloned, the sour
 
 The chess engine used by the computer is rudimentary in nature. Located in file Engine.js, it is aggressive and lacks foresight. That said, the interface between the chess engine and the other parts of the system is designed to be obvious and extensible. Perhaps some other developer will insert a better engine. Perhaps I will.
 
-Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just a single NPM package called **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the react user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
+Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just two NPM package: one called **react-native-draggable** and another called **patch-package**, which is used only to patch **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the react user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 
 More generally, I thought the development of Arensee unfolded with notable rapidity. I started work on the Friday evening of a three-day weekend, and what I had Sunday evening was pretty close to the finished product seen here. The overall Arensee development process struck me as interesting, and I allow myself to pontificate about it a bit at the end of this article.
 
@@ -199,12 +199,47 @@ One new wrinkle in evidence above is the existence of module "Movement.js." Ther
 
 **The Computer Chess Engine**
 
-Some readers will be most concerned with the logic used by the computer player's chess engine. For these people, the lead-up to this section may have seemed mundane. Sadly, if you endured everything above in hopes of learning about my latent, silicon-based Boris Spasky, you are destined for further disappointment. That said, if you are thinking about _developing_ a great chess engine, then you may be in luck, as I will now tell you exactly where and how to hook your code up.
+Some readers will be most concerned with the logic used by the computer player's chess engine. For these people, the lead-up to this section may have seemed mundane. However, my goal for this project was to try some things out using React Native, 
+
+That said, if you are thinking about _developing_ a great chess engine, I will now tell you exactly where and how to hook your code up. Engine.js exports function PossibleMoves, whose declaration begins as shown below.
+
+```
+const Engine = {
+    // Returns possible moves for a color, sorted from best to worst.
+    PossibleMoves: (blackness, causesSelfCheck, causesEnemyCheck, max, pieces)=>{
+    //etc.
+```
+
+This will get called when it's a computer player's turn, and the first element in the indexable data structure returned will be assumed to define the best possible chess move found by the engine, per whatever move-ranking logic it implements. (It is logical to ask why a collection is returned, vs. a single move's data. My thinking in writing Engine.js this was that it made my code more amenable to function composition, allowing for the creation of a "chess move pipeline" with different functions playing different move evaluation roles.)
+
+The parameters to the "PossibleMoves" function are, in order:
+
+* The color of the side making a move
+* A function used to identify moves that would put that side in check
+* A function used to identify moves that would put the opponent in check
+* The maximum number of legal moves to find before ranking and returning them
+* The state of the chessboard
+
+The second and third parameters (the functions) are passed in from the "App" component, as is the last parameter. The penultimate parameter "max" can be used to limit the processing time used by the engine. In the archive, "max" is set to a value from Constants.js that is so large as to always allow all legal moves to be considered. If you want to make the chess engine even worse at the game, though, or accelerate things to deal with a lack of computing power, "Difficulty" in Constants.js can be reduced. It can be reduced all the way to 1, in fact, in which case the engine will essentially be random in its operation.
+
+The data returned by "PossibleMoves" is populated by assignments like this one:
+
+```
+{n:t.n, x:i, y:j, takenPiece:takenPiece}
+```
+
+Above, "n" is the index of the piece being moved. Next come the cooordinates where it is moving, and finally the chess value (1=pawn, 5=rook, etc.) of the piece taken by the move, if any.
 
 **Draggable Patch**
 
+The **react-native-draggable** library on which the project depends required several alterations to be suitable for Arensee:
+
+* A bug (documented at https://github.com/tongyy/react-native-draggable/issues/41#issuecomment-789320290) is fixed
+* Some animation was removed. The glitz added by this part of the code did not mesh well with my rendering logic.
+
 **Future**
-TS vs JS scalars "flying in close formation"
+
+Other than the improvements to the chess engine already suggested, it seems to me that more formal typing would be welcome here. The format of the board state, the return format of "PossibleMoves," etc. all consist of primitive types "flying in close formation," and dealing with them requires either memorization, constant reference to source code, or a good IDE. Something like Typescript or Flow would be helpful here, 
 
 **Development Process**
 

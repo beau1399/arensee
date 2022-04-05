@@ -3,7 +3,7 @@ import Constants from './Constants';
 
 const Engine = {
     // Returns possible moves for a color, sorted from best to worst.
-    PossibleMoves: (blackness,causesSelfCheck,causesEnemyCheck,max,pieces)=>{
+    PossibleMoves: (blackness, causesSelfCheck, causesEnemyCheck, max, pieces)=>{
         let returnable = [];
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             if(returnable.length<max){

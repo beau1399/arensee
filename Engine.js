@@ -3,19 +3,19 @@ import Constants from './Constants';
 
 const Engine = {
     // Returns possible moves for a color, sorted from best to worst.
-    PossibleMoves: (blackness,causesSelfCheck,causesEnemyCheck,max,pieces)=>{
+    PossibleMoves: (blackness, causesSelfCheck, causesEnemyCheck, max, pieces)=>{
         let returnable = [];
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             if(returnable.length<max){
                 for(let i=0; i<8; ++i){
                     for(let j=0; j<8; ++j){
                         if(returnable.length<max){
-                            let cm= (t.x!=i || t.y!=j) && t.canMove(t.blackness,t.x,t.y,i,j,pieces);
+                            const cm= (t.x!=i || t.y!=j) && t.canMove(t.blackness,t.x,t.y,i,j,pieces);
                             if(cm){
-                                let noSelfCheck= !causesSelfCheck(t.n,i,j);
+                                const noSelfCheck= !causesSelfCheck(t.n,i,j);
                                 if(noSelfCheck) {
                                     let takenPiece=pieces.filter(u=>u.blackness!=blackness && !u.deadness && u.x==i && u.y==j)[0]?.value ?? 0;
-                                    let enemyCheck= causesEnemyCheck(t.n,i,j);
+                                    const enemyCheck= causesEnemyCheck(t.n,i,j);
 
                                     if(enemyCheck){ takenPiece += Constants.CheckValue; /*Valuate any check-causing move*/ }
 

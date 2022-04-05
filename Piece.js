@@ -23,7 +23,7 @@ export class Piece extends Component {
 	    {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View>
 	    <View style={styles.pieceWrapper}>
-  	    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} />
+  	    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} letterToColor={Constants.LetterToColor} />
 	    </View>
 	    </View>
 

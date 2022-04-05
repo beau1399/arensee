@@ -6,7 +6,7 @@ const Pawn = {
 	    //Black
 	    (toY-y==1 && blackness && Math.abs(toX-x)==1 &&
 	     pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness))||
-	        //White
+	    //White
 	    (toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
 	     pieces.some((t)=>t.x==toX && t.justAdvancedTwo && t.y==y && t.pawnness  && t.blackness!=blackness && !t.deadness)));
 	return {enpassant:happened, capturedX:toX, capturedY:y}
@@ -17,31 +17,31 @@ const Pawn = {
 		(toY-y==-1 && !blackness) ||
 		(toY-y==2 && blackness && y==1  && Movement.NoInterveningPiece(x,y,toX,toY,pieces)) ||
 		(toY-y==-2 && !blackness && y==6  && Movement.NoInterveningPiece(x,y,toX,toY,pieces)) 	   
-	       )
+	)
         
         // No jumping by pawns
 	    && Movement.NoInterveningPiece(x,y,toX,toY,pieces)
 
         // Enforce the horizontal movement rules
-            &&(toX==x // Move straight ahead is OK
+             &&(toX==x // Move straight ahead is OK
 
-	       //Capture (pawn)
-	       // Customary diagonal capture, black
-	       ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
-		  pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
+	         //Capture (pawn)
+	         // Customary diagonal capture, black
+	      ||(toY-y==1 && blackness && Math.abs(toX-x)==1 &&
+		 pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
 
-	       // Customary diagonal capture, white
-	       ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
-		  pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
+	         // Customary diagonal capture, white
+	      ||(toY-y==-1 && !blackness && Math.abs(toX-x)==1 &&
+		 pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness))
 
-	       //En passant
-	       ||Pawn.EnPassant(blackness,true,x,y,toX,toY,pieces).enpassant
+	         //En passant
+	      ||Pawn.EnPassant(blackness,true,x,y,toX,toY,pieces).enpassant
 
-	      )
+	     )
 
-            &&
-	    //No straight-on capture
-	(!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness) && toX==x	   ))
+       &&
+	       //No straight-on capture
+	       (!( pieces.some((t)=>t.x==toX && t.y==toY && t.blackness!=blackness && !t.deadness) && toX==x	   ))
 	    && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
 
     },

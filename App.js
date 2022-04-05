@@ -29,8 +29,10 @@ import Queen from './Queen';
 const App = ()=>{
     const [boardState, setBoardState] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
-    const [modalVisible, setModalVisible]=useState(undefined);
-
+    const [drawMoveCount, setDrawMoveCount] = useState(0)
+    const [modalVisible, setModalVisible] = useState(undefined);
+    const [history, setHistory] = useState([])
+    
     const isChecked = (blackness)=> {
         //Find king of the color that might be checked.
         const k=boardState.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
@@ -48,7 +50,7 @@ const App = ()=>{
     //  or other-color check (opponent=true). 
     const causesCheck = (n, x, y, opponent)=> {
         //Construct next board state so we can simulate the move to gauge impact
-        let prime=[...boardState]
+        const prime=[...boardState]
         
         //Find moving piece
         const movingPiece = prime.filter(t=>t.n==n)[0]
@@ -63,13 +65,13 @@ const App = ()=>{
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Move is performed hypothetically so we save state of piece n
-        let savex=movingPiece.x;
-        let savey=movingPiece.y;
+        const savex=movingPiece.x;
+        const savey=movingPiece.y;
         movingPiece.x=x;
         movingPiece.y=y;
 
         //Get a verdict
-        let returnable = isChecked(opponent ? !movingPiece.blackness : movingPiece.blackness);
+        const returnable = isChecked(opponent ? !movingPiece.blackness : movingPiece.blackness);
 
         //Restore state
         movingPiece.x=savex;
@@ -89,19 +91,17 @@ const App = ()=>{
     const ResetBoard = ()=>{
         setBoardState(Constants.StartingBoard())
         setMoveCount(0)
+        setDrawMoveCount(0)
     }
 
     // Piece move handler
     //
-    // Beyond mutating board state, this is also the locus of some bookkeeping code (marking dirty,
-    //  notating two-square pawn moves for subsequnet en passant) and the place where illegal
-    //  self-checking moves by human players are rejected (in which case param "prechecked" is false...
-    //  the computer's chess engine will already have filtered out any self-checking moves as part of
-    //  its analysis).
+    // Here is where we mutate board state, detect  check, detect mates and draws of all types,
+    //  and perform game-level bookkeeping around things like en passant.
     const movePiece = (n, x, y, prechecked)=> {
 
         //Construct new board state
-        let prime=[...boardState]
+        const prime=[...boardState]
 
         //Get piece n, the moving piece
         const movingPiece = prime.filter(t=>t.n==n)[0]
@@ -111,12 +111,13 @@ const App = ()=>{
         if(enemy.length==1) { enemy[0].deadness=true; }
 
         //Detect and enforce enpassant
-        const {enpassant,capturedX,capturedY} = Pawn.EnPassant(movingPiece.blackness,movingPiece.pawnness,movingPiece.x,movingPiece.y,x,y,boardState) 
+        const {enpassant,capturedX,capturedY} =
+            Pawn.EnPassant(movingPiece.blackness, movingPiece.pawnness, movingPiece.x, movingPiece.y, x, y, boardState) 
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Save state in case the (human's) move attempt is illegal
-        let savex=movingPiece.x;
-        let savey=movingPiece.y;
+        const savex=movingPiece.x;
+        const savey=movingPiece.y;
         movingPiece.x=x;
         movingPiece.y=y;
 
@@ -144,8 +145,9 @@ const App = ()=>{
 
             //Pawn Promotion
             if(movingPiece.pawnness && ((movingPiece.blackness && movingPiece.y==7)||(!movingPiece.blackness && movingPiece.y==0))){
-                movingPiece.sprite=movingPiece.blackness?Queen.Black:Queen.White;
+                movingPiece.sprite=movingPiece.blackness ? Queen.Black : Queen.White;
                 movingPiece.canMove=Queen.CanMove;
+                movingPiece.value=Queen.Value;
             }
 
             // Check for mate
@@ -156,7 +158,27 @@ const App = ()=>{
                     setModalVisible('STALEMATE')                    
                 }               
             }else{
+                if(movingPiece.pawnness || enemy.length==1){
+                    setDrawMoveCount(0)
+                } else {
+                    setDrawMoveCount(drawMoveCount + 1)
+                }
+                // 50 moves w/o pawn move or piece capture is a draw by rule
+                if(drawMoveCount == 50) { setModalVisible('DRAW') }
                 setMoveCount(moveCount+1);
+                const newHistory=[...history]
+                newHistory.push(JSON.stringify(boardState))
+                setHistory(newHistory)
+                const repeatedPositionCount =  history.filter((t, n)=>{return t==JSON.stringify(boardState)}).length
+                // If a position has been repeated thrice, then the computer (if playing) will avail itself of the right
+                //  to request a draw from the game arbiter.
+                if(Constants.Players < 2 && repeatedPositionCount == 3) {
+                    setModalVisible('DRAW')                    
+                }
+                // If a position has been repeated five times, then it's a draw per rule
+                if(Constants.Players < 2 && repeatedPositionCount == 5) {
+                    setModalVisible('DRAW')                    
+                }
             }
         }
     } 

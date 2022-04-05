@@ -19,16 +19,16 @@ const Constants = {
     BoardTop: 138,
     BoardLeft: 13,
     Chessboard:      //Board spritexs
-    [
-	"prprprpr",
-	"rprprprp",
-	"prprprpr",
-	"rprprprp",
-	"prprprpr",
-	"rprprprp",
-	"prprprpr",
-	"rprprprp",
-    ],
+                     [
+	                 "prprprpr",
+	                 "rprprprp",
+	                 "prprprpr",
+	                 "rprprprp",
+	                 "prprprpr",
+	                 "rprprprp",
+	                 "prprprpr",
+	                 "rprprprp",
+                     ],
     StartingBoard: ()=> [
 	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
 	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
@@ -63,6 +63,25 @@ const Constants = {
 	{ sprite:Knight.White, x:1, y:7, n:28, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false, value: 4 },
 	{ sprite:Knight.White, x:6, y:7, n:29, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false, value: 4 },
     ],
+
+    LetterToColor: {"r":"red",
+		   "b":"blue",
+		   "g":"green",
+		   "p":"pink",
+		   "w":"white",
+		   "y":"yellow",
+		   "k":"black",
+		   ".":"rgb(20,20,20)",
+		   ",":"rgb(70,70,70)",
+		   "o":"rgb(120,120,120)",
+		   "0":"rgb(170,170,170)",
+		   "`":"rgb(190,190,190)",
+		   "'":"rgb(210,210,210)",
+		   '"':"rgb(230,230,230)",
+		   "@":"rgb(250,250,250)",
+		   " ":undefined
+    },
+
 };
 
 export {Constants as default};

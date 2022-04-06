@@ -3,9 +3,9 @@
 
 <img width="268" alt="arensee" src="https://user-images.githubusercontent.com/42191239/161679795-e19efeb4-3d7d-47ed-aa40-58b8567b1b05.png">
 
-Arensee is a computer chess game written using React Native. As cloned, the source code builds an app where the human user plays white and the computer responds by playing black. Build-time parameters in file Constants.js can be tweaked to support two human players, or even computer-versus-computer play.
+Arensee is a computer chess game written using React Native. As cloned, the source code builds an app where the human user plays white and the computer responds by playing black. Build-time parameters in file Constants.js can be tweaked to support two human players, or even computer-versus-computer play. The user interface is "drag and drop," with single-button modals announcing mates and draws.
 
-The chess engine used by the computer is rudimentary in nature. Located in file Engine.js, it is aggressive and lacks foresight. That said, the interface between the chess engine and the other parts of the system is designed to be obvious and extensible. 
+The chess engine used by the computer is rudimentary in nature. Located in file Engine.js, it is aggressive and lacks foresight. I was more focused on the mechanics of making a useful, rules-compliant React Native chess game. That said, the interface between the chess engine and the other parts of the system is designed to be obvious and extensible. Nothing prevents me or anyone else from writing a better engine. 
 
 Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just two NPM package: one called **react-native-draggable** and another called **patch-package**, which is used only to patch **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the react user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 
@@ -196,6 +196,14 @@ if(!Movement.CanMakeAMove(!movingPiece.blackness, causesSelfCheck, boardState)){
 The outermost "if" determines that the opponent (i.e. the color that is not moving) cannot respond to the move in play with a move of his own. This will either be a checkmate (if the opponent is in check) or a stalemate (if he is not). It is hoped that this code reads easily, and that this is particularly true of the high-level code in App.js.
 
 One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
+
+**Movement.js**
+
+This file seems pretty miscellaneous on its surface. It is a home for procedures shared among all the piece definitions, for example. There is one especially important function in it, though: "Release." This function does what its name hints: runs when the user lifts his finger to release a piece. More specifically, it handles the release event exposed by **react-native-dragable**.
+
+The things that happen here are necessarily low-level.  It must be determined which physical square on the chessboard is being moved to, if any. The user may even have attempted to move a piece off the board, or move a piece of the wrong color. 
+
+Castling attempts are also detected here. All in all, function "Release" answers the question, "what is the user attempting to do?" so that execution can be shunted to the relevant handler. 
 
 **The Computer Chess Engine**
 

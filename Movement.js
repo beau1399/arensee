@@ -2,7 +2,7 @@ import King from './King'
 
 const Movement = {
 
-    NoInterveningPiece: (x,y,toX,toY,pieces) =>
+    NoInterveningPiece: (x, y, toX, toY, pieces) =>
         {
             var returnable=true;
             const signX=Math.sign(toX-x);
@@ -13,7 +13,7 @@ const Movement = {
             return returnable;
         },
 
-    CanMakeAMove: (blackness,causesSelfCheck,pieces) => {
+    CanMakeAMove: (blackness, causesSelfCheck, pieces) => {
         let returnable = false;
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             for(let i=0; i<8; ++i){
@@ -29,7 +29,7 @@ const Movement = {
         return returnable;
     },
     
-    Release: (e,t) => {
+    Release: (e, t) => {
         const pieces = t.props.board;
         const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
         const targetY = (Math.floor((e.nativeEvent.pageY-138) / 42));

@@ -9,7 +9,7 @@ The chess engine used by the computer is rudimentary in nature. Located in file 
 
 Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just two NPM package: one called **react-native-draggable** and another called **patch-package**, which is used only to patch **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the reactive user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 
-More generally, I thought the development of Arensee unfolded with notable rapidity. I started work on the Friday evening of a three-day weekend, and what I had Sunday evening was pretty close to the finished product seen here. The overall Arensee development process struck me as interesting, and I allow myself to pontificate about it a bit at the end of this article.
+I do think the development of Arensee unfolded with notable rapidity. I started work on the Friday evening of a three-day weekend, and what I had Sunday evening was pretty close to the finished product seen here. The overall Arensee development process struck me as interesting, and I allow myself to pontificate about it a bit at the end of this article.
 
 **Component *Sprite*** 
 

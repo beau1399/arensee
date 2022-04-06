@@ -21,7 +21,7 @@ This figure attempts to demonstrate how easy it is to use React Native's "View" 
 
 Here, this concept has been baked into a component called Sprite, in file Sprite.js, and the resulting idiom is quite intuitive. Note that appearance definitions are done using multi-dimension character arrays. Consider for example, the partial declaration shown below, in which the appearance definition of the black knight sprite is evident:
 
-```
+```javascript
     Black: [
 	"    0     ",
 	"   o000   ",
@@ -38,7 +38,7 @@ Here, this concept has been baked into a component called Sprite, in file Sprite
 ```
 
 Here's an example of the overall usage of the Sprite component:
-```
+```jsx
   <Sprite pixelSize=24
           sprite={["x.",".x"]}
           letterToColor={"x":"yellow", ".":"brown"} />
@@ -48,11 +48,11 @@ The properties seen in the markup above establish, in order, the size of each vi
 **Components *Piece* and *Board*** 
 
 For Arensee, the Sprite component is mostly invoked from component "Piece," where the JSX seen below is present:
-```
+```jsx
    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} letterToColor={Constants.LetterToColor} />
 ```
 The Piece component is, in turn, contained by component "Board," which emits a React fragment containing Pieces:
-```
+```jsx
 //
 // Component "Board"
 //
@@ -80,7 +80,7 @@ Another thing evident in the code snippet above is the passage from parent compo
 
 Some specifics are in order, from a couple of other JS files. From Constants.js:
 
-```
+```javascript
     StartingBoard: ()=> [
 	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
 	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
@@ -146,7 +146,7 @@ Most of the piece types are similarly uncomplicated in their definitions. Where 
 
 The "App" component in App.js is a top-level container for the game components, and also the central locus for game state, enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also functions for game-level checks and for piece move attempts. Here is the App state setup:
 
-```
+```javascript
     const [boardState, setBoardState] = useState(Constants.StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
     const [drawMoveCount, setDrawMoveCount] = useState(0)
@@ -172,7 +172,7 @@ Function "movePiece" does what its name implies, and is thus largely responsible
 
 Pawn promotion is checked for in "movePiece." This turns out to be pretty straightforward:
 
-```
+```javascript
 //Pawn Promotion
 if(movingPiece.pawnness && 
    ((movingPiece.blackness && movingPiece.y==7)||
@@ -184,7 +184,7 @@ if(movingPiece.pawnness &&
 ```
 In short, we check that the piece is a pawn, and then that it's either white and in row 0 or black and in row 7. The check for mates is similarly legible:
 
-```
+```javascript
 if(!Movement.CanMakeAMove(!movingPiece.blackness, causesSelfCheck, boardState)){
  if(isChecked(!movingPiece.blackness)){
   setModalVisible(('CHECKMATE! WINNER: ' + (movingPiece.blackness?'BLACK':'WHITE') ))
@@ -211,7 +211,7 @@ Some readers will be most concerned with the logic used by the computer player's
 
 That said, if you are thinking about _developing_ a great chess engine, I will now tell you exactly where and how to hook your code up. Engine.js exports function PossibleMoves, whose declaration begins as shown below.
 
-```
+```javascript
 const Engine = {
     // Returns possible moves for a color, sorted from best to worst.
     PossibleMoves: (blackness, causesSelfCheck, causesEnemyCheck, max, pieces)=>{
@@ -232,7 +232,7 @@ The second and third parameters (the functions) are passed in from the "App" com
 
 The data returned by "PossibleMoves" is populated by assignments like this one:
 
-```
+```javascript
 {n:t.n, x:i, y:j, takenPiece:takenPiece}
 ```
 

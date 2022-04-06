@@ -251,9 +251,8 @@ Other than the improvements to the chess engine already suggested, it seems to m
 
 **Development Process**
 
-Arensee began mostly as a learning exercise. Having done pretty extensive React development, and pretty extensive Java / Android native development, I wanted a real project to help me bridge the knowledge gap between the two. I began with an Expo-based React Native app created on the Friday of a three-day weekend, and by Sunday evening the game had taken its final appearance and was mostly complete. 
+Arensee began mostly as a learning exercise. Having done pretty extensive React development and Java / Android native development, I wanted a real project to help me bridge the React Native knowledge gap between the two. I began with an Expo-based project created on the Friday of a three-day weekend, and by Sunday evening the game had taken its final appearance and was mostly complete. 
 
-As I recall things, castling, capture-en-passant, and the more obscure draw rules remained undone at the end of the weekend, but it was definitely possible to play games against the computer using the user interface depicted above. On Monday I moved my code from Expo to a more generic React Native codebase, and all of the unwritten logic for a full chess game followed pretty rapidly.
+As I recall things, castling, capture-en-passant and the more obscure draw rules remained undone at the end of the weekend, but it was definitely possible to play games against the computer using the user interface depicted above. On Monday I moved my code from Expo to a more generic React Native codebase, and all of the unwritten logic for a full chess game followed pretty rapidly.
 
 Having written a basic computer chess game in such a short time, I reiterate with confidence what I said right up front: React Native is emminently suited for this particular application. 
-

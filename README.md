@@ -96,7 +96,7 @@ Finally, we see properties coming in from a "Pawn" module. Prop "sprite" (the ap
 **Piece Type Definition**
 
 Here is Bishop.js, with ellipses as commented:
-```
+```javascript
 import Movement from './Movement';
 const Bishop = {
     CanMove: (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))

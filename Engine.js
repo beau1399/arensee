@@ -22,7 +22,7 @@ const Engine = {
                                     //Account for capture en passant 
                                     const {enpassant,capturedX,capturedY} =
                                           Pawn.EnPassant(t.blackness,t.pawnness,t.x,t.y,i,j,pieces);                                    
-                                    if(enpassant) { takenPiece=1; }                                
+                                    if(enpassant) { takenPiece=Pawn.Value; }                                
                                     returnable.push({n:t.n, x:i, y:j, takenPiece:takenPiece});
                                 }
                             }

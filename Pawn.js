@@ -1,6 +1,10 @@
 import Movement from './Movement';
 
 const Pawn = {
+    // We don't define a "Value" in every piece definition file. For pieces where this value would only be used in Constants.js,
+    //  I didn't see the value in adding such an extra layer. That said, Pawn.Value is something used in multiple places (b/c
+    //  of the unique ways in which pawns move), so I saw a need to factor out the "1" constant for pawns.
+    Value: 1,
     EnPassant:  (blackness,pawnness,x,y,toX,toY,pieces)=> {
 	const happened = pawnness && (
 	    //Black

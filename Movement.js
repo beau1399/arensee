@@ -29,6 +29,31 @@ const Movement = {
         return returnable;
     },
     
+    Castling : (targetX, targetY, piecesn, pieces, n, t) => {
+        // Castling... if this were in kingCanMove, then the computer could use it...
+        if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
+            if(!Movement.NoInterveningPiece(piecesn.x,piecesn.y,targetX,targetY,pieces)){
+                // Piece in way
+            }else{
+                const left = (targetX==2);
+                if(left){
+                    const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
+                    if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
+                        if(!t.props.causesSelfCheck(n,piecesn.x-1,targetY) && !t.props.causesSelfCheck(n,piecesn.x-2,targetY)){
+                            t.props.movePiece(n,piecesn.x-2,targetY);
+                            t.props.movePiece(castle.n,castle.x+3,castle.y); }}
+                }else{
+                    const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
+                    if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
+                        if(!t.props.causesSelfCheck(n,piecesn.x+1,targetY) && !t.props.causesSelfCheck(n,piecesn.x+2,targetY)){
+                            t.props.movePiece(n,piecesn.x+1,targetY);
+                            t.props.movePiece(n,piecesn.x+2,targetY);
+                            t.props.movePiece(castle.n,castle.x-2,castle.y); }}
+                }
+            }
+        }
+    },
+    
     Release: (e, t) => {
         const pieces = t.props.board;
         const targetX = (Math.floor((e.nativeEvent.pageX-9) / 42));
@@ -38,7 +63,7 @@ const Movement = {
         const piecesn=pieces.filter((u)=>u.n==n)[0];
         const blackGo = t.props.moveCount%2==1
         if(blackGo != piecesn.blackness){return}
-        King.Castling (targetX, targetY, piecesn, pieces, n, t);
+        Movement.Castling (targetX, targetY, piecesn, pieces, n, t);
         if((targetX!=piecesn.x || targetY!=piecesn.y) &&
            piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
             t.props.movePiece(n,targetX,targetY); }

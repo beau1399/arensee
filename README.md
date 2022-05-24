@@ -129,7 +129,7 @@ const Bishop = {
 	" ,0000o  ",
 	",000000o "
     ],
-  // There's also a "Black" member, removed for brevity
+  // There's also a "White" member, removed for brevity
 };
 export {Bishop as default};
 ```

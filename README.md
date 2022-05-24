@@ -156,7 +156,7 @@ Most of the piece types are similarly uncomplicated in their definitions. Where 
 
 **The *App* Component**
 
-The "App" component in App.js is a top-level container for the game components, and also the central locus for game state, enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also functions for game-level checks and for piece move attempts. Here is the App state setup:
+The "App" component in App.js is a top-level container for the game components, and also the central locus for game state and enforcement of whole-board rules like those around checkmate, stalemate, and draw. In typical React fashion, much is established in App and then woven down into child components in their properties. This includes state, but also functions for game-level checks and for piece move attempts. Here is the App state setup:
 
 ```javascript
     const [boardState, setBoardState] = useState(Constants.StartingBoard())

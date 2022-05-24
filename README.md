@@ -112,7 +112,8 @@ const Bishop = {
     CanMove: (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
 					 && !pieces.some((t)=>
 					     //Can't move atop same color piece
-					     t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) 
+					     t.x==toX && t.y==toY && t.blackness==blackness && 
+					     !t.deadness) 
 					 && Movement.NoInterveningPiece(x,y,toX,toY,pieces),
     Black:
     [

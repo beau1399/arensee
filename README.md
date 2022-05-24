@@ -113,6 +113,7 @@ const Bishop = {
 					 && !pieces.some((t)=>
 					     //Can't move atop same color piece
 					     t.x==toX && t.y==toY && t.blackness==blackness && 
+					     //Captured pieces don't concern us
 					     !t.deadness) 
 					 && Movement.NoInterveningPiece(x,y,toX,toY,pieces),
     Black:

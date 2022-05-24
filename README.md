@@ -50,7 +50,7 @@ The properties seen in the markup above establish, in order, the size of each vi
 For Arensee, the Sprite component is mostly invoked from component "Piece," where the JSX seen below is present:
 ```jsx
    <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} 
-   letterToColor={Constants.LetterToColor} />
+     letterToColor={Constants.LetterToColor} />
 ```
 The Piece component is, in turn, contained by component "Board," which emits a React fragment containing Pieces:
 ```jsx
@@ -64,9 +64,15 @@ The Piece component is, in turn, contained by component "Board," which emits a R
 export function Board(props){
     return(<>
         {props.boardState.map((t)=>(
-            <Piece n={t.n} key={t.n} deadness={t.deadness} x={t.x} y={t.y} sprite={t.sprite}
-            causesSelfCheck={props.causesSelfCheck} causesEnemyCheck={props.causesEnemyCheck} movePiece={props.movePiece}  
-            moveCount={props.moveCount} board={props.boardState}
+            <Piece 
+	     n={t.n} key={t.n} 
+	     deadness={t.deadness} 
+	     x={t.x} y={t.y} 
+	     sprite={t.sprite}
+             causesSelfCheck={props.causesSelfCheck} 
+	     causesEnemyCheck={props.causesEnemyCheck} 
+	     movePiece={props.movePiece}  
+             moveCount={props.moveCount} board={props.boardState}
             />))}
         </>
     )

@@ -230,7 +230,9 @@ const Engine = {
     //etc.
 ```
 
-This will get called when it's a computer player's turn, and the first element in the indexable data structure returned will be assumed to define the best possible chess move found by the engine, per whatever move-ranking logic it implements. (It is logical to ask why a collection is returned, vs. a single move's data. My thinking in writing Engine.js this was that it made my code more amenable to function composition, allowing for the creation of a "chess move pipeline" with different functions playing different move evaluation roles.)
+This will get called when it's a computer player's turn, and the indexable data structure returned should contain a collection of good moves found by the engine. The move at index 0 has been found by the engine to be the best move. The maximum number of moves to be found and returned is dictated by the "max" parameter. 
+
+It is logical to ask why a collection is returned, vs. a single move's data. My thinking in writing Engine.js this was that it made my code more amenable to function composition, allowing for the creation of a "chess move pipeline" with different functions playing different move evaluation roles. I did not ultimately rely on this technique, but the notion of progressive move filtering by independent functions was something I found promising.
 
 The parameters to the "PossibleMoves" function are, in order:
 

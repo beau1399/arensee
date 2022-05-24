@@ -180,7 +180,9 @@ Function "isChecked" checks whether a particular color is in check.
 
 Function "causesSelfCheck" tells whether a hypothetical move should be illegal because it would put the moving color in check. Function "causesOpponentCheck" tells whether a hypothetical move puts the opponent in check.
 
-Function "movePiece" does what its name implies, and is thus largely responsible for the state members elucidated in the last code snippet. This includes not only piece position, but also the "deadness" property for captured pieces. Function "movePiece" is also the place where moves that would put the mover in check are refused, for human players; the computer's chess engine will already have excluded such moves before attempting them. Capture-en-passant is handled here, since it's really just a species of capture. (The computer chess engine calls into the same members of module "Pawn" that are used to detect capture-en-passant in "movePiece," and the engine will thus consider en passant in its machinations just like any other piece capture.)
+Function "movePiece" does what its name implies, and is thus largely responsible for the state members elucidated in the last code snippet. This includes not only piece position, but also the "deadness" property for captured pieces. 
+
+Function "movePiece" is also the place where moves that would put the mover in check are refused, for human players; the computer's chess engine will already have excluded such moves before attempting them. Capture-en-passant is handled here, since it's really just a species of capture. The computer chess engine calls into the same members of module "Pawn" that are used to detect capture-en-passant in "movePiece," and the engine will thus consider en passant in its machinations just like any other piece capture.
 
 Pawn promotion is checked for in "movePiece." This turns out to be pretty straightforward:
 
@@ -207,11 +209,12 @@ if(!Movement.CanMakeAMove(!movingPiece.blackness, causesSelfCheck, boardState)){
 ```
 The outermost "if" determines that the opponent (i.e. the color that is not moving) cannot respond to the move in play with a move of his own. This will either be a checkmate (if the opponent is in check) or a stalemate (if he is not). It is hoped that this code reads easily, and that this is particularly true of the high-level code in App.js.
 
-One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
 
 **Movement.js**
 
-This file seems pretty miscellaneous on its surface. It is a home for procedures shared among all the piece definitions, for example. There is one especially important function in it, though: "Release." This function does what its name hints: runs when the user lifts his finger to release a piece. More specifically, it handles the release event exposed by **react-native-dragable**.
+One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions (beyond "CanMakeAMove") is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
+
+Another important function in "Movement" is "Release." This function does what its name hints: runs when the user lifts his finger to release a piece. More specifically, it handles the release event exposed by **react-native-dragable**.
 
 The things that happen here are necessarily low-level.  It must be determined which physical square on the chessboard is being moved to, if any. The user may even have attempted to move a piece off the board, or move a piece of the wrong color. 
 

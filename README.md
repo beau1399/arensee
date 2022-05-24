@@ -89,10 +89,15 @@ Some specifics are in order, from a couple of other JS files. From Constants.js:
 
 ```javascript
     StartingBoard: ()=> [
-	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
-	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
-	{ sprite:Pawn.Black, x:2, y:1, n:2, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 },
-
+	{ sprite:Pawn.Black, 
+	  x:0, y:1, n:0, 
+	  canMove: Pawn.CanMove, 
+	  blackness: true, 
+	  kingness: false,  
+	  deadness: false, 
+	  pawnness: true, 
+	  value: 1 },
+	  // ETC.
 ```
 This "StartingBoard" function returns the initial value at game start for what ultimately becomes "props.boardState" in "Board.js." I have covered "deadness" and "blackness"; above we also see "kingness" and "pawnness"- kings and pawns are special, viz. capture-en-passant, castling, checkmate, rules around pawn movement and forced draws, etc.
 

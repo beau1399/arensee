@@ -135,7 +135,7 @@ export {Bishop as default};
 ```
 
 In addition to the sprite appearance members, we have just "CanMove," which defines how a bishop moves. All "CanMove" members receive the same parameters, respectively:
-* The color of the piecess (blackness bit)
+* The color of the piece (blackness bit)
 * The x and y position of the piece's current square
 * The x and y position of some hypothetical board square where the piece might move
 * The state of the chessboard, called "pieces" here but in the same format as "boardState" mentioned earlier

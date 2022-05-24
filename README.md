@@ -49,7 +49,8 @@ The properties seen in the markup above establish, in order, the size of each vi
 
 For Arensee, the Sprite component is mostly invoked from component "Piece," where the JSX seen below is present:
 ```jsx
-   <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} letterToColor={Constants.LetterToColor} />
+   <Sprite sprite={this.props.sprite} pixelSize={Constants.SpritePixelSize} 
+   letterToColor={Constants.LetterToColor} />
 ```
 The Piece component is, in turn, contained by component "Board," which emits a React fragment containing Pieces:
 ```jsx

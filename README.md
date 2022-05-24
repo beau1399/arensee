@@ -212,7 +212,7 @@ The outermost "if" determines that the opponent (i.e. the color that is not movi
 
 **Movement.js**
 
-One new wrinkle in evidence above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions (beyond "CanMakeAMove") is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
+One new wrinkle in evidence in the last code snippet above is the existence of module "Movement.js." There is not much architectural magic in evidence here; Movement.js exists simply to remove somewhat complex, low-level logic from App.js (and other files) so that they can operate at a higher level-of-abstraction. For example, another of its functions (beyond "CanMakeAMove") is "NoInterveningPiece," which is shared by all the piece definition files for pieces that can't jump other pieces.
 
 Another important function in "Movement" is "Release." This function does what its name hints: runs when the user lifts his finger to release a piece. More specifically, it handles the release event exposed by **react-native-dragable**.
 

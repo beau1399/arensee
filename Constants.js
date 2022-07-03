@@ -16,7 +16,7 @@ const Constants = {
 	                 "prprprpr",
 	                 "rprprprp",
 	                 "prprprpr",
-	                 "rprggprp",
+	                 "rprprprp",
 	                 "prprprpr",
 	                 "rprprprp",
 	                 "prprprpr",

@@ -1,0 +1,6 @@
+module Pods_arensee_arenseeTests {
+  umbrella header "Pods-arensee-arenseeTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

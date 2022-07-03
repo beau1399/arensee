@@ -13,10 +13,10 @@ const Constants = {
     CheckValue: 10, // How highly does the chess engine value putting opponent in check, in points (pawn=1, bishop=4, etc.)
 
     //Things you probably don't need to change (dimensions, initial piece position, etc.) 
-    SquareSize: 42,
+    SquareSize: 39,
     SpritePixelSize: 3,
-    SpriteWidth: 18,
-    BoardTop: 138,
+    SpriteWidth: 10,
+    BoardTop: 142,
     BoardLeft: 13,
     Chessboard:      //Board spritexs
                      [

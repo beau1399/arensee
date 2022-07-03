@@ -1,4 +1,3 @@
-import King from './King'
 import Constants from './Constants'
 
 const Movement = {

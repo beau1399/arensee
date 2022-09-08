@@ -7,9 +7,11 @@ import { View } from 'react-native';
 // Props establish pixel size, appearance string, and the character-to-color mapping
 //  that gives context to the appearance string and allows it to be rendered.
 //
-//  <Sprite pixelSize=24
-//          sprite={["x.",".x"]}
-//          letterToColor={"x":"yellow", ".":"brown"} />
+/*
+          <Sprite pixelSize={24}
+                  sprite={["x.",".x"]}
+                  letterToColor={{"x":"yellow", ".":"brown"}} />
+*/
 //
 function Sprite(props) {
     const markup = (<View style={{flexDirection: "column"}}>				    

@@ -1,3 +1,5 @@
+import {Dimensions} from 'react-native';
+
 const Constants = {
     
     //Tweakable parameters for build
@@ -6,11 +8,12 @@ const Constants = {
     CheckValue: 10, // How highly does the chess engine value putting opponent in check, in points (pawn=1, bishop=4, etc.)
 
     //Things you probably don't need to change (dimensions, initial piece position, etc.) 
-    SquareSize: 39,
+    SquareSize: Dimensions.get('window').width / 8.0,
+    SquareHeight: Dimensions.get('window').height / 8.0,
     SpritePixelSize: 3,
     SpriteWidth: 10,
-    BoardTop: 142,
-    BoardLeft: 13,
+    BoardTop: 0,
+    BoardLeft: 0,
     Chessboard:      //Board spritexs
                      [
 	                 "prprprpr",

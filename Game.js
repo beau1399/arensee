@@ -2,6 +2,7 @@ import React, {Component, useEffect} from 'react';
 import {View, Text, Modal, Pressable, NativeModules} from 'react-native';
 import Constants from './Constants';
 import Sprite from './Sprite';
+import Tile from './Tile';
 import {Board} from './Board'
 import {styles} from './Styles'
 import Engine from './Engine';
@@ -53,14 +54,45 @@ export function Game(props){
         <View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
 
         {/*The chessboard*/}
-        <View style={styles.boardCenterer}>
+            { /*    <View style={styles.boardCenterer}>
         <View style={styles.verticalShim} />
         <View>
         <Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} letterToColor={Constants.LetterToColor} ></Sprite>            
         </View>
         <View style={styles.verticalShim} />        
         </View>
+              */}
 
+
+
+<View style={{width:"100%", height:"100%", flexDirection:"column"}}>{
+            [...Array(8).keys()].map((t,i)=>            
+
+                (<View style={{flexDirection:"row", flex:1}}>
+                    {[...Array(8).keys()].map((u,j)=>                        
+                        (<><View key={i+"o"+"j"} style={{ flex:1, flexGrow:1, backgroundColor:i%2!=j%2?"pink":"gray"}}>
+                            { false && (                  <Tile key={i+100}
+                                sprite={["........",
+                                         "...xx...",
+                                         "...xx...",
+                                         "...xx...",
+                                         "..xxxx..",
+                                         "..xxxx..",
+                                         "...xx...",
+                                         "........", ]}
+                                letterToColor={{"x":"black", ".":"rgb(255,255,255,1.0)"}}>
+                                </Tile>
+                            )}                                                                                    
+                            </View>
+                            </>)
+                    )}                   
+                    </View>)                
+            )}</View>
+        
+
+
+            
+            
         {/*The pieces*/}
         <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
 

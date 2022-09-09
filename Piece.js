@@ -18,7 +18,7 @@ export class Piece extends Component {
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
 	    renderSize={Constants.SquareSize } x={ this.props.x * Constants.SquareSize + (Constants.SpriteWidth / 2.0) + Constants.BoardLeft}
-	    y={this.props.y * Constants.SquareSize + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
+	    y={this.props.y * Constants.SquareHeight + (Constants.SquareHeight / 2.0) + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
 	    
 	    {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View>

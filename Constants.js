@@ -12,6 +12,9 @@ const Constants = {
     SquareHeight: Dimensions.get('window').height / 8.0,
     SpritePixelSize: 3,
     SpriteWidth: 10,
+    // Ease piece movement by adding some slight, static perspective to compensate of relative position
+    //  of user and phone. Some fraction of a single board square works well.
+    UserPerspectiveCompensator: Dimensions.get('window').height / 8.0 / 4.0,
     Chessboard:      //Board spritexs
                      [
 	                 "prprprpr",

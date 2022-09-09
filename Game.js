@@ -96,9 +96,6 @@ export function Game(props){
         {/*The pieces*/}
         <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
 
-        {/*Text banner beneath board (move count)*/}
-        <View style={styles.textBanner} ><Text>{"MOVE " + (props.moveCount+1) + (props.moveCount%2>0?' BLACK':' WHITE')}</Text></View>
-
         {/*Modal, to announce mate &c.*/}
         <View style={styles.centeredView}>
         <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} 

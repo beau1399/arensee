@@ -90,7 +90,7 @@ const App = ()=>{
 
     // E.g. at game end
     const ResetBoard = ()=>{
-        setBoardState(Constants.StartingBoard())
+        setBoardState(StartingBoard.State())
         setMoveCount(0)
         setDrawMoveCount(0)
     }

@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
     textBanner: {flex:0.2},
     verticalShim: {flex:0.0125},
     boardCenterer: {flexDirection:"row"},
-    modalText: {color:"black"},
+    modalText: {color:"black", fontSize:22, fontWeight:"bold"},
 });
 

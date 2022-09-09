@@ -16,9 +16,9 @@ import { View } from 'react-native';
 function Sprite(props) {
     const markup = (<View style={{flexDirection: "column"}}>				    
 	    {props.sprite.map((t,i)=>{
-		return (<View key={i} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>
+		return (<View key={"sprite-outer-" + i + props.x + props.y} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>
 		    {t.split('').map((u,j)=>{
-			return (<View key={j+","+i}  style={{width:props.pixelSize, height:props.pixelSize,
+			return (<View key={"sprite-inner-" + (i * 100 + j) + props.x + props.y} style={{width:props.pixelSize, height:props.pixelSize,
 							     backgroundColor:props.letterToColor[u]}} />);})}
 		    </View>);})}
 	    </View>

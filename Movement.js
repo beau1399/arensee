@@ -56,7 +56,7 @@ const Movement = {
     
     Release: (e, t) => {
         const pieces = t.props.board;
-        const targetX = (Math.floor((e.nativeEvent.pageX-Constants.SpriteWidth) / Constants.SquareWidth));
+        const targetX = (Math.floor((e.nativeEvent.pageX) / Constants.SquareWidth));
         const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / Constants.SquareHeight));
         if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
         const n=t.props.n;

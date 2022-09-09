@@ -13,7 +13,8 @@ const { RNPlayNative } = NativeModules;
 // Component "Game"
 //
 // This is the outermost container in the component hierarchy, and also where computer chess engine is invoked
-//  for 0-player and 1-player games
+//  for 0-player and 1-player games.
+//
 export function Game(props){
 
     // Handle computer movement when necessary
@@ -49,50 +50,24 @@ export function Game(props){
             },[props.moveCount]);
         }
     }
-    
+
+    let keyMaker=0;
     return(
-        <View style={styles.gameWrapper}><View style={styles.boardWrapper}/>
+        <View style={styles.gameWrapper}><View style={styles.boardWrapper} key={"board" + keyMaker++}/>
 
         {/*The chessboard*/}
-            { /*    <View style={styles.boardCenterer}>
-        <View style={styles.verticalShim} />
-        <View>
-        <Sprite pixelSize={Constants.SquareSize} sprite={Constants.Chessboard} letterToColor={Constants.LetterToColor} ></Sprite>            
-        </View>
-        <View style={styles.verticalShim} />        
-        </View>
-              */}
-
-
-
-<View style={{width:"100%", height:"100%", flexDirection:"column"}}>{
+        <View style={styles.chessboardView} key={"board" + keyMaker++}>{
             [...Array(8).keys()].map((t,i)=>            
-
-                (<View style={{flexDirection:"row", flex:1}}>
-                    {[...Array(8).keys()].map((u,j)=>                        
-                        (<><View key={i+"o"+"j"} style={{ flex:1, flexGrow:1, backgroundColor:i%2==j%2?"pink":"red"}}>
-                            { false && (                  <Tile key={i+100}
-                                sprite={["........",
-                                         "...xx...",
-                                         "...xx...",
-                                         "...xx...",
-                                         "..xxxx..",
-                                         "..xxxx..",
-                                         "...xx...",
-                                         "........", ]}
-                                letterToColor={{"x":"black", ".":"rgb(255,255,255,1.0)"}}>
-                                </Tile>
-                            )}                                                                                    
+                (<View style={{flexDirection:"row", flex:1}} key={"board" + keyMaker++}>
+                    {[...Array(8).keys()].map((u,j)=>
+                        (<><View key={"board" + keyMaker++}
+                            style={{ ...styles.boardSquare, backgroundColor:i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor }}>           
                             </View>
                             </>)
                     )}                   
                     </View>)                
-            )}</View>
+        )}</View>
         
-
-
-            
-            
         {/*The pieces*/}
         <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
 

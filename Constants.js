@@ -8,7 +8,7 @@ const Constants = {
     CheckValue: 10, // How highly does the chess engine value putting opponent in check, in points (pawn=1, bishop=4, etc.)
 
     //Things you probably don't need to change (dimensions, initial piece position, etc.) 
-    SquareSize: Dimensions.get('window').width / 8.0,
+    SquareWidth: Dimensions.get('window').width / 8.0,
     SquareHeight: Dimensions.get('window').height / 8.0,
     SpritePixelSize: 3,
     SpriteWidth: 10,

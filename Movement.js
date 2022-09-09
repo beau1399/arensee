@@ -56,8 +56,8 @@ const Movement = {
     
     Release: (e, t) => {
         const pieces = t.props.board;
-        const targetX = (Math.floor((e.nativeEvent.pageX-Constants.SpriteWidth) / Constants.SquareSize));
-        const targetY = (Math.floor((e.nativeEvent.pageY-Constants.BoardTop) / Constants.SquareSize));
+        const targetX = (Math.floor((e.nativeEvent.pageX-Constants.SpriteWidth) / Constants.SquareWidth));
+        const targetY = (Math.floor((e.nativeEvent.pageY-Constants.BoardTop) / Constants.SquareHeight));
         if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
         const n=t.props.n;
         const piecesn=pieces.filter((u)=>u.n==n)[0];

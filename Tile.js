@@ -1,10 +1,15 @@
-import React from 'react';
-import { View } from 'react-native';
+//
+// "Tile" is similar to "Sprite," but instead of relying on the
+//   "pixelSize" property for sizing, it simply expands (and distorts)
+//   to fill its container.
+//
 /*
-          <Tile pixelSize={24}
-                  sprite={["x.",".x"]}
+          <Tile sprite={["x.",".x"]}
                   letterToColor={{"x":"yellow", ".":"brown"}} />
 */
+
+import React from 'react';
+import { View } from 'react-native';
 
 function Tile(props) {
     const markup = (<View style={{flexDirection: "column", height:"100%", width:"100%"}}>				    

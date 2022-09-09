@@ -70,7 +70,7 @@ export function Game(props){
 
                 (<View style={{flexDirection:"row", flex:1}}>
                     {[...Array(8).keys()].map((u,j)=>                        
-                        (<><View key={i+"o"+"j"} style={{ flex:1, flexGrow:1, backgroundColor:i%2!=j%2?"pink":"gray"}}>
+                        (<><View key={i+"o"+"j"} style={{ flex:1, flexGrow:1, backgroundColor:i%2==j%2?"pink":"red"}}>
                             { false && (                  <Tile key={i+100}
                                 sprite={["........",
                                          "...xx...",

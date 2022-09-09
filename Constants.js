@@ -15,19 +15,6 @@ const Constants = {
     // Ease piece movement by adding some slight, static perspective to compensate of relative position
     //  of user and phone. Some fraction of a single board square works well.
     UserPerspectiveCompensator: Dimensions.get('window').height / 8.0 / 4.0,
-    Chessboard:      //Board spritexs
-                     [
-	                 "prprprpr",
-	                 "rprprprp",
-	                 "prprprpr",
-	                 "rprprprp",
-	                 "prprprpr",
-	                 "rprprprp",
-	                 "prprprpr",
-	                 "rprprprp",
-                     ],
-   
-
     LetterToColor: {"r":"red",
 		   "b":"blue",
 		   "g":"green",

@@ -12,8 +12,6 @@ const Constants = {
     SquareHeight: Dimensions.get('window').height / 8.0,
     SpritePixelSize: 3,
     SpriteWidth: 10,
-    BoardTop: 0,
-    BoardLeft: 0,
     Chessboard:      //Board spritexs
                      [
 	                 "prprprpr",

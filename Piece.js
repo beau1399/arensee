@@ -17,8 +17,8 @@ export class Piece extends Component {
 	if(this.props.deadness) return null; // No rendering if piece has been captured
 	return (
 	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
-	    renderSize={Constants.SquareWidth } x={ this.props.x * Constants.SquareWidth + (Constants.SpriteWidth / 2.0) + Constants.BoardLeft}
-	    y={this.props.y * Constants.SquareHeight + (Constants.SquareHeight / 2.0) + Constants.BoardTop} onDragRelease={(event)=>{Movement.Release(event,this)}}>
+	    renderSize={Constants.SquareWidth } x={ this.props.x * Constants.SquareWidth + (Constants.SpriteWidth / 2.0)}
+	    y={this.props.y * Constants.SquareHeight + (Constants.SquareHeight / 2.0)} onDragRelease={(event)=>{Movement.Release(event,this)}}>
 	    
 	    {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	    <View>

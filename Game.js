@@ -53,10 +53,10 @@ export function Game(props){
 
     let keyMaker=0;
     return(
-        <View style={styles.gameWrapper}><View style={styles.boardWrapper} key={"board" + keyMaker++}/>
+        <View style={styles.gameWrapper}><View style={styles.boardWrapper} />
 
         {/*The chessboard*/}
-        <View style={styles.chessboardView} key={"board" + keyMaker++}>{
+        <View style={styles.chessboardView}>{
             [...Array(8).keys()].map((t,i)=>            
                 (<View style={{flexDirection:"row", flex:1}} key={"board" + keyMaker++}>
                     {[...Array(8).keys()].map((u,j)=>

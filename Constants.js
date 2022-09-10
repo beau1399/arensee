@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, StatusBar} from 'react-native';
 
 const Constants = {
     
@@ -23,13 +23,13 @@ const Constants = {
     //  respectively) use flexbox to achieve raster effects.
     //
     SquareWidth: Dimensions.get('window').width / 8.0,
-    SquareHeight: Dimensions.get('window').height / 8.0,
+    SquareHeight: (1.0 / 8.0) * (Dimensions.get('window').height - StatusBar.currentHeight),
     SpritePixelSize: 3,
     SpriteWidth: 10,
     
     // Ease piece movement by adding some slight, static perspective to compensate of relative position
     //  of user and phone. Some fraction of a single board square works well.
-    UserPerspectiveCompensator: Dimensions.get('window').height / 8.0 / 5.0,
+    UserPerspectiveCompensator: (Dimensions.get('window').height - StatusBar.currentHeight) / 8.0 / 5.0,
 
     // Game-wide color palette for Tile and Sprite components
     LetterToColor: {"r":"red",

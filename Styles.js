@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     },
     chessboardView: {width:"100%", height:"100%", flexDirection:"column"},
     boardSquare: {flex:1, flexGrow:1},
+    boardOuter: {flexDirection:"row", flex:1},
     button:{backgroundColor:"rgba(192,192,192,0.8)", borderRadius:4},
     pieceWrapper: {width:35, height:45},
     gameWrapper: {width: '100%', height:'100%'},

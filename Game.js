@@ -58,9 +58,9 @@ export function Game(props){
         {/*The chessboard*/}
         <View style={styles.chessboardView}>{
             [...Array(8).keys()].map((t,i)=>            
-                (<View style={{flexDirection:"row", flex:1}} key={"board0" + ++keyMaker}>
+                (<View style={styles.boardOuter} key={"boardOuter" + ++keyMaker}>
                     {[...Array(8).keys()].map((u,j)=>
-                        (<View key={"board1" + ++keyMaker}
+                        (<View key={"boardSquare" + ++keyMaker}
                             style={{ ...styles.boardSquare, backgroundColor:i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor }}>           
                             </View>
                             )

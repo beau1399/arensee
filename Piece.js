@@ -16,7 +16,7 @@ export class Piece extends Component {
     render(){
 	if(this.props.deadness) return null; // No rendering if piece has been captured
 	return (
-	    <Draggable key={"sprite"+this.props.x+this.props.y} shouldReverse={true /*We'll handle the positioning*/ }
+	    <Draggable shouldReverse={true /*We'll handle the positioning*/ }
 	    renderSize={Constants.SquareWidth } x={ this.props.x * Constants.SquareWidth + (Constants.SpriteWidth / 2.0)}
 	    y={this.props.y * Constants.SquareHeight + (Constants.SquareHeight / 2.0)} onDragRelease={(event)=>{Movement.Release(event,this)}}>
 	    

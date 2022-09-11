@@ -6,6 +6,7 @@ const Constants = {
     Difficulty: 100000, // How many potential moves should chess engine iterate over
     Players: 1,
     CheckValue: 10, // How highly does the chess engine value putting opponent in check, in points (pawn=1, bishop=4, etc.)
+    BoardWidthInSquares: 8,
 
     //A few things you probably don't need to change (dimensions, initial piece position, etc.) are grouped below.
     // However, this section does give some insight into the overall rendering scheme used. The Draggable component

@@ -19,5 +19,6 @@ export const styles = StyleSheet.create({
     modalText: {color:"black", fontSize:22, fontWeight:"bold"},
     whiteSquareColor: "pink",
     blackSquareColor: "red",
+    boardRow: {flexDirection:"row", flex:1},
 });
 

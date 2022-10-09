@@ -4,7 +4,7 @@ import Bishop from './Bishop';
 
 const Queen = {
     CanMove: (blackness,x,y,toX,toY,pieces)=>Rook.CanMove(blackness,x,y,toX,toY,pieces) || Bishop.CanMove(blackness,x,y,toX,toY,pieces),    
-
+    Value: 9,
     White: 
     [
 	'         ',

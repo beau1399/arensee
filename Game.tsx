@@ -53,35 +53,36 @@ export function Game(props){
 
     let keyMaker=0;
     return(
-        <View style={styles.gameWrapper}><View style={styles.boardWrapper} />
+        <View style={styles.gameWrapper}>
 
-        {/*The chessboard*/}
-        <View style={styles.chessboardView}>{
-            [...Array(Constants.BoardWidthInSquares).keys()].map((t,i)=>            
-                (<View style={styles.boardRow} key={"board0" + ++keyMaker}>
-                    {[...Array(Constants.BoardWidthInSquares).keys()].map((u,j)=>
-                        (<View key={"board1" + ++keyMaker}
-                            style={{ ...styles.boardSquare, backgroundColor:i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor }}>           
+            {/*The chessboard*/}
+            <View style={styles.chessboardView}>{
+                [...Array(Constants.BoardWidthInSquares).keys()].map((t,i)=>            
+                    (<View style={styles.boardRow} key={"board0" + ++keyMaker}>
+                        {[...Array(Constants.BoardWidthInSquares).keys()].map((u,j)=>
+{                            let squareColoration=i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor;
+                            
+                            return (<View key={"board1" + ++keyMaker}
+                                   style={{ ...styles.boardSquare, ...squareColoration }}>           
                             </View>
-                            )
-                    )}                   
+                            )}
+                        )}                   
                     </View>)                
-        )}</View>
-        
-        {/*The pieces*/}
-        <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
+                )}</View>
+            
+            {/*The pieces*/}
+            <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
 
-        {/*Modal, to announce mate &c.*/}
-        <View style={styles.centeredView}>
-        <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} 
-        onRequestClose={() => { setModalVisible(undefined);}} >
-        <View style={styles.centeredView} >
-        <Text style={styles.modalText}>{props.modalVisible}</Text>
-        <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
-        <Text>OK</Text>
-        </Pressable>
-        </View>
-        </Modal>
-        </View>
+            {/*Modal, to announce mate &c.*/}
+            <View style={styles.centeredView}>
+                <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} >
+                    <View style={styles.centeredView} >
+                        <Text style={styles.modalText}>{props.modalVisible}</Text>
+                        <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
+                            <Text>OK</Text>
+                        </Pressable>
+                    </View>
+                </Modal>
+            </View>
         </View>);
 }

@@ -10,7 +10,7 @@ import {styles} from './Styles';
 // Component "Piece" - a single instance of a piece. 
 //
 //
-export class Piece extends Component {
+export class Piece /*extends Component*/ extends React.Component<any,any> {
     constructor(props){super(props);}
     
     render(){

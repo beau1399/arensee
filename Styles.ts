@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
     textBanner: {flex:0.2},
     boardCenterer: {flexDirection:"row"},
     modalText: {color:"black", fontSize:22, fontWeight:"bold"},
-    whiteSquareColor: "pink",
-    blackSquareColor: "red",
+    whiteSquareColor: {backgroundColor: "rgb(255,128,128)"},
+    blackSquareColor: {backgroundColor: "rgb(255,0,0)" },
     boardRow: {flexDirection:"row", flex:1},
 });
 

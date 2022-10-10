@@ -29,7 +29,7 @@ import Queen from './Queen';
 // Outermost "App" component- the place to which state is "lifted up" and where check and mate are detected
 const App = ()=>{
 
-    const [boardState, setBoardState] = useState(StartingBoard.State())
+    const [boardState, setBoardState] = useState(StartingBoard)
     const [moveCount, setMoveCount] = useState(0)
     const [drawMoveCount, setDrawMoveCount] = useState(0)
     const [modalVisible, setModalVisible] = useState(undefined);
@@ -91,7 +91,7 @@ const App = ()=>{
 
     // E.g. at game end
     const ResetBoard = ()=>{
-        setBoardState(StartingBoard.State())
+        setBoardState(StartingBoard)
         setMoveCount(0)
         setDrawMoveCount(0)
     }

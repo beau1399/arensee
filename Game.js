@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component, useEffect, useLayoutEffect} from 'react';
 import {View, Text, Modal, Pressable, NativeModules} from 'react-native';
 import Constants from './Constants';
 import Sprite from './Sprite';
@@ -20,12 +20,12 @@ export function Game(props){
     // Handle computer movement when necessary
     if(!props.modalVisible) { // Modal presents game result; don't make any computer moves while it's open
         if(Constants.Players==1) { // Human-vs.-computer mode... 
-            useEffect(() => {
+            useLayoutEffect(() => {
                 if(props.moveCount%2==1) {
                     // Run the engine and make a computer move for moves 1,3,5 etc. (human is white pieces)
                     const pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                     const move = pm[0];
-                    props.movePiece(move.n, move.x, move.y, true);
+                    setTimeout(()=> {props.movePiece(move.n, move.x, move.y, true)},1000);
                 }
             },[props.moveCount]);
 

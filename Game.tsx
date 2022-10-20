@@ -25,7 +25,7 @@ export function Game(props){
                     // Run the engine and make a computer move for moves 1,3,5 etc. (human is white pieces)
                     const pm = Engine.PossibleMoves(true,props.causesSelfCheck,props.causesEnemyCheck,Constants.Difficulty,props.boardState)
                     const move = pm[0];
-                    setTimeout(()=>{props.movePiece(move.n, move.x, move.y, true);}, 1000)
+                    setTimeout(()=>{props.movePiece(move.n, move.x, move.y, true);}, 500)
                 }
             },[props.moveCount]);
 

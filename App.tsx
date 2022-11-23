@@ -25,15 +25,16 @@ import StartingBoard from './StartingBoard';
 import Movement from './Movement';
 import Pawn from './Pawn';
 import Queen from './Queen';
+import {PieceProps} from './PieceProps';
 
 // Outermost "App" component- the place to which state is "lifted up" and where check and mate are detected
 const App = ()=>{
 
-    const [boardState, setBoardState] = useState(StartingBoard)
+    const [boardState, setBoardState] = useState<PieceProps[]>(StartingBoard)
     const [moveCount, setMoveCount] = useState(0)
     const [drawMoveCount, setDrawMoveCount] = useState(0)
-    const [modalVisible, setModalVisible] = useState(undefined);
-    const [history, setHistory] = useState([])
+    const [modalVisible, setModalVisible] = useState<string>(undefined);
+    const [history, setHistory] = useState<string[]>([])
     
     const isChecked = (blackness)=> {
         //Find king of the color that might be checked.

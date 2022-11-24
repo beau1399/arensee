@@ -6,7 +6,7 @@ import King from './King';
 import Queen from './Queen';
 import {PieceProps} from './PieceProps';
 
-const StartingBoard: PieceProps[] = [
+const StartingBoard = () => { return [
 	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: Pawn.Value, dirtiness: false ,justAdvancedTwo: false },
 	{ sprite:Pawn.Black, x:1, y:1, n:1, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: 1 , dirtiness: false,justAdvancedTwo: false },
 	{ sprite:Pawn.Black, x:2, y:1, n:2, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: Pawn.Value , dirtiness: false,justAdvancedTwo: false },
@@ -39,6 +39,6 @@ const StartingBoard: PieceProps[] = [
 	{ sprite:King.White, x:4, y:7, n:27, canMove: King.CanMove, blackness: false,  kingness: true,deadness: false, value: 0 , dirtiness: false,justAdvancedTwo: false },
 	{ sprite:Knight.White, x:1, y:7, n:28, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false, value: 4 , dirtiness: false,justAdvancedTwo: false },
 	{ sprite:Knight.White, x:6, y:7, n:29, canMove: Knight.CanMove, blackness: false,  kingness: false, deadness: false, value: 4 , dirtiness: false,justAdvancedTwo: false },
-    ];
+    ];}
 
 export {StartingBoard as default};

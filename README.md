@@ -268,10 +268,6 @@ The **react-native-draggable** library on which the project depends required sev
 * A bug (documented at https://github.com/tongyy/react-native-draggable/issues/41#issuecomment-789320290) is fixed
 * Some animation was removed. The glitz added by this part of the code did not mesh well with my rendering logic.
 
-**Future**
-
-Other than the improvements to the chess engine already suggested, it seems to me that more formal typing would be welcome here. The format of the board state, the return format of "PossibleMoves," etc. all consist of primitive types "flying in close formation," and dealing with them requires either memorization, constant reference to source code, or a good IDE. Something like Typescript or Flow would be helpful here, 
-
 **Development Process**
 
 Arensee began mostly as a learning exercise. Having done pretty extensive React development and Java / Android native development, I wanted a real project to help me bridge the React Native knowledge gap between the two. I began with an Expo-based project created on the Friday of a three-day weekend, and by Sunday evening the game had taken its final appearance and was mostly complete. 

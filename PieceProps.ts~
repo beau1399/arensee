@@ -1,5 +1,0 @@
-export interface PieceProps {
- x:numeric;
- y:number;
- sprint:string[];
-}

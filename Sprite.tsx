@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import {SpriteProps} from './SpriteProps';
 
 //
 // Component "Sprite" - a raster component build around flexbox layout
@@ -8,7 +9,7 @@ import { View } from 'react-native';
 //  that gives context to the appearance string and allows it to be rendered.
 //
 //
-function Sprite(props) {
+function Sprite(props:SpriteProps) {
     const markup = (<View style={{flexDirection: "column"}}>				    
 	    {props.sprite.map((t,i)=>{
 		return (<View key={"sprite-outer-" + i + props.x + props.y} style={{width:1, height:props.pixelSize, flexDirection: "row"}}>

@@ -4,9 +4,10 @@
 //   to fill its container.
 //
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
+import {TileProps} from './TileProps';
 
-function Tile(props) {
+function Tile(props:TileProps) {
     const markup = (<View style={{flexDirection: "column", height:"100%", width:"100%"}}>				    
 	                {props.sprite.map((t,i)=>{
 		            return (<View key={"tile-outer-" + i + props.x + props.y} style={{height:props.pixelSize, flexDirection: "row", flex:1, flexGrow: 1}}>

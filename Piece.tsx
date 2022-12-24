@@ -26,7 +26,7 @@ export class Piece extends React.Component<any,any> {
 	        {/*This view immediately inside draggable seems to be required to establish the rectangle in which your finger will grab it.*/}
 	        <View>
 	            <View style={styles.pieceWrapper}>
-  	                <Sprite sprite={this.props.sprite} pixelSize={Constants?.SpritePixelSize||0} letterToColor={Constants.LetterToColor} />
+  	                <Sprite x={0} y={0} sprite={this.props.sprite} pixelSize={Constants?.SpritePixelSize||0} letterToColor={Constants.LetterToColor} />
 	            </View>
 	        </View>
 

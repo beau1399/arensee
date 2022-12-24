@@ -1,10 +1,10 @@
 export interface GameProps {
-    modalVisible: booean;
+    modalVisible: string | undefined;
     moveCount: number;
     causesSelfCheck: (n:number, i:number, j:number)=>boolean;
     causesEnemyCheck:(n:number, i:number, j:number)=>boolean;
     boardState: any;
     movePiece:(n:number, x:number, y:number, checked:boolean)=>void;
-    setModalVisible:Dispatch<SetStateAction<string | undefined>>;
+    setModalVisible:any; //Dispatch<SetStateAction<string | undefined>>;
     ResetBoard:()=>void;
 }

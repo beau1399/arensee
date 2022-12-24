@@ -61,18 +61,19 @@ export function Game(props:GameProps){
                 [...Array(Constants.BoardWidthInSquares).keys()].map((t,i)=>            
                     (<View style={styles.boardRow} key={"board0" + ++keyMaker}>
                         {[...Array(Constants.BoardWidthInSquares).keys()].map((u,j)=>
-{                            let squareColoration=i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor;
-                            
-                            return (<View key={"board1" + ++keyMaker}
-                                   style={{ ...styles.boardSquare, ...squareColoration }}>           
-                            </View>
+                            {                            let squareColoration=i%2==j%2 ? styles.whiteSquareColor : styles.blackSquareColor;
+                                
+                                return (<View key={"board1" + ++keyMaker}
+                                              style={{ ...styles.boardSquare, ...squareColoration }}>           
+                                </View>
                             )}
                         )}                   
                     </View>)                
                 )}</View>
             
             {/*The pieces*/}
-            <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck} moveCount={props.moveCount} />
+            <Board boardState={props.boardState} movePiece={props.movePiece} causesSelfCheck={props.causesSelfCheck}
+                   causesEnemyCheck={props.causesEnemyCheck} moveCount={props.moveCount} />
 
             {/*Modal, to announce mate &c.*/}
             <View style={styles.centeredView}>

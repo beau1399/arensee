@@ -1,7 +1,8 @@
 import Movement from './Movement';
+import {PieceProps} from './PieceProps';
 
 const King = {
-    CanMove: (blackness,x,y,toX,toY,pieces)=> {
+    CanMove: (blackness: boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> {
 	return (Math.abs(toX-x)<=1 && Math.abs(toY-y)<=1
 	     && !pieces.some((t)=>t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness)
     )},

@@ -1,8 +1,10 @@
-import Constants from './Constants'
+import Constants from './Constants';
+import {PieceProps} from './PieceProps';
+import {Piece} from './Piece';
 
 const Movement = {
 
-    NoInterveningPiece: (x, y, toX, toY, pieces) =>
+    NoInterveningPiece: (x:number, y:number, toX:number, toY:number, pieces:PieceProps[]) =>
         {
             var returnable=true;
             const signX=Math.sign(toX-x);
@@ -13,7 +15,7 @@ const Movement = {
             return returnable;
         },
 
-    CanMakeAMove: (blackness, causesSelfCheck, pieces) => {
+    CanMakeAMove: (blackness:boolean, causesSelfCheck:(x: number, y: number, n: number)=>boolean, pieces:PieceProps[]) => {
         let returnable = false;
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             for(let i=0; i<8; ++i){
@@ -29,7 +31,7 @@ const Movement = {
         return returnable;
     },
     
-    Castling : (targetX, targetY, piecesn, pieces, n, t) => {
+    Castling : (targetX:number, targetY:number, piecesn:PieceProps, pieces:PieceProps[], n:number, t:Piece) => {
         // Castling... if this were in kingCanMove, then the computer could use it...
         if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
             if(!Movement.NoInterveningPiece(piecesn.x,piecesn.y,targetX,targetY,pieces)){
@@ -54,7 +56,7 @@ const Movement = {
         }
     },
     
-    Release: (e, t) => {
+    Release: (e, t:Piece) => {
         const pieces = t.props.board;
         const targetX = (Math.floor((e.nativeEvent.pageX) / Constants.SquareWidth));
         const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / Constants.SquareHeight));

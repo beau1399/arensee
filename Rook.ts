@@ -1,4 +1,5 @@
 import Movement from './Movement';
+import {PieceProps} from './PieceProps';
 
 const Rook = {
 

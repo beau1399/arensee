@@ -60,11 +60,11 @@ const Movement = {
     
     Release: (e:GestureResponderEvent, t:Piece) => {
         const pieces = t.props.board;
-        const targetX = (Math.floor((e.nativeEvent.pageX) / Constants.SquareWidth));
-        const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / Constants.SquareHeight));
+        const targetX = (Math.floor((e.nativeEvent.pageX) / (Constants?.SquareWidth||0)));
+        const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / (Constants?.SquareHeight||0)));
         if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
         const n=t.props.n;
-        const piecesn=pieces.filter((u)=>u.n==n)[0];
+        const piecesn=pieces.filter((u:PieceProps)=>u.n==n)[0];
         const blackGo = t.props.moveCount%2==1
         if(blackGo != piecesn.blackness){return}
         Movement.Castling (targetX, targetY, piecesn, pieces, n, t);

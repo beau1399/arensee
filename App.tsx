@@ -64,7 +64,7 @@ const App = ()=>{
 
         //Check for and enforce capture en passant
         const {enpassant,capturedX,capturedY} =
-              Pawn.EnPassant(movingPiece.blackness, movingPiece.pawnness, movingPiece.x, movingPiece.y, x, y, boardState) 
+              Pawn.EnPassant(movingPiece.blackness, movingPiece?.pawnness || false, movingPiece.x, movingPiece.y, x, y, boardState) 
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Move is performed hypothetically so we save state of piece n
@@ -115,7 +115,7 @@ const App = ()=>{
 
         //Detect and enforce enpassant
         const {enpassant,capturedX,capturedY} =
-            Pawn.EnPassant(movingPiece.blackness, movingPiece.pawnness, movingPiece.x, movingPiece.y, x, y, boardState) 
+            Pawn.EnPassant(movingPiece.blackness, movingPiece?.pawnness||false, movingPiece.x, movingPiece.y, x, y, boardState) 
         if(enpassant) { prime.filter((t)=>t.x==capturedX && t.y==capturedY )[0].deadness=true; }
 
         //Save state in case the (human's) move attempt is illegal

@@ -1,7 +1,9 @@
 import Movement from './Movement';
+import {PieceProps} from './PieceProps';
+
 
 const Bishop = {
-    CanMove: (blackness,x,y,toX,toY,pieces)=> (Math.abs(toX-x)==Math.abs(toY-y))
+    CanMove: (blackness:boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> (Math.abs(toX-x)==Math.abs(toY-y))
 					 && !pieces.some((t)=>
 					     t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) //Can't move atop same color piece
 					 && Movement.NoInterveningPiece(x,y,toX,toY,pieces),

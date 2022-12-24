@@ -13,7 +13,7 @@
         "types": ["react-native", "jest"],
         "moduleResolution": "node",
         "noEmit": true,
-        "strict": false,
+        "strict": true,
         "target": "esnext"
     },
     

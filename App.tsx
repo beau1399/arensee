@@ -33,10 +33,10 @@ const App = ()=>{
     const [boardState, setBoardState] = useState<PieceProps[]>(StartingBoard())
     const [moveCount, setMoveCount] = useState(0)
     const [drawMoveCount, setDrawMoveCount] = useState(0)
-    const [modalVisible, setModalVisible] = useState<string>(undefined);
+    const [modalVisible, setModalVisible] = useState<string | undefined>(undefined);
     const [history, setHistory] = useState<string[]>([])
     
-    const isChecked = (blackness)=> {
+    const isChecked = (blackness:boolean)=> {
         //Find king of the color that might be checked.
         const k=boardState.filter((t,i)=>t.blackness==blackness && t.kingness && !t.deadness)[0];
         let returnable = false;
@@ -51,7 +51,7 @@ const App = ()=>{
 
     // Answers question "Does move of piece n to (x,y) cause check?". We can check for own-color check (opponent=false)
     //  or other-color check (opponent=true). 
-    const causesCheck = (n, x, y, opponent)=> {
+    const causesCheck = (n:number, x:number, y:number, opponent:boolean)=> {
         //Construct next board state so we can simulate the move to gauge impact
         const prime=[...boardState]
         
@@ -86,9 +86,9 @@ const App = ()=>{
         return returnable
     }
 
-    const causesSelfCheck = (n, x, y)=> causesCheck(n,x,y,false)
+    const causesSelfCheck = (n:number, x:number, y:number)=> causesCheck(n,x,y,false)
     
-    const causesEnemyCheck = (n, x, y)=> causesCheck(n,x,y,true)
+    const causesEnemyCheck = (n:number, x:number, y:number)=> causesCheck(n,x,y,true)
 
     // E.g. at game end
     const ResetBoard = ()=>{
@@ -101,7 +101,7 @@ const App = ()=>{
     //
     // Here is where we mutate board state, detect  check, detect mates and draws of all types,
     //  and perform game-level bookkeeping around things like en passant.
-    const movePiece = (n, x, y, prechecked)=> {
+    const movePiece = (n:number, x:number, y:number, prechecked:boolean)=> {
 
         //Construct new board state
         const prime=[...boardState]
@@ -187,8 +187,11 @@ const App = ()=>{
     } 
     
     return(<Game boardState={boardState} movePiece={movePiece} causesSelfCheck={causesSelfCheck} causesEnemyCheck={causesEnemyCheck}   
-        moveCount={moveCount} setMoveCount={setMoveCount} setBoardState={setBoardState}
-        modalVisible={modalVisible} setModalVisible={setModalVisible} ResetBoard={ResetBoard} />);    
+        ResetBoard={ResetBoard} setModalVisible={setModalVisible} modalVisible={modalVisible} moveCount={moveCount} />);    
 }    
 
+/*
+ {setMoveCount={setMoveCount} setBoardState={setBoardState}
+           }
+*/
 export default App;

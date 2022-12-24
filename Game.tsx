@@ -6,6 +6,7 @@ import Tile from './Tile';
 import {Board} from './Board'
 import {styles} from './Styles'
 import Engine from './Engine';
+import {GameProps} from './GameProps';
 
 const { RNPlayNative } = NativeModules;
 
@@ -15,7 +16,7 @@ const { RNPlayNative } = NativeModules;
 // This is the outermost container in the component hierarchy, and also where computer chess engine is invoked
 //  for 0-player and 1-player games.
 //
-export function Game(props){
+export function Game(props:GameProps){
 
     // Handle computer movement when necessary
     if(!props.modalVisible) { // Modal presents game result; don't make any computer moves while it's open

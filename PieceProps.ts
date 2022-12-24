@@ -10,5 +10,5 @@ export interface PieceProps {
     dirtiness:boolean;
     justAdvancedTwo:boolean;
     value:number;
-    canMove?(blackness: boolean, x: number, y: number, targetX: number, targetY: number, pieces: PieceProps[]): any;
+    canMove(blackness: boolean, x: number, y: number, targetX: number, targetY: number, pieces: PieceProps[]): any;
 }

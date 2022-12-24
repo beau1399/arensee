@@ -1,0 +1,8 @@
+export interface GameProps {
+ modalVisible: booean;
+ moveCount: number;
+                        causesSelfCheck: (n:number, i:number, j:number)=>boolean;
+                        causesEnemyCheck:(n:number, i:number, j:number)=>boolean;
+
+
+}

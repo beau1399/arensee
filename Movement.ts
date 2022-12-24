@@ -1,6 +1,7 @@
 import Constants from './Constants';
 import {PieceProps} from './PieceProps';
 import {Piece} from './Piece';
+import {GestureResponderEvent} from "react-native";
 
 const Movement = {
 
@@ -18,6 +19,7 @@ const Movement = {
     CanMakeAMove: (blackness:boolean, causesSelfCheck:(x: number, y: number, n: number)=>boolean, pieces:PieceProps[]) => {
         let returnable = false;
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
+            //A chessboard is 8x8...
             for(let i=0; i<8; ++i){
                 for(let j=0; j<8; ++j){
                     if(!returnable){
@@ -56,7 +58,7 @@ const Movement = {
         }
     },
     
-    Release: (e, t:Piece) => {
+    Release: (e:GestureResponderEvent, t:Piece) => {
         const pieces = t.props.board;
         const targetX = (Math.floor((e.nativeEvent.pageX) / Constants.SquareWidth));
         const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / Constants.SquareHeight));

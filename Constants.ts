@@ -5,8 +5,8 @@ interface ArenseeConstants {
     Players: number;
     CheckValue: number;
     BoardWidthInSquares: number;
-    SquareWidth: number | undefined;
-    SquareHeight: number | undefined;
+    SquareWidth: number;
+    SquareHeight: number;
     SpritePixelSize: number;
     SpriteWidth: number;
     UserPerspectiveCompensator: number;
@@ -22,20 +22,20 @@ const Constants:ArenseeConstants = {
     BoardWidthInSquares: 8,
 
     //A few things you probably don't need to change (dimensions, initial piece position, etc.) are grouped below.
-        // However, this section does give some insight into the overall rendering scheme used. The Draggable component
+    // However, this section does give some insight into the overall rendering scheme used. The Draggable component
     // (from react-native-draggable) really works best when it's positioned in screen coordinates,
     // independent of everything else.
-        //
+    //
     // Here, such a drag-and-drop coordinate system, based around board squares and piece renderings one-eighth
     // of the screen dimensions (since a chessboard is 8x8), is used. This screen / drag coordinate system is
     // superimposed atop the chessboard, which is build using flexboxes with flexGrow set to 1 and the sizes set
     // to 100%. Because both the flexbox matrix and the drag-and-drop renderings span the entire screen, they are
     // synchronized, i.e. movement and positioning of pieces (screen coordinate driven) lines up correctly with
     // the flexbox-based board.
-        //
+    //
     // At the lowest, smallest level, both the Sprite and Tile components (used to bld the pieces and the board,
     //  respectively) use flexbox to achieve raster effects.
-        //
+    //
     SquareWidth: Dimensions.get('window').width / 8.0,
     SquareHeight: (1.0 / 8.0) * (Dimensions.get('window').height - (StatusBar?.currentHeight || 0)),
 

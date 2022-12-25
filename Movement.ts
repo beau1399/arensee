@@ -44,15 +44,15 @@ const Movement = {
                     const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==0)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
                         if(!t.props.causesSelfCheck(n,piecesn.x-1,targetY) && !t.props.causesSelfCheck(n,piecesn.x-2,targetY)){
-                            t.props.movePiece(n,piecesn.x-2,targetY);
-                            t.props.movePiece(castle.n,castle.x+3,castle.y); }}
+                            t.props.movePiece(n,piecesn.x-2,targetY,false);
+                            t.props.movePiece(castle.n,castle.x+3,castle.y,false); }}
                 }else{
                     const castle=pieces.filter(u=>u.blackness==piecesn.blackness && u.y==piecesn.y && u.x==7)[0]
                     if(castle && !castle.dirtiness && !piecesn.dirtiness && !castle.deadness && !piecesn.deadness) {
                         if(!t.props.causesSelfCheck(n,piecesn.x+1,targetY) && !t.props.causesSelfCheck(n,piecesn.x+2,targetY)){
-                            t.props.movePiece(n,piecesn.x+1,targetY);
-                            t.props.movePiece(n,piecesn.x+2,targetY);
-                            t.props.movePiece(castle.n,castle.x-2,castle.y); }}
+                            t.props.movePiece(n,piecesn.x+1,targetY,false);
+                            t.props.movePiece(n,piecesn.x+2,targetY,false);
+                            t.props.movePiece(castle.n,castle.x-2,castle.y,false); }}
                 }
             }
         }
@@ -70,7 +70,7 @@ const Movement = {
         Movement.Castling (targetX, targetY, piecesn, pieces, n, t);
         if((targetX!=piecesn.x || targetY!=piecesn.y) &&
            piecesn.canMove(piecesn.blackness,piecesn.x,piecesn.y,targetX,targetY,pieces)){
-            t.props.movePiece(n,targetX,targetY); }
+            t.props.movePiece(n,targetX,targetY,false); }
     }
 };
 

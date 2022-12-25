@@ -5,14 +5,14 @@ import Movement from './Movement';
 import Sprite from './Sprite';
 import Draggable from 'react-native-draggable';
 import {styles} from './Styles';
-import {BoardStatePiece} from './BoardStatePiece';
+import {PieceProps} from './PieceProps';
 
 //
 // Component "Piece" - a single instance of a piece. 
 //
 //
-export class Piece extends React.Component<any,any> {
-    constructor(props: BoardStatePiece){super(props);}
+export class Piece extends React.Component<PieceProps,{}> {
+    constructor(props: PieceProps){super(props);}
     
     render(){
 	if(this.props.deadness) return null; // No rendering if piece has been captured

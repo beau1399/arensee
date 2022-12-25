@@ -1,13 +1,5 @@
 import {Dimensions, StatusBar} from 'react-native';
 
-interface thingtype {
-    a:any;
-    b:string;
-
-}
-
-const thing:thingtype={a:null, b:''};
-
 interface ArenseeConstants {
     Difficulty: number;
     Players: number;
@@ -52,7 +44,7 @@ const Constants:ArenseeConstants = {
     
     // Ease piece movement by adding some slight, static perspective to compensate of relative position
     //  of user and phone. Some fraction of a single board square works well.
-        UserPerspectiveCompensator: 10, //any) : (Dimensions.get('window').height ?? 0 - StatusBar.currentHeight ?? 0) / 8.0 / 5.0,
+    UserPerspectiveCompensator: (Dimensions.get('window').height ?? 0 - (StatusBar?.currentHeight || 0)) / 8.0 / 5.0,
 
     LetterToColor:(l:string):string|undefined => {return (
         {"r":"red",

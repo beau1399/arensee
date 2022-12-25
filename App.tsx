@@ -190,8 +190,4 @@ const App = ()=>{
         ResetBoard={ResetBoard} setModalVisible={setModalVisible} modalVisible={modalVisible} moveCount={moveCount} />);    
 }    
 
-/*
- {setMoveCount={setMoveCount} setBoardState={setBoardState}
-           }
-*/
 export default App;

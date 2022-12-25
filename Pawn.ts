@@ -1,12 +1,12 @@
 import Movement from './Movement';
-import {PieceProps} from './PieceProps';
+import {BoardStatePiece} from './BoardStatePiece';
 
 const Pawn = {
     // We don't define a "Value" in every piece definition file. For pieces where this value would only be used in Constants.js,
     //  I didn't see the value in adding such an extra layer. That said, Pawn.Value is something used in multiple places (b/c
     //  of the unique ways in which pawns move), so I saw a need to factor out the "1" constant for pawns.
     Value: 1,
-    EnPassant:  (blackness:boolean, pawnness:boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> {
+    EnPassant:  (blackness:boolean, pawnness:boolean, x:number, y:number, toX:number, toY:number, pieces:BoardStatePiece[])=> {
 	const happened = pawnness && (
 	    //Black
 	    (toY-y==1 && blackness && Math.abs(toX-x)==1 &&
@@ -17,7 +17,7 @@ const Pawn = {
 	return {enpassant:happened, capturedX:toX, capturedY:y}
     },
     
-    CanMove:  (blackness:boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> {
+    CanMove:  (blackness:boolean, x:number, y:number, toX:number, toY:number, pieces:BoardStatePiece[])=> {
 	return ((toY-y==1 && blackness) ||    //Start with the vertical movement rules...
 		(toY-y==-1 && !blackness) ||
 		(toY-y==2 && blackness && y==1  && Movement.NoInterveningPiece(x,y,toX,toY,pieces)) ||

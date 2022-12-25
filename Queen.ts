@@ -1,10 +1,10 @@
 import Movement from './Movement';
 import Rook from './Rook'; //Is this really how we want to do this TODO?
 import Bishop from './Bishop';
-import {PieceProps} from './PieceProps';
+import {BoardStatePiece} from './BoardStatePiece';
 
 const Queen = {
-    CanMove: (blackness: boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> 
+    CanMove: (blackness: boolean, x:number, y:number, toX:number, toY:number, pieces:BoardStatePiece[])=> 
         Rook.CanMove(blackness,x,y,toX,toY,pieces) || Bishop.CanMove(blackness,x,y,toX,toY,pieces),
     
         Value: 9,

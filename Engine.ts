@@ -1,6 +1,6 @@
 import Pawn from './Pawn';
 import Constants from './Constants';
-import {PieceProps} from './PieceProps';
+import {BoardStatePiece} from './BoardStatePiece';
 
 interface PossibleMove {
     //Piece index to move
@@ -18,7 +18,7 @@ const Engine = {
                         causesSelfCheck: (n:number, i:number, j:number)=>boolean,
                         causesEnemyCheck:(n:number, i:number, j:number)=>boolean,
                         max:number,
-                        pieces:PieceProps[]) : PossibleMove[] =>{
+                        pieces:BoardStatePiece[]) : PossibleMove[] =>{
                             let returnable:PossibleMove[] = [];
                             pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
                                 if(returnable.length<max){

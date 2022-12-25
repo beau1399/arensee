@@ -1,11 +1,11 @@
 import Constants from './Constants';
-import {PieceProps} from './PieceProps';
+import {BoardStatePiece} from './BoardStatePiece';
 import {Piece} from './Piece';
 import {GestureResponderEvent} from "react-native";
 
 const Movement = {
 
-    NoInterveningPiece: (x:number, y:number, toX:number, toY:number, pieces:PieceProps[]) =>
+    NoInterveningPiece: (x:number, y:number, toX:number, toY:number, pieces:BoardStatePiece[]) =>
         {
             var returnable=true;
             const signX=Math.sign(toX-x);
@@ -16,7 +16,7 @@ const Movement = {
             return returnable;
         },
 
-    CanMakeAMove: (blackness:boolean, causesSelfCheck:(x: number, y: number, n: number)=>boolean, pieces:PieceProps[]) => {
+    CanMakeAMove: (blackness:boolean, causesSelfCheck:(x: number, y: number, n: number)=>boolean, pieces:BoardStatePiece[]) => {
         let returnable = false;
         pieces.filter((t)=>t.blackness==blackness && !t.deadness).forEach((t)=> {
             //A chessboard is 8x8...
@@ -33,7 +33,7 @@ const Movement = {
         return returnable;
     },
     
-    Castling : (targetX:number, targetY:number, piecesn:PieceProps, pieces:PieceProps[], n:number, t:Piece) => {
+    Castling : (targetX:number, targetY:number, piecesn:BoardStatePiece, pieces:BoardStatePiece[], n:number, t:Piece) => {
         // Castling... if this were in kingCanMove, then the computer could use it...
         if(piecesn.kingness && Math.abs(targetX-piecesn.x)==2 && Math.abs(targetY-piecesn.y)==0){
             if(!Movement.NoInterveningPiece(piecesn.x,piecesn.y,targetX,targetY,pieces)){
@@ -64,7 +64,7 @@ const Movement = {
         const targetY = (Math.floor((e.nativeEvent.pageY-Constants.UserPerspectiveCompensator) / (Constants?.SquareHeight||0)));
         if (targetX>7 || targetY>7 || targetX<0 || targetY<0) { return; }
         const n=t.props.n;
-        const piecesn=pieces.filter((u:PieceProps)=>u.n==n)[0];
+        const piecesn=pieces.filter((u:BoardStatePiece)=>u.n==n)[0];
         const blackGo = t.props.moveCount%2==1
         if(blackGo != piecesn.blackness){return}
         Movement.Castling (targetX, targetY, piecesn, pieces, n, t);

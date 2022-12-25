@@ -1,4 +1,4 @@
-export interface PieceProps {
+export interface BoardStatePiece {
     x:number;
     y:number;
     sprite:string[];

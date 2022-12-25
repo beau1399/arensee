@@ -1,9 +1,9 @@
 import Movement from './Movement';
-import {PieceProps} from './PieceProps';
+import {BoardStatePiece} from './BoardStatePiece';
 
 const Rook = {
 
-    CanMove: (blackness: boolean, x:number, y:number, toX:number, toY:number, pieces:PieceProps[])=> 
+    CanMove: (blackness: boolean, x:number, y:number, toX:number, toY:number, pieces:BoardStatePiece[])=> 
         (x==toX || y==toY) &&                                                                                                   
         !pieces.some((t)=> t.x==toX && t.y==toY && t.blackness==blackness && !t.deadness) &&
         Movement.NoInterveningPiece(x,y,toX,toY,pieces),

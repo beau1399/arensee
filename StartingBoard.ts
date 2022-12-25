@@ -4,7 +4,6 @@ import Bishop from './Bishop';
 import Knight from './Knight';
 import King from './King';
 import Queen from './Queen';
-import {PieceProps} from './PieceProps';
 
 const StartingBoard = () => { return [
 	{ sprite:Pawn.Black, x:0, y:1, n:0, canMove: Pawn.CanMove, blackness: true, kingness: false,  deadness: false, pawnness: true, value: Pawn.Value, dirtiness: false ,justAdvancedTwo: false },

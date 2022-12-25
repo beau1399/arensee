@@ -9,6 +9,12 @@ The chess engine used by the computer is rudimentary in nature. Located in file 
 
 Arensee is noteworthy for its lack of dependencies. Other than React Native itself, I've added just two NPM package: one called **react-native-draggable** and another called **patch-package**, which is used only to patch **react-native-draggable**. This seems pretty atypical of React Native applications to me, but as things unfolded I found that React Native provided ample facilities "right out of the box" for a chess game. In fact, the reactive user interface paradigm struck me as well-suited to a chess game, where state is central, evolving over time, and prominently presented visually. 
 
+**Language Note** 
+
+Arensee was originally developed using Javascript. That language was adequate for the quick, single-developer nature of the project. More recently, Arensee has been ported to the Typescript language. The Typescript implementation can be found on branch *typescript* of the project repo, and will be maintained roughly in parallel with the *main* (JS) branch.
+
+This document gives examples from the JS version of Arensee only. The underlying computer chess implementation is fundamentally similar across both languages and their branches, though. 
+
 **Component *Sprite*** 
 
 I began with the question "how do I render a chessboard and pieces on the screen?". In the past I've used OpenGL ES and **react-native-canvas** with good results, but I didn't think what I needed here was a drawing engine per se. Rather, it seemed to me that these rendering tasks could be accomplished using a very raster-centric "pixel art" style reminiscent of the 8-bit era of home computing. Consider the image below, where a magnified version of my white bishop is shown with some illustrative guidelines:
@@ -261,10 +267,6 @@ The **react-native-draggable** library on which the project depends required sev
 
 * A bug (documented at https://github.com/tongyy/react-native-draggable/issues/41#issuecomment-789320290) is fixed
 * Some animation was removed. The glitz added by this part of the code did not mesh well with my rendering logic.
-
-**Future**
-
-Other than the improvements to the chess engine already suggested, it seems to me that more formal typing would be welcome here. The format of the board state, the return format of "PossibleMoves," etc. all consist of primitive types "flying in close formation," and dealing with them requires either memorization, constant reference to source code, or a good IDE. Something like Typescript or Flow would be helpful here, 
 
 **Development Process**
 

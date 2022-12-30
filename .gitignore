@@ -64,4 +64,4 @@ buck-out/
 /vendor/bundle/
 
 #Some crap from Emacs or something
-*~
+#*~

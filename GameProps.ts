@@ -8,5 +8,5 @@ export interface GameProps {
     boardState: BoardStatePiece[];
     movePiece:(n:number, x:number, y:number, checked:boolean)=>void;
     setModalVisible: (value: string|undefined | ((prevVar: string|undefined) => string|undefined)) => void; 
-    ResetBoard:()=>void;
+    resetBoard:()=>void;
 }

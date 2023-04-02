@@ -80,7 +80,7 @@ export function Game(props:GameProps){
                 <Modal animationType="slide" transparent={true} visible={props.modalVisible?true:false} >
                     <View style={styles.centeredView} >
                         <Text style={styles.modalText}>{props.modalVisible}</Text>
-                        <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.ResetBoard();}} >
+                        <Pressable style={styles.modalButton} onPress={() => {props.setModalVisible(undefined); props.resetBoard();}} >
                             <Text>OK</Text>
                         </Pressable>
                     </View>

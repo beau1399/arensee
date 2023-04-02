@@ -91,7 +91,7 @@ const App = ()=>{
     const causesEnemyCheck = (n:number, x:number, y:number)=> causesCheck(n,x,y,true)
 
     // E.g. at game end
-    const ResetBoard = ()=>{
+    const resetBoard = ()=>{
         setBoardState(StartingBoard())
         setMoveCount(0)
         setDrawMoveCount(0)
@@ -187,7 +187,7 @@ const App = ()=>{
     } 
     
     return(<Game boardState={boardState} movePiece={movePiece} causesSelfCheck={causesSelfCheck} causesEnemyCheck={causesEnemyCheck}   
-        ResetBoard={ResetBoard} setModalVisible={setModalVisible} modalVisible={modalVisible} moveCount={moveCount} />);    
+        resetBoard={resetBoard} setModalVisible={setModalVisible} modalVisible={modalVisible} moveCount={moveCount} />);    
 }    
 
 export default App;

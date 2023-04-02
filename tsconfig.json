@@ -3,7 +3,7 @@
     "extends": "@tsconfig/react-native/tsconfig.json",     /* Recommended React Native TSConfig base */
     
     "compilerOptions": {
-        "allowJs": true,
+        "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "isolatedModules": true,
